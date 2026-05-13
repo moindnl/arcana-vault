@@ -3,6 +3,7 @@
   import { tweened } from 'svelte/motion';
   import { linear } from 'svelte/easing';
   import { fly } from 'svelte/transition';
+  import { onMount } from 'svelte';
 
   // Piecewise linear carb oxidation by IF (Jeukendrup 2004 / ACSM guidelines)
   function carbsFromIF(if_val: number): number {
@@ -34,12 +35,46 @@
   let weight = 0;
   let ftp = 0;
   let power = 0;
+  let temperature = 20; // °C, baseline — no heat bonus below 20°C
+  let imperial = false;
   let howItWorksOpen = false;
 
+  // Persist weight, FTP, unit preference across sessions
+  onMount(() => {
+    try {
+      const p = JSON.parse(localStorage.getItem('bs-profile') || '{}');
+      if (p.weight > 0) weight = p.weight;
+      if (p.ftp > 0) ftp = p.ftp;
+      if (typeof p.imperial === 'boolean') imperial = p.imperial;
+      if (typeof p.temperature === 'number') temperature = p.temperature;
+    } catch {}
+  });
+  $: localStorage?.setItem('bs-profile', JSON.stringify({ weight, ftp, imperial, temperature }));
+
+  // Reset per-ride inputs only; weight/FTP/preferences persist
   function resetInputs() {
-    distance = 0; duration = 0; weight = 0; ftp = 0; power = 0;
+    distance = 0; duration = 0; power = 0;
     triggerBananaSpin();
   }
+
+  // Imperial ↔ metric: convert displayed values on toggle
+  function toggleImperial() {
+    if (!imperial) {
+      if (weight > 0)   weight   = Math.round(weight * 2.20462);
+      if (distance > 0) distance = Math.round(distance * 0.621371 * 10) / 10;
+    } else {
+      if (weight > 0)   weight   = Math.round(weight / 2.20462);
+      if (distance > 0) distance = Math.round(distance * 1.60934);
+    }
+    imperial = !imperial;
+  }
+
+  // Metric-normalised values used in all calculations
+  $: weightKg  = imperial ? weight / 2.20462 : weight;
+  $: distanceKm = imperial ? distance * 1.60934 : distance;
+  $: speedKmh  = distanceKm > 0 && duration > 0 ? distanceKm / duration : 0;
+  $: speedUnit = imperial ? 'mph' : 'km/h';
+  $: heatBonus = temperature > 20 ? Math.round((temperature - 20) / 5 * 0.3 * 10) / 10 : 0;
 
   // Banana spin on input change
   let bananaClass = 'banana-idle';
@@ -81,9 +116,9 @@
     intensityFactor < 0.95 ? 'high' :
     'extreme') as keyof typeof CARB_RANGES;
 
-  // Fluid: weight-scaled
+  // Fluid: weight-scaled + heat adjustment
   $: baseFluid = (FLUID_RANGES[intensity].min + FLUID_RANGES[intensity].max) / 2;
-  $: fluidPerHour = weight > 0 && duration > 0 ? baseFluid * (weight / 70) : 0;
+  $: fluidPerHour = weight > 0 && duration > 0 ? baseFluid * (weightKg / 70) + heatBonus : 0;
 
   // Carbs: IF-based piecewise when power available, zone midpoint fallback
   $: carbsPerHour = duration <= 0 || weight <= 0 ? 0 :
@@ -94,8 +129,8 @@
   // Energy: kJ mechanical ≈ kcal (cycling standard: 1W × 1h = 3.6 kJ ≈ 3.6 kcal)
   $: kcalPerHour = powerDerived ? Math.round(power * 3.6) : 0;
 
-  // Speed
-  $: speedDisplay = distance > 0 && duration > 0 ? Math.round(distance / duration) : 0;
+  // Speed (display unit depends on imperial; animal thresholds always km/h)
+  $: speedDisplay = Math.round(imperial ? speedKmh * 0.621371 : speedKmh);
 
   // Totals
   $: totalCarbs = Math.round(carbsPerHour * duration);
@@ -130,13 +165,13 @@
     'Greyhound sprint':'https://en.wikipedia.org/wiki/Greyhound'
   };
 
-  $: speedSlogan = speedDisplay === 0 ? '' :
-    speedDisplay < 10 ? 'Turtle pace' :
-    speedDisplay < 15 ? 'Penguin cruise' :
-    speedDisplay < 20 ? 'Gazelle pace' :
-    speedDisplay < 25 ? 'Cheetah chase' :
-    speedDisplay < 30 ? 'Falcon flight' :
-    speedDisplay < 40 ? 'Peregrine speed' :
+  $: speedSlogan = speedKmh === 0 ? '' :
+    speedKmh < 10 ? 'Turtle pace' :
+    speedKmh < 15 ? 'Penguin cruise' :
+    speedKmh < 20 ? 'Gazelle pace' :
+    speedKmh < 25 ? 'Cheetah chase' :
+    speedKmh < 30 ? 'Falcon flight' :
+    speedKmh < 40 ? 'Peregrine speed' :
     'Greyhound sprint';
 
   $: multiCarbNote = zoneLabel === 'Threshold' || zoneLabel === 'VO₂max+';
@@ -200,13 +235,20 @@
     <!-- Input Card -->
     <div class="bg-[--color-canvas] border border-[--color-hairline-soft] rounded-sm p-lg md:p-xl mb-section card-enter card-enter-3" on:input={triggerBananaSpin}>
 
+      <!-- Unit toggle -->
+      <div class="flex justify-end mb-lg">
+        <button class="filter-chip {imperial ? 'filter-chip-active' : ''} text-caption-sm px-sm py-xs" on:click={toggleImperial}>
+          {imperial ? 'mi / lbs' : 'km / kg'}
+        </button>
+      </div>
+
       <!-- Row 1: Distance / Duration / Weight -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
         <div class="space-y-sm">
           <label for="distance" class="text-caption-md text-[--color-ink]">Distance</label>
           <div class="flex items-center gap-sm">
             <input id="distance" type="number" bind:value={distance} min="1" max="500" step="1" class="search-pill flex-1" />
-            <span class="text-caption-sm text-[--color-mute] whitespace-nowrap">km</span>
+            <span class="text-caption-sm text-[--color-mute] whitespace-nowrap">{imperial ? 'mi' : 'km'}</span>
           </div>
         </div>
         <div class="space-y-sm">
@@ -219,8 +261,8 @@
         <div class="space-y-sm">
           <label for="weight" class="text-caption-md text-[--color-ink]">Weight</label>
           <div class="flex items-center gap-sm">
-            <input id="weight" type="number" bind:value={weight} min="40" max="150" step="1" class="search-pill flex-1" />
-            <span class="text-caption-sm text-[--color-mute] whitespace-nowrap">kg</span>
+            <input id="weight" type="number" bind:value={weight} min="1" max="400" step="1" class="search-pill flex-1" />
+            <span class="text-caption-sm text-[--color-mute] whitespace-nowrap">{imperial ? 'lbs' : 'kg'}</span>
           </div>
         </div>
       </div>
@@ -255,6 +297,20 @@
         </div>
       </div>
 
+      <!-- Temperature -->
+      <div class="mt-lg pt-lg border-t border-[--color-hairline-soft]">
+        <div class="flex items-center justify-between mb-sm">
+          <label for="temperature" class="text-caption-md text-[--color-ink]">Temperature</label>
+          <span class="text-caption-md font-bold text-[--color-ink]">{temperature}°C</span>
+        </div>
+        <input id="temperature" type="range" bind:value={temperature} min="0" max="45" step="1" class="w-full accent-[--color-ink]" />
+        {#if heatBonus > 0}
+          <p class="text-caption-sm text-[--color-sale] mt-xs">+{heatBonus.toFixed(1)} L/h heat adjustment applied</p>
+        {:else}
+          <p class="text-caption-sm text-[--color-mute] mt-xs">Heat adjustment active above 20°C</p>
+        {/if}
+      </div>
+
       <!-- Reset -->
       <div class="flex justify-end mt-lg">
         <button class="filter-chip flex items-center gap-xs" on:click={resetInputs} aria-label="Reset all inputs">
@@ -281,7 +337,7 @@
         <div class="mb-lg">
           <div class="flex items-baseline gap-sm">
             <span class="text-7xl md:text-8xl font-extra-bold text-[--color-ink]">{Math.round($animatedSpeed)}</span>
-            <span class="text-3xl text-[--color-mute]">km/h</span>
+            <span class="text-3xl text-[--color-mute]">{speedUnit}</span>
           </div>
         </div>
         {#if speedSlogan}
@@ -376,6 +432,9 @@
           </div>
         </div>
         <p class="text-caption-md text-[--color-charcoal]">Based on weight and duration</p>
+        {#if heatBonus > 0}
+          <p class="text-caption-sm text-[--color-sale] mt-sm">+{heatBonus.toFixed(1)} L/h for {temperature}°C heat</p>
+        {/if}
       </div>
     </div>
 
