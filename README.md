@@ -1,59 +1,53 @@
-# BananaSprocket - Nutrition Planner for Endurance Cyclists
+# BananaSprocket — Cycling Nutrition Planner
 
-A web application for calculating optimal carbohydrate and fluid intake during long endurance cycling tours.
+Precision carbohydrate and fluid targets for endurance cyclists, calculated from FTP and ride power output.
 
 ## Features
 
-- **Personalized Calculations**: Enter your distance, duration, and weight to get tailored nutrition recommendations
-- **Intensity Levels**: Choose from Low, Moderate, High, or Extreme intensity
-- **Speed Tracking**: View your average speed with fun animal-themed descriptions
-- **Responsive Design**: Works on mobile and desktop devices
-- **Animated UI**: Smooth number transitions and interactive elements
+- **Power-based carb formula** — piecewise model by Intensity Factor (Jeukendrup / ACSM). Two riders at the same watts get different recommendations based on their FTP.
+- **Zone detection** — Recovery → Endurance → Tempo → Threshold → VO₂max+, driven by % FTP
+- **Weight-scaled fluids** — larger athletes sweat more; fluid targets scale accordingly
+- **Energy expenditure** — kcal/h via `power × 3.6` (cycling mechanical efficiency standard)
+- **Speed + animal badge** — average pace with Wikipedia-linked animal comparison
+- **Mobile sticky bar** — liquid glass overlay showing carbs/fluids/kcal per hour, always visible while scrolling
+- **Zone-reactive banana** — pendulum idle animation, color shifts yellow → red with intensity
+- **WCAG 2.1 AA** — 100/100 accessibility score
 
-## Design System
+## Science
 
-This application uses the **Nike Design System** as documented at:
-- https://getdesign.md/nike/design-md
-
-The styling follows Nike's design tokens for colors, typography, spacing, and components.
+| Zone | % FTP | Carbs |
+|---|---|---|
+| Recovery | < 55% | 0–20 g/h |
+| Endurance | 55–75% | 20–40 g/h |
+| Tempo | 75–90% | 40–60 g/h |
+| Threshold | 90–105% | 60–90 g/h |
+| VO₂max+ | > 105% | 90–120 g/h (glucose+fructose 2:1 required) |
 
 ## Tech Stack
 
-- **Framework**: SvelteKit with Svelte 5
-- **Styling**: Tailwind CSS with custom Nike design tokens
-- **Icons**: Tabler Icons (svelte-runes)
-- **Animations**: Svelte Motion for number animations
-
-## Usage
-
-1. Enter your ride distance (km)
-2. Enter your expected duration (hours)
-3. Enter your weight (kg)
-4. Select your training intensity
-5. View your recommended carbohydrate and fluid intake per hour
-6. See your average speed with a clickable animal badge that links to Wikipedia
-
-## Project Structure
-
-```
-stryx-engine/
-├── src/
-│   ├── App.svelte          # Main application
-│   ├── app.css            # Nike design tokens + custom styles
-│   └── main.js            # Entry point
-├── package.json
-├── README.md
-└── .gitignore
-```
+- **Framework**: Svelte 5 + Vite (plain, no SvelteKit)
+- **Styling**: Tailwind CSS v4 with Nike design tokens
+- **Icons**: Tabler Icons (`@tabler/icons-svelte-runes`)
+- **Animations**: `svelte/motion` tweened stores, CSS keyframes
 
 ## Installation
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
+```
+
+## Project Structure
+
+```
+├── src/
+│   ├── App.svelte    # Single-component app
+│   ├── app.css       # Nike design tokens + animations + liquid glass
+│   └── main.js       # Entry point
+├── vite.config.js
+└── index.html
 ```
 
 ## License
 
 MIT
-
