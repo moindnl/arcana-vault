@@ -51,18 +51,41 @@ pnpm preview  # serve dist/ locally
 
 ## Install as PWA
 
-### Android (Chrome)
-1. Open the app in Chrome
-2. Tap the **⋮** menu → **Add to Home screen**
-3. Tap **Add** — app appears on your home screen and runs standalone
+### Test from localhost on your phone
 
-### iOS (Safari)
-1. Open the app in Safari
-2. Tap the **Share** button (box with arrow)
+The service worker only runs in the **production build** (not `pnpm dev`).
+
+```bash
+pnpm build
+pnpm preview --host   # exposes on local network, e.g. http://192.168.1.x:4173
+```
+
+Find your machine's IP:
+- Mac: `ipconfig getifaddr en0`
+- Windows: `ipconfig` → look for IPv4 under your WiFi adapter
+
+Open `http://<your-ip>:4173` in Safari (iOS) or Chrome (Android) — phone must be on the same WiFi.
+
+### iOS (Safari only)
+
+> Chrome and Firefox on iOS cannot install PWAs. Use Safari.
+
+1. Open the app in **Safari**
+2. Tap the **Share** button (box with arrow, bottom of screen)
 3. Scroll down → tap **Add to Home Screen**
-4. Tap **Add** — app launches without browser UI
+4. Tap **Add** — app icon appears on home screen
+5. Launch from home screen — runs full-screen, no browser UI
+
+### Android (Chrome)
+
+1. Open the app in **Chrome**
+2. Tap **⋮** menu (top right) → **Add to Home screen**
+3. Tap **Add** — app icon appears on home screen
+
+> You may also see an install prompt appear automatically at the bottom of the screen.
 
 ### Desktop (Chrome / Edge)
+
 1. Open the app
 2. Click the **install icon** (⊕) in the address bar
 3. Click **Install**
