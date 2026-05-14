@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Banana, Zap, Gauge, Droplet, ChevronDown, RotateCcw, User, Ruler, Scale, Wheat } from 'lucide-svelte';
+  import { Banana, Zap, Gauge, Droplet, ChevronDown, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Info, X } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut } from 'svelte/easing';
   import { fly, slide } from 'svelte/transition';
@@ -44,8 +44,12 @@
   // UI state
   let howItWorksOpen = false;
   let profileOpen = false;
+  let totalsTab: 'summary' | 'schedule' | 'bottles' = 'summary';
   let showGuide = false;
   let profileLoaded = false;
+
+  // Bottle planner
+  let bottleSize = 750; // ml
 
   // Restore profile from localStorage
   onMount(() => {
@@ -190,6 +194,29 @@
   $: multiCarbNote = intensityFactor >= 0.90;
   $: sweatRateLabel = sweatRate[0].toUpperCase() + sweatRate.slice(1);
 
+  // Fueling schedule: 20-min intake slots
+  $: fuelingEvents = (() => {
+    if (duration <= 0 || weight <= 0) return [] as { time: string; carbs: number; gels: number }[];
+    const events: { time: string; carbs: number; gels: number }[] = [];
+    const totalMins = Math.round(duration * 60);
+    const carbsPerSlot = Math.round(carbsPerHour / 3);
+    for (let t = 20; t <= totalMins; t += 20) {
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      events.push({
+        time: `${h}:${String(m).padStart(2, '0')}`,
+        carbs: carbsPerSlot,
+        gels: carbsPerSlot > 0 ? Math.ceil(carbsPerSlot / 22) : 0,
+      });
+    }
+    return events;
+  })();
+
+  // Bottle planner
+  $: bottleCount   = weight > 0 && duration > 0 && totalFluid > 0 ? Math.ceil(totalFluid * 1000 / bottleSize) : 0;
+  $: carbsPerBottle = bottleCount > 0 ? Math.round(totalCarbs / bottleCount) : 0;
+  $: mlPerBottle   = bottleCount > 0 ? Math.round(totalFluid * 1000 / bottleCount) : 0;
+
   let howItWorksEl: HTMLElement;
 
   function toggleHowItWorks() {
@@ -215,8 +242,12 @@
       </div>
       <p class="text-caption-md text-[--color-mute] mb-xs">Precise carb & fluid targets from your FTP and ride data.</p>
       {#if weight > 0 || ftp > 0}
-        <button class="text-caption-sm text-[--color-stone]" style="text-decoration:underline;text-underline-offset:3px;" on:click={() => (showGuide = !showGuide)}>
-          {showGuide ? 'Hide guide' : 'Getting started'}
+        <button class="flex items-center gap-xs text-caption-sm text-[--color-stone]" style="text-decoration:underline;text-underline-offset:3px;" on:click={() => (showGuide = !showGuide)}>
+          {#if showGuide}
+            <X class="w-3.5 h-3.5" />Hide guide
+          {:else}
+            <Info class="w-3.5 h-3.5" />Getting started
+          {/if}
         </button>
       {/if}
     </div>
@@ -267,13 +298,10 @@
             <span class="text-heading-md font-bold text-[--color-ink]">Rider Profile</span>
           </div>
           {#if !profileOpen}
-            {#if weight > 0 || ftp > 0}
-              <div class="flex flex-wrap gap-xs">
-                {#if weight > 0}<span class="badge">{weight} {imperial ? 'lbs' : 'kg'}</span>{/if}
-                {#if ftp > 0}<span class="badge">{ftp} W FTP</span>{/if}
-                <span class="badge">{imperial ? 'Imperial' : 'Metric'}</span>
-                <span class="badge">{sweatRateLabel} sweater</span>
-              </div>
+            {#if weight > 0 && ftp > 0}
+              <CheckCircle class="w-5 h-5 text-[--color-success]" />
+            {:else if weight > 0 || ftp > 0}
+              <span class="text-caption-sm text-[--color-mute]">Almost done →</span>
             {:else}
               <span class="text-caption-sm text-[--color-sale]">Set up profile for accurate results →</span>
             {/if}
@@ -562,25 +590,99 @@
       </div>
     </div>
 
-    <!-- Totals - Dark Campaign, always 3 cols -->
+    <!-- Totals + Fueling Schedule + Bottle Planner — tabbed dark card -->
     <div class="card-campaign rounded-sm p-lg md:p-xl mb-section card-enter card-enter-7">
-      <h2 class="text-heading-lg mb-lg text-[--color-on-primary]">Total needs for {duration} hours</h2>
-      <div class="grid grid-cols-3 gap-md">
-        <div class="bg-[--color-on-primary] rounded-md p-md text-center">
-          <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">{Math.round($animatedTotalCarbs)}g</div>
-          <div class="text-caption-sm text-[--color-charcoal]">Carbohydrates</div>
-        </div>
-        <div class="bg-[--color-on-primary] rounded-md p-md text-center">
-          <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">
-            {powerDerived ? Math.round($animatedTotalKcal) : '—'}
-          </div>
-          <div class="text-caption-sm text-[--color-charcoal]">kcal</div>
-        </div>
-        <div class="bg-[--color-on-primary] rounded-md p-md text-center">
-          <div class="text-4xl md:text-5xl font-extra-bold text-[--color-info] mb-xs">{$animatedTotalFluid.toFixed(1)}L</div>
-          <div class="text-caption-sm text-[--color-charcoal]">Fluids</div>
-        </div>
+
+      <!-- Tab bar -->
+      <div style="display:flex;gap:3px;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:20px;padding:3px;">
+        <button
+          style="{totalsTab === 'summary' ? 'background:#ffffff;color:#111111;' : 'background:transparent;color:rgba(255,255,255,0.65);'}flex:1;padding:6px 10px;border-radius:18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+          on:click={() => (totalsTab = 'summary')}>Summary</button>
+        <button
+          style="{totalsTab === 'schedule' ? 'background:#ffffff;color:#111111;' : 'background:transparent;color:rgba(255,255,255,0.65);'}flex:1;padding:6px 10px;border-radius:18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+          on:click={() => (totalsTab = 'schedule')}>Schedule</button>
+        <button
+          style="{totalsTab === 'bottles' ? 'background:#ffffff;color:#111111;' : 'background:transparent;color:rgba(255,255,255,0.65);'}flex:1;padding:6px 10px;border-radius:18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+          on:click={() => (totalsTab = 'bottles')}>Bottles</button>
       </div>
+
+      <!-- Summary tab -->
+      {#if totalsTab === 'summary'}
+        <h2 class="text-heading-lg mb-lg text-[--color-on-primary]">Total needs for {duration > 0 ? duration : '—'} hours</h2>
+        <div class="grid grid-cols-3 gap-md">
+          <div class="bg-[--color-on-primary] rounded-md p-md text-center">
+            <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">{Math.round($animatedTotalCarbs)}g</div>
+            <div class="text-caption-sm text-[--color-charcoal]">Carbs</div>
+          </div>
+          <div class="bg-[--color-on-primary] rounded-md p-md text-center">
+            <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">
+              {powerDerived ? Math.round($animatedTotalKcal) : '—'}
+            </div>
+            <div class="text-caption-sm text-[--color-charcoal]">kcal</div>
+          </div>
+          <div class="bg-[--color-on-primary] rounded-md p-md text-center">
+            <div class="text-4xl md:text-5xl font-extra-bold text-[--color-info] mb-xs">{$animatedTotalFluid.toFixed(1)}L</div>
+            <div class="text-caption-sm text-[--color-charcoal]">Fluids</div>
+          </div>
+        </div>
+
+      <!-- Schedule tab -->
+      {:else if totalsTab === 'schedule'}
+        {#if fuelingEvents.length === 0}
+          <p style="color:rgba(255,255,255,0.5);font-size:14px;">Enter weight and duration to generate schedule.</p>
+        {:else if fuelingEvents[0].carbs === 0}
+          <p style="color:rgba(255,255,255,0.5);font-size:14px;">No carbs needed at this intensity. Stay hydrated.</p>
+        {:else}
+          <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
+            {#each fuelingEvents as event, i}
+              <div class="flex items-center justify-between px-lg py-md"
+                style="{i < fuelingEvents.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
+                <span style="color:rgba(255,255,255,0.5);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
+                <span style="color:#ffffff;font-weight:700;font-size:15px;">{event.carbs}g</span>
+                <span style="color:rgba(255,255,255,0.4);font-size:12px;">{event.gels === 1 ? '1 gel' : `${event.gels} gels`}</span>
+              </div>
+            {/each}
+          </div>
+          <p style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:10px;">Every 20 min · 1 gel ≈ 22g</p>
+        {/if}
+
+      <!-- Bottles tab -->
+      {:else}
+        {#if bottleCount === 0}
+          <p style="color:rgba(255,255,255,0.5);font-size:14px;">Enter weight and duration to plan bottles.</p>
+        {:else}
+          <!-- Bottle size selector -->
+          <div class="flex items-center justify-between mb-lg flex-wrap gap-sm">
+            <span style="color:rgba(255,255,255,0.7);font-size:14px;">Bottle size</span>
+            <div style="display:flex;border-radius:20px;border:1px solid rgba(255,255,255,0.2);overflow:hidden;background:rgba(255,255,255,0.06);">
+              <button
+                style="{bottleSize === 500 ? 'background:rgba(255,255,255,0.9);color:#111;' : 'background:transparent;color:rgba(255,255,255,0.6);'}padding:6px 14px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;"
+                on:click={() => (bottleSize = 500)}>500ml</button>
+              <button
+                style="{bottleSize === 750 ? 'background:rgba(255,255,255,0.9);color:#111;' : 'background:transparent;color:rgba(255,255,255,0.6);'}padding:6px 14px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;"
+                on:click={() => (bottleSize = 750)}>750ml</button>
+              <button
+                style="{bottleSize === 1000 ? 'background:rgba(255,255,255,0.9);color:#111;' : 'background:transparent;color:rgba(255,255,255,0.6);'}padding:6px 14px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;"
+                on:click={() => (bottleSize = 1000)}>1L</button>
+            </div>
+          </div>
+          <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
+            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="color:rgba(255,255,255,0.6);font-size:14px;">Bottles needed</span>
+              <span style="color:#fff;font-weight:700;font-size:15px;">{bottleCount}</span>
+            </div>
+            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="color:rgba(255,255,255,0.6);font-size:14px;">Water per bottle</span>
+              <span style="color:#fff;font-weight:700;font-size:15px;">{mlPerBottle} ml</span>
+            </div>
+            <div class="flex items-center justify-between px-lg py-md">
+              <span style="color:rgba(255,255,255,0.6);font-size:14px;">Carbs per bottle</span>
+              <span style="color:#fff;font-weight:700;font-size:15px;">{carbsPerBottle} g</span>
+            </div>
+          </div>
+          <p style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:10px;">Mix carbs evenly across all bottles.</p>
+        {/if}
+      {/if}
     </div>
 
     <!-- How It Works collapsible -->
