@@ -4,6 +4,16 @@
   import { linear, cubicOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
   import { onMount, onDestroy } from 'svelte';
+  import { registerSW } from 'virtual:pwa-register';
+
+  let updateAvailable = false;
+  let doUpdateSW: () => Promise<void>;
+
+  const swUpdate = registerSW({
+    onNeedRefresh() { updateAvailable = true; },
+    onOfflineReady() {},
+  });
+  doUpdateSW = swUpdate;
 
   // Named versions — women who shaped cycling
   const VERSION = '1.0';
@@ -530,6 +540,24 @@
 </script>
 
 <main class="min-h-screen bg-[--color-canvas]">
+
+  <!-- Update toast -->
+  {#if updateAvailable}
+    <div class="fixed top-0 left-0 right-0 z-[1000] flex justify-center pt-3 px-4 pointer-events-none"
+      transition:fly={{ y: -48, duration: 300, easing: cubicOut }}>
+      <div class="inline-flex items-center gap-md rounded-full px-md py-sm pointer-events-auto"
+        style="background:#111111;color:#ffffff;box-shadow:0 4px 16px rgba(0,0,0,0.25);">
+        <span class="text-caption-sm font-extra-bold" style="color:#FFD700;">↑</span>
+        <span class="text-caption-sm" style="color:rgba(255,255,255,0.85);">Update available</span>
+        <button on:click={() => doUpdateSW()}
+          class="text-caption-sm font-extra-bold rounded-full px-sm py-xxs"
+          style="background:#FFD700;color:#111111;">Refresh</button>
+        <button on:click={() => updateAvailable = false} aria-label="Dismiss">
+          <X class="w-3.5 h-3.5" style="color:rgba(255,255,255,0.45);" />
+        </button>
+      </div>
+    </div>
+  {/if}
 
   <!-- Desktop notice -->
   {#if showDesktopBanner}

@@ -8,7 +8,7 @@ export default defineConfig({
     tailwindcss(),
     svelte(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon.svg', 'icon-192x192.png', 'icon-512x512.png', 'icon-192x192-dark.png', 'icon-512x512-dark.png'],
       manifest: {
         name: 'BananaSprocket — Cycling Nutrition',
