@@ -104,6 +104,8 @@
   let solidProduct: SolidId = 'gel';
   let drinkProduct: DrinkId = 'water';
 
+  let showDesktopBanner = false;
+
   // Restore profile from localStorage
   onMount(() => {
     try {
@@ -116,7 +118,16 @@
       // ignore parse errors
     }
     profileLoaded = true;
+    // Show desktop banner on md+ screens, unless dismissed this session
+    if (window.innerWidth >= 768 && !sessionStorage.getItem('bs-desktop-dismissed')) {
+      showDesktopBanner = true;
+    }
   });
+
+  function dismissDesktopBanner() {
+    showDesktopBanner = false;
+    sessionStorage.setItem('bs-desktop-dismissed', '1');
+  }
   // Guard: only save after profile has been loaded from storage
   $: if (profileLoaded) localStorage?.setItem('bs-profile', JSON.stringify({ weight, ftp, imperial, sweatRate }));
 
@@ -308,6 +319,21 @@
 </script>
 
 <main class="min-h-screen bg-[--color-canvas]">
+
+  <!-- Desktop notice -->
+  {#if showDesktopBanner}
+    <div class="hidden md:flex items-center justify-between px-lg py-md gap-md"
+      style="background:#111111;color:#ffffff;">
+      <div class="flex items-center gap-sm">
+        <Banana class="w-4 h-4 flex-shrink-0" style="color:#FFD700;" />
+        <span style="font-size:13px;">BananaSprocket is designed for mobile use — install it as a PWA on your phone for quick access during rides.</span>
+      </div>
+      <button on:click={dismissDesktopBanner}
+        style="flex-shrink:0;font-size:12px;opacity:0.6;padding:4px 10px;border:1px solid rgba(255,255,255,0.3);border-radius:20px;color:#fff;white-space:nowrap;"
+        aria-label="Dismiss">Got it</button>
+    </div>
+  {/if}
+
   <div class="max-w-6xl mx-auto p-sm md:p-md lg:p-lg" class:pb-28={duration > 0 && weight > 0}>
 
     <!-- Title -->
@@ -475,6 +501,7 @@
             </div>
 
           </div>
+          <p class="text-caption-sm text-[--color-stone] px-lg pb-md pt-xs">Saved locally on this device. Nothing sent to any server.</p>
         </div>
       {/if}
     </div>
