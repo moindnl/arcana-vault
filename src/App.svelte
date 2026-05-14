@@ -251,7 +251,7 @@
       || (navigator as any).standalone === true;
     const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isAndroid = /android/i.test(navigator.userAgent);
-    if (isMobile && !standalone && (isIos || isAndroid)) {
+    if (isMobile && !standalone && (isIos || isAndroid) && !localStorage.getItem('bs-install-dismissed')) {
       installSheetTimer = setTimeout(() => { installPlatform = isIos ? 'ios' : 'android'; }, 1200);
     }
 
@@ -274,6 +274,7 @@
     installPlatform = null;
     sheetDragOffsetY = 0;
     sheetIsDragging = false;
+    localStorage.setItem('bs-install-dismissed', '1');
   }
   async function triggerInstall() {
     if (!deferredInstallPrompt) return;
