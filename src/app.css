@@ -92,6 +92,7 @@
   .card-enter-5 { animation-delay: 0.33s; }
   .card-enter-6 { animation-delay: 0.40s; }
   .card-enter-7 { animation-delay: 0.47s; }
+  .card-enter-8 { animation-delay: 0.54s; }
 
   /* Shimmer hint — sweep once to signal swipeability */
   @keyframes shimmerSweep {

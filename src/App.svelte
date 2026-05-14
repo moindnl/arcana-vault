@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Banana, Zap, Gauge, Droplet, ChevronDown, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Info, X, Bike, ExternalLink, Trophy } from 'lucide-svelte';
+  import { Banana, Zap, Gauge, Droplet, ChevronDown, ChevronRight, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Check, Info, RefreshCw, X, Bike, ExternalLink, Trophy, Lock } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
@@ -17,14 +17,15 @@
     async onNeedRefresh() {
       try {
         const res = await fetch(`/version.json?_=${Date.now()}`);
+        if (!res.ok) { swUpdate(false); return; }
         const data = await res.json();
         if (data.version !== VERSION || data.build !== BUILD_NAME) {
           updateAvailable = true;
         } else {
-          swUpdate(); // same version — silently apply
+          swUpdate(false); // same version — apply silently, no reload
         }
       } catch {
-        updateAvailable = true; // network error — show toast anyway
+        swUpdate(false); // can't determine version — apply silently
       }
     },
     onOfflineReady() {},
@@ -167,11 +168,13 @@
 
   $: duration = parseDuration(durationRaw);
 
-  // Rider profile (persists via localStorage)
-  let weight = 0;
-  let ftp = 0;
-  let imperial = false;
-  let sweatRate: 'light' | 'moderate' | 'heavy' = 'moderate';
+  // Rider profile (persists via localStorage — read synchronously so guide renders correctly on first paint)
+  let _savedProfile: Record<string, any> = {};
+  try { _savedProfile = JSON.parse(localStorage.getItem('bs-profile') || '{}'); } catch { /* ignore */ }
+  let weight: number = _savedProfile.weight > 0 ? _savedProfile.weight : 0;
+  let ftp: number = _savedProfile.ftp > 0 ? _savedProfile.ftp : 0;
+  let imperial: boolean = typeof _savedProfile.imperial === 'boolean' ? _savedProfile.imperial : false;
+  let sweatRate: 'light' | 'moderate' | 'heavy' = _savedProfile.sweatRate || 'moderate';
 
   // UI state
   let showMathSheet = false;
@@ -188,7 +191,12 @@
   }
   function resetPack() { checkedPack.clear(); checkedPack = checkedPack; }
   let showGuide = false;
-  let profileLoaded = false;
+
+  const SWEAT_LEVELS = [
+    { value: 'light',    drops: 1 },
+    { value: 'moderate', drops: 2 },
+    { value: 'heavy',    drops: 3 },
+  ] as const;
 
   // Bottle planner
   let bottleSize = 750; // ml
@@ -250,7 +258,6 @@
     }
   }
 
-  // Restore profile from localStorage
   onMount(() => {
     // Easter egg: console greeting
     console.log(
@@ -258,16 +265,6 @@
       'color:#FFD700;background:#111111;font-family:monospace;font-size:12px;padding:16px 20px;border-radius:8px;line-height:1.6;'
     );
 
-    try {
-      const p = JSON.parse(localStorage.getItem('bs-profile') || '{}');
-      if (p.weight > 0) weight = p.weight;
-      if (p.ftp > 0) ftp = p.ftp;
-      if (typeof p.imperial === 'boolean') imperial = p.imperial;
-      if (p.sweatRate) sweatRate = p.sweatRate;
-    } catch {
-      // ignore parse errors
-    }
-    profileLoaded = true;
     if (localStorage.getItem('bs-seen-build') !== BUILD_NAME) showWhatsNew = true;
     // Show desktop banner on md+ screens, unless dismissed this session
     const isMobile = window.innerWidth < 768;
@@ -312,7 +309,7 @@
     if (outcome === 'accepted') installPlatform = null;
   }
   // Guard: only save after profile has been loaded from storage
-  $: if (profileLoaded) localStorage?.setItem('bs-profile', JSON.stringify({ weight, ftp, imperial, sweatRate }));
+  $: localStorage.setItem('bs-profile', JSON.stringify({ weight, ftp, imperial, sweatRate }));
 
   // Reset per-ride inputs only; profile persists
   function resetInputs() {
@@ -565,7 +562,7 @@
       transition:fly={{ y: -48, duration: 300, easing: cubicOut }}>
       <div class="inline-flex items-center gap-md rounded-full px-md py-sm pointer-events-auto"
         style="background:#111111;color:#ffffff;box-shadow:0 4px 16px rgba(0,0,0,0.25);">
-        <span class="text-caption-sm font-extra-bold" style="color:#FFD700;">↑</span>
+        <RefreshCw class="w-3.5 h-3.5 flex-shrink-0" style="color:#FFD700;" />
         <span class="text-caption-sm" style="color:rgba(255,255,255,0.85);">Update available</span>
         <button on:click={() => doUpdateSW()}
           class="text-caption-sm font-extra-bold rounded-full px-sm py-xxs"
@@ -602,7 +599,7 @@
           BananaSprocket
         </h1>
       </div>
-      <p class="text-caption-md text-[--color-mute] mb-xs">Precise carb & fluid targets from your FTP and power.</p>
+      <p class="text-caption-md text-[--color-mute] mb-xs italic">Precise carb & fluid targets from your FTP and power.</p>
       <div class="flex items-center justify-center gap-md flex-wrap">
         {#if weight > 0 || ftp > 0}
           <button class="inline-flex items-center gap-xs text-caption-sm text-[--color-stone]" style="text-decoration:underline;text-underline-offset:3px;" on:click={() => (showGuide = !showGuide)}>
@@ -615,40 +612,43 @@
         {/if}
         {#if showWhatsNew}
           <button class="inline-flex items-center gap-xs text-caption-sm text-[--color-stone]" style="text-decoration:underline;text-underline-offset:3px;" on:click={() => (showChangelogSheet = true)}>
-            What's new in {BUILD_NAME} →
+            What's new in v{VERSION} · {BUILD_NAME} <ChevronRight class="w-3 h-3" />
           </button>
         {/if}
       </div>
     </div>
 
     <!-- 3-step how-to — shown on first visit or on demand -->
-    {#if profileLoaded && (!(weight > 0 || ftp > 0) || showGuide)}
-    <div transition:slide={{ duration: 260, easing: cubicOut }} class="mb-lg md:mb-section card-enter card-enter-2">
+    {#if !(weight > 0 || ftp > 0) || showGuide}
+    <div transition:fade={{ duration: 200 }} class="mb-lg md:mb-section card-enter card-enter-2">
       <!-- Mobile: horizontal swipe cards -->
       <div class="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-sm pb-sm -mx-sm px-sm" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;">
         {#each HOW_TO_STEPS as step, i}
-          <div class="snap-center shrink-0 w-[78%] card-soft rounded-sm p-lg space-y-sm shimmer-once"
+          <div class="snap-center shrink-0 w-[78%] card-soft rounded-sm overflow-hidden shimmer-once flex"
             style="--shimmer-delay:{0.5 + i * 0.1}s"
             in:fly={{ y: 18, duration: 320, delay: 80 + i * 70, easing: cubicOut }}>
-            <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background:rgba(17,81,255,0.1);border:1px solid rgba(17,81,255,0.3);">
-              <span class="text-lg font-bold text-[--color-info]">{step.n}</span>
+            <div class="flex items-center justify-center flex-shrink-0" style="background:#FFD700;min-width:56px;padding:0 18px 0 14px;clip-path:polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);">
+              <span class="text-lg font-bold" style="color:#111111;">{step.n}</span>
             </div>
-            <h2 class="text-body-strong font-bold text-[--color-ink]">{step.title}</h2>
-            <p class="text-caption-md text-[--color-charcoal]">{step.body}</p>
+            <div class="p-lg space-y-xs">
+              <h2 class="text-body-strong font-bold text-[--color-ink]">{step.title}</h2>
+              <p class="text-caption-md text-[--color-charcoal]">{step.body}</p>
+            </div>
           </div>
         {/each}
       </div>
       <!-- Desktop: 3-column grid -->
-      <div class="hidden md:grid grid-cols-3 gap-lg relative card-soft rounded-sm p-xl">
-        <div class="absolute left-0 right-0 top-[52px] h-px" style="background:var(--color-hairline);"></div>
+      <div class="hidden md:grid grid-cols-3 gap-lg card-soft rounded-sm overflow-hidden">
         {#each HOW_TO_STEPS as step, i}
-          <div class="space-y-sm relative z-10"
+          <div class="flex flex-col"
             in:fly={{ y: 18, duration: 320, delay: 80 + i * 70, easing: cubicOut }}>
-            <div class="w-8 h-8 rounded-full flex items-center justify-center mb-sm" style="background:rgba(17,81,255,0.1);border:1px solid rgba(17,81,255,0.3);">
-              <span class="text-lg font-bold text-[--color-info]">{step.n}</span>
+            <div class="flex items-center justify-center py-md" style="background:#FFD700;">
+              <span class="text-lg font-bold" style="color:#111111;">{step.n}</span>
             </div>
-            <h2 class="text-body-strong font-bold text-[--color-ink]">{step.title}</h2>
-            <p class="text-caption-md text-[--color-charcoal]">{step.body}</p>
+            <div class="p-lg space-y-xs flex-1">
+              <h2 class="text-body-strong font-bold text-[--color-ink]">{step.title}</h2>
+              <p class="text-caption-md text-[--color-charcoal]">{step.body}</p>
+            </div>
           </div>
         {/each}
       </div>
@@ -656,7 +656,7 @@
     {/if}
 
     <!-- Input section -->
-    <div class="mb-lg">
+    <div class="mb-lg card-enter card-enter-3">
       <div class="flex items-center gap-md mb-lg">
         <div class="flex-1 h-px" style="background:var(--color-hairline);"></div>
         <span class="badge text-utility-xs font-bold uppercase tracking-widest">Setup</span>
@@ -664,14 +664,14 @@
       </div>
 
     <!-- Unified setup card -->
-    <div class="rounded-sm overflow-hidden mb-lg card-enter card-enter-3"
+    <div class="rounded-sm overflow-hidden mb-lg"
       style="background:var(--color-canvas);border:1px solid var(--color-hairline);">
 
     <!-- Rider Profile -->
     <div on:input={triggerBananaSpin}>
       <button
         class="w-full flex items-center justify-between p-lg text-left cursor-pointer"
-        on:click={() => (profileOpen = !profileOpen)}
+        on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
         aria-expanded={profileOpen}
       >
         <div class="flex flex-wrap items-center gap-sm min-w-0">
@@ -683,9 +683,9 @@
             {#if weight > 0 && ftp > 0}
               <CheckCircle class="w-5 h-5 text-[--color-success]" />
             {:else if weight > 0 || ftp > 0}
-              <span class="text-caption-sm text-[--color-mute]">Almost done →</span>
+              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-mute]">Almost done <ChevronRight class="w-3 h-3" /></span>
             {:else}
-              <span class="text-caption-sm text-[--color-sale]">Set up profile for accurate results →</span>
+              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-sale]">Set up profile <ChevronRight class="w-3 h-3" /></span>
             {/if}
           {/if}
         </div>
@@ -711,7 +711,7 @@
                   class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                   style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                   on:focus={focusInput} />
-                <span class="text-caption-sm text-[--color-mute] w-8">{imperial ? 'lbs' : 'kg'}</span>
+                <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
               </div>
             </div>
 
@@ -731,7 +731,7 @@
                   class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                   style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                   on:focus={focusInput} />
-                <span class="text-caption-sm text-[--color-mute] w-8">W</span>
+                <span class="text-caption-sm text-[--color-mute] w-5">W</span>
               </div>
             </div>
 
@@ -754,8 +754,8 @@
             </div>
 
             <!-- Sweat Rate — segmented control -->
-            <div class="flex items-center justify-between px-lg py-lg gap-md flex-wrap">
-              <div class="flex items-center gap-sm">
+            <div class="flex items-center justify-between px-lg py-lg gap-md">
+              <div class="flex items-center gap-sm flex-shrink-0">
                 <div class="w-7 h-7 rounded-full bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
                   <Droplet class="w-4 h-4 text-[--color-charcoal]" />
                 </div>
@@ -766,22 +766,23 @@
                   </span>
                 </div>
               </div>
-              <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;">
-                <button
-                  style="{sweatRate === 'light' ? 'background:#111111;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;"
-                  on:click={() => (sweatRate = 'light')}>Light</button>
-                <button
-                  style="{sweatRate === 'moderate' ? 'background:#111111;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;"
-                  on:click={() => (sweatRate = 'moderate')}>Moderate</button>
-                <button
-                  style="{sweatRate === 'heavy' ? 'background:#111111;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;"
-                  on:click={() => (sweatRate = 'heavy')}>Heavy</button>
+              <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;flex-shrink:0;">
+                {#each SWEAT_LEVELS as { value, drops }}
+                  <button
+                    class="flex items-center gap-[2px]"
+                    style="{sweatRate === value ? 'background:#111111;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;transition:background 0.15s,color 0.15s;"
+                    on:click={() => (sweatRate = value)}>
+                    {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
+                  </button>
+                {/each}
               </div>
             </div>
 
           </div>
-          <div class="mx-lg mt-xl" style="border-top:1px solid var(--color-hairline-soft);"></div>
-          <p class="text-caption-sm text-[--color-stone] px-lg pb-lg pt-md">Saved locally on this device. Nothing sent to any server.</p>
+          <div class="flex items-center gap-xs px-lg pt-xl pb-lg">
+            <Lock class="w-3 h-3 text-[--color-stone] flex-shrink-0" />
+            <p class="text-caption-sm text-[--color-stone]">Saved locally on this device. Nothing sent to any server.</p>
+          </div>
         </div>
       {/if}
     </div>
@@ -793,7 +794,7 @@
     <div on:input={triggerBananaSpin}>
       <button
         class="w-full flex items-center justify-between p-lg text-left cursor-pointer"
-        on:click={() => (rideOpen = !rideOpen)}
+        on:click={() => { rideOpen = !rideOpen; if (rideOpen) profileOpen = false; }}
         aria-expanded={rideOpen}
       >
         <div class="flex flex-wrap items-center gap-sm min-w-0">
@@ -811,9 +812,9 @@
                 {#if temperature !== 20}<span class="badge">{temperature}°C</span>{/if}
               </div>
             {:else if distance > 0 || duration > 0 || power > 0}
-              <span class="text-caption-sm text-[--color-mute]">Almost done →</span>
+              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-mute]">Almost done <ChevronRight class="w-3 h-3" /></span>
             {:else}
-              <span class="text-caption-sm text-[--color-sale]">Add ride details →</span>
+              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-sale]">Add ride details <ChevronRight class="w-3 h-3" /></span>
             {/if}
           {/if}
         </div>
@@ -836,7 +837,7 @@
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                     on:focus={focusInput} />
-                  <span class="text-caption-sm text-[--color-mute] w-8">{imperial ? 'mi' : 'km'}</span>
+                  <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'mi' : 'km'}</span>
                 </div>
               </div>
               <div class="flex items-center justify-between px-lg py-lg">
@@ -850,7 +851,7 @@
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                     on:focus={focusInput} />
-                  <span class="text-caption-sm text-[--color-mute] w-8">h</span>
+                  <span class="text-caption-sm text-[--color-mute] w-5">h</span>
                 </div>
               </div>
             </div>
@@ -867,7 +868,7 @@
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                     on:focus={focusInput} />
-                  <span class="text-caption-sm text-[--color-mute] w-8">W</span>
+                  <span class="text-caption-sm text-[--color-mute] w-5">W</span>
                 </div>
               </div>
               <div class="flex items-center justify-between px-lg py-lg">
@@ -876,7 +877,7 @@
                   {#if powerDerived && zoneLabel}
                     <span class="badge-black" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
                   {:else if ftp === 0}
-                    <span class="text-[--color-mute] text-caption-sm">Set FTP ↑</span>
+                    <span class="text-[--color-mute] text-caption-sm">Enter FTP first</span>
                   {:else}
                     <span class="text-[--color-mute] text-caption-sm">Enter power</span>
                   {/if}
@@ -893,7 +894,7 @@
               <input id="temperature" type="range" bind:value={temperature} min="0" max="45" step="1"
                 class="temp-slider w-full"
                 style="--fill:{(temperature / 45 * 100).toFixed(1)}%" />
-              <p class="text-caption-sm mt-xs {heatBonus > 0 ? 'text-[--color-sale]' : 'text-[--color-mute]'}">
+              <p class="text-caption-sm mt-md {heatBonus > 0 ? 'text-[--color-sale]' : 'text-[--color-mute]'}">
                 {heatBonus > 0 ? `+${heatBonus.toFixed(1)} L/h heat adjustment` : 'Heat adjustment activates above 20°C'}
               </p>
             </div>
@@ -921,7 +922,7 @@
     </div><!-- /Input section -->
 
     <!-- Results divider -->
-    <div class="flex items-center gap-md mb-lg">
+    <div class="flex items-center gap-md mb-lg card-enter card-enter-5">
       <div class="flex-1 h-px" style="background:var(--color-hairline);"></div>
       <span class="badge text-utility-xs font-bold uppercase tracking-widest">Results</span>
       <div class="flex-1 h-px" style="background:var(--color-hairline);"></div>
@@ -951,7 +952,7 @@
           <a href={animalLinks[speedSlogan]} target="_blank" rel="noopener noreferrer">
             <span class="badge-black inline-flex items-center gap-xs">
               {speedSlogan}
-              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              <ExternalLink class="w-3 h-3" />
             </span>
           </a>
         {/if}
@@ -1195,7 +1196,7 @@
                     on:click={() => togglePack(item.id)}>
                     <div style="width:22px;height:22px;border-radius:6px;border:1.5px solid {checked ? '#FFD700' : 'rgba(255,255,255,0.25)'};background:{checked ? '#FFD700' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
                       {#if checked}
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <Check class="w-3 h-3" style="color:#111111;" />
                       {/if}
                     </div>
                     <span style="font-size:14px;color:{checked ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.85)'};text-decoration:{checked ? 'line-through' : 'none'};transition:color 0.15s;">{item.label}</span>
