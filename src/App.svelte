@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Banana, Zap, Gauge, Droplet, ChevronDown, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Info, X, Bike, ExternalLink } from 'lucide-svelte';
+  import { Banana, Zap, Gauge, Droplet, ChevronDown, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Info, X, Bike, ExternalLink, Trophy } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
@@ -1196,7 +1196,7 @@
       <span style="display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:4px 14px;border-radius:9999px;font-size:13px;font-weight:500;">{currentRider.specialty}</span>
       <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;">
         {#each currentRider.wins as win}
-          <span style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:500;">🏆 {win}</span>
+          <span style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:5px;"><Trophy size={11} />{win}</span>
         {/each}
       </div>
       <p class="text-body-md mt-lg" style="color:rgba(255,255,255,0.75);">{currentRider.bio}</p>
