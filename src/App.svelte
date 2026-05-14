@@ -31,9 +31,42 @@
 
   // Per-ride inputs (reset on Reset)
   let distance = 0;
-  let duration = 0;
+  let durationRaw = ''; // what user types — e.g. "1.30" or "1:30" or "1.5"
   let power = 0;
   let temperature = 20; // °C — no heat bonus below 20°C; resets with ride
+
+  // Parse "1:30", "1.30" (dot = minutes when 2+ digits), or "1.5" → decimal hours
+  function parseDuration(raw: string): number {
+    const s = raw.trim();
+    if (!s) return 0;
+    if (s.includes(':')) {
+      const [hPart, mPart] = s.split(':');
+      const h = parseFloat(hPart) || 0;
+      const m = parseFloat(mPart) || 0;
+      return Math.max(0, h + m / 60);
+    }
+    const dot = s.indexOf('.');
+    if (dot !== -1) {
+      const dec = s.slice(dot + 1);
+      if (dec.length >= 2) {
+        // "1.30" → 1h 30m
+        const h = parseInt(s.slice(0, dot), 10) || 0;
+        const m = Math.min(59, parseInt(dec.slice(0, 2), 10) || 0);
+        return Math.max(0, h + m / 60);
+      }
+    }
+    return Math.max(0, parseFloat(s) || 0);
+  }
+
+  // Display decimal hours as "1:30 h" in badges/labels
+  function formatDuration(h: number): string {
+    if (h <= 0) return '';
+    const hrs = Math.floor(h);
+    const mins = Math.round((h - hrs) * 60);
+    return mins === 0 ? `${hrs} h` : `${hrs}:${String(mins).padStart(2, '0')} h`;
+  }
+
+  $: duration = parseDuration(durationRaw);
 
   // Rider profile (persists via localStorage)
   let weight = 0;
@@ -89,7 +122,7 @@
 
   // Reset per-ride inputs only; profile persists
   function resetInputs() {
-    distance = 0; duration = 0; power = 0; temperature = 20;
+    distance = 0; durationRaw = ''; power = 0; temperature = 20;
     rideOpen = true; rideAutoCollapsed = false;
     triggerBananaSpin();
   }
@@ -251,6 +284,13 @@
     return events;
   })();
 
+  // Scroll input into view after keyboard appears (mobile)
+  function focusInput(e: FocusEvent) {
+    const el = e.target as HTMLInputElement;
+    el.select();
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 180);
+  }
+
   let howItWorksEl: HTMLElement;
 
   function toggleHowItWorks() {
@@ -361,7 +401,7 @@
                 <input id="weight" type="number" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                   class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                   style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                  on:focus={(e) => (e.target as HTMLInputElement).select()} />
+                  on:focus={focusInput} />
                 <span class="text-caption-sm text-[--color-mute] w-8">{imperial ? 'lbs' : 'kg'}</span>
               </div>
             </div>
@@ -381,7 +421,7 @@
                 <input id="ftp" type="number" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                   class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                   style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                  on:focus={(e) => (e.target as HTMLInputElement).select()} />
+                  on:focus={focusInput} />
                 <span class="text-caption-sm text-[--color-mute] w-8">W</span>
               </div>
             </div>
@@ -451,7 +491,7 @@
             {#if distance > 0 || duration > 0 || power > 0}
               <div class="flex flex-wrap gap-xs">
                 {#if distance > 0}<span class="badge">{distance} {imperial ? 'mi' : 'km'}</span>{/if}
-                {#if duration > 0}<span class="badge">{duration} h</span>{/if}
+                {#if duration > 0}<span class="badge">{formatDuration(duration)}</span>{/if}
                 {#if power > 0}<span class="badge">{power} W</span>{/if}
                 {#if temperature !== 20}<span class="badge">{temperature}°C</span>{/if}
               </div>
@@ -476,17 +516,18 @@
                   <input id="distance" type="number" bind:value={distance} min="1" max="500" step="1"
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                    on:focus={(e) => (e.target as HTMLInputElement).select()} />
+                    on:focus={focusInput} />
                   <span class="text-caption-sm text-[--color-mute] w-8">{imperial ? 'mi' : 'km'}</span>
                 </div>
               </div>
               <div class="flex items-center justify-between px-lg py-lg border-b border-[var(--color-hairline)]">
                 <label for="duration" class="text-caption-md text-[--color-ink]">Duration</label>
                 <div class="flex items-center gap-xs">
-                  <input id="duration" type="number" bind:value={duration} min="0.5" max="24" step="0.5"
+                  <input id="duration" type="text" inputmode="decimal" bind:value={durationRaw}
+                    placeholder="1:30"
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                    on:focus={(e) => (e.target as HTMLInputElement).select()} />
+                    on:focus={focusInput} />
                   <span class="text-caption-sm text-[--color-mute] w-8">h</span>
                 </div>
               </div>
@@ -503,7 +544,7 @@
                   <input id="power" type="number" bind:value={power} min="0" max="600" step="1"
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                    on:focus={(e) => (e.target as HTMLInputElement).select()} />
+                    on:focus={focusInput} />
                   <span class="text-caption-sm text-[--color-mute] w-8">W</span>
                 </div>
               </div>
@@ -687,7 +728,7 @@
 
       <!-- Summary tab -->
       {#if totalsTab === 'summary'}
-        <h2 class="text-heading-lg mb-lg text-[--color-on-primary]">Total needs for {duration > 0 ? duration : '—'} hours</h2>
+        <h2 class="text-heading-lg mb-lg text-[--color-on-primary]">Total needs for {duration > 0 ? formatDuration(duration) : '—'}</h2>
         <div class="grid grid-cols-3 gap-md">
           <div class="bg-[--color-on-primary] rounded-md p-md text-center">
             <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">{Math.round($animatedTotalCarbs)}g</div>
