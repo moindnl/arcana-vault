@@ -6,18 +6,30 @@
   import { onMount, onDestroy } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
 
+  // Named versions — women who shaped cycling
+  const VERSION = '1.0';
+  const BUILD_NAME = 'Marianne Vos';
+
   let updateAvailable = false;
   let doUpdateSW: () => Promise<void>;
 
   const swUpdate = registerSW({
-    onNeedRefresh() { updateAvailable = true; },
+    async onNeedRefresh() {
+      try {
+        const res = await fetch(`/version.json?_=${Date.now()}`);
+        const data = await res.json();
+        if (data.version !== VERSION || data.build !== BUILD_NAME) {
+          updateAvailable = true;
+        } else {
+          swUpdate(); // same version — silently apply
+        }
+      } catch {
+        updateAvailable = true; // network error — show toast anyway
+      }
+    },
     onOfflineReady() {},
   });
   doUpdateSW = swUpdate;
-
-  // Named versions — women who shaped cycling
-  const VERSION = '1.0';
-  const BUILD_NAME = 'Marianne Vos';
   const CHANGELOG_ITEMS = [
     'Pack tab — gear checklist auto-generated from your ride',
     'One-tap install on Android Chrome via native browser prompt',
@@ -218,18 +230,24 @@
   }
   function onSheetDragMove(e: TouchEvent) {
     if (!sheetIsDragging) return;
+    e.preventDefault();
     sheetDragOffsetY = Math.max(0, e.touches[0].clientY - sheetDragStartY);
   }
   function onSheetDragEnd() {
     if (!sheetIsDragging) return;
     sheetIsDragging = false;
     if (sheetDragOffsetY > 80) {
-      if (installPlatform) dismissInstallSheet();
-      else if (showRiderCard) showRiderCard = false;
-      else if (showChangelogSheet) dismissChangelog();
-      else if (showMathSheet) showMathSheet = false;
+      sheetDragOffsetY = window.innerHeight;
+      setTimeout(() => {
+        if (installPlatform) dismissInstallSheet();
+        else if (showRiderCard) showRiderCard = false;
+        else if (showChangelogSheet) dismissChangelog();
+        else if (showMathSheet) showMathSheet = false;
+        sheetDragOffsetY = 0;
+      }, 260);
+    } else {
+      sheetDragOffsetY = 0;
     }
-    sheetDragOffsetY = 0;
   }
 
   // Restore profile from localStorage
@@ -1217,7 +1235,7 @@
     <div class="fixed bottom-0 left-0 right-0 z-[996] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto text-center"
       style="background:rgba(17,17,17,0.93);color:#ffffff;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
       on:touchstart={onSheetDragStart}
-      on:touchmove={onSheetDragMove}
+      on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
       transition:fly={{ duration: 300, y: 80 }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(255,255,255,0.25);"></div>
@@ -1251,7 +1269,7 @@
     <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:rgba(17,17,17,0.93);color:#ffffff;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
       on:touchstart={onSheetDragStart}
-      on:touchmove={onSheetDragMove}
+      on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
       transition:fly={{ duration: 300, y: 80 }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(255,255,255,0.25);"></div>
@@ -1281,7 +1299,7 @@
     <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:rgba(17,17,17,0.93);color:#ffffff;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
       on:touchstart={onSheetDragStart}
-      on:touchmove={onSheetDragMove}
+      on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
       transition:fly={{ duration: 300, y: 80 }}>
       <!-- Drag handle -->
@@ -1356,7 +1374,7 @@
     <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:rgba(17,17,17,0.93);color:#ffffff;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
       on:touchstart={onSheetDragStart}
-      on:touchmove={onSheetDragMove}
+      on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
       transition:fly={{ duration: 300, y: 80 }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(255,255,255,0.25);"></div>
