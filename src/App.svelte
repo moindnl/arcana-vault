@@ -1126,7 +1126,7 @@
       <div class="flex items-center gap-lg">
         <span class="text-caption-sm text-[--color-stone]">© 2026 BananaSprocket</span>
         <button on:click={() => showImpressumSheet = true}
-          class="text-caption-sm text-[--color-mute] underline-offset-2 hover:underline">Impressum</button>
+          class="text-caption-sm text-[--color-mute] underline-offset-2 hover:underline">Legal Notice</button>
       </div>
     </div>
 
