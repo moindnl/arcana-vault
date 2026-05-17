@@ -554,13 +554,13 @@
         <!-- Profile icon: User when set, UserX when empty -->
         <button
           class="flex items-center justify-center"
-          style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);"
+          style="width:34px;height:34px;border-radius:50%;background:#ffffff;"
           on:click={() => { profileOpen = !profileOpen; if (profileOpen) { rideOpen = false; setTimeout(() => setupCard?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); } }}
           aria-label="{weight > 0 && ftp > 0 ? $t.ariaRiderProfile : $t.ariaSetupProfile}">
           {#if weight > 0 && ftp > 0}
-            <User class="w-4 h-4" style="color:#ffffff;" />
+            <User class="w-4 h-4" style="color:#09090b;" />
           {:else}
-            <UserX class="w-4 h-4" style="color:#ffffff;" />
+            <UserX class="w-4 h-4" style="color:#09090b;" />
           {/if}
         </button>
         <!-- Theme toggle -->
