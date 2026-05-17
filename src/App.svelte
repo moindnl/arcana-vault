@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Ruler, Scale, Wheat, CheckCircle, Check, RefreshCw, X, Bike, ExternalLink } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn } from 'svelte/easing';
-  import { fly, fade, slide, scale } from 'svelte/transition';
+  import { fly, fade, slide } from 'svelte/transition';
   import { onMount, onDestroy } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
 
-  // Named versions — women who shaped cycling
   const VERSION = '1.0';
-  const BUILD_NAME = 'Marianne Vos';
 
   let updateAvailable = false;
   let doUpdateSW: () => Promise<void>;
@@ -34,20 +32,6 @@
     onOfflineReady() {},
   });
   doUpdateSW = swUpdate;
-  const CHANGELOG_ITEMS = [
-    'Pack tab — gear checklist auto-generated from your ride',
-    'One-tap install on Android Chrome via native browser prompt',
-    'Swipe-to-dismiss on install sheet',
-    'Emergency gel only added on rides ≥ 2h',
-    'Contrast fixes across all dark cards (WCAG AA throughout)',
-  ];
-  let showWhatsNew = false;
-  let showChangelogSheet = false;
-  function dismissChangelog() {
-    showChangelogSheet = false;
-    showWhatsNew = false;
-    localStorage.setItem('bp-seen-build', BUILD_NAME);
-  }
 
   let showAboutSheet = false;
 
@@ -223,8 +207,6 @@
   onMount(() => {
     // Easter egg: console greeting
     console.log('bonkproof — Cycling Nutrition Planner\n\nPsst. You\'re looking at the source.\nWhy are you not riding your bike?\n\nBuilt by Daniel Muschinski\nhttps://github.com/moindnl');
-
-    if (localStorage.getItem('bp-seen-build') !== BUILD_NAME) showWhatsNew = true;
 
     const isMobile = window.innerWidth < 768;
     const standalone = window.matchMedia('(display-mode: standalone)').matches
@@ -501,7 +483,7 @@
   }
 </script>
 
-<main class="min-h-screen bg-[--color-canvas]">
+<main class="min-h-screen">
 
   <!-- Update toast -->
   {#if updateAvailable}
@@ -528,29 +510,18 @@
       </div>
       <!-- Right -->
       <div class="flex items-center gap-sm">
-        <!-- Profile: text pill when set, ghost icon when empty -->
-        {#if weight > 0 && ftp > 0}
-          <button
-            in:fly={{ x: 24, duration: 280, easing: cubicOut }}
-            out:scale={{ duration: 160, start: 0.7, easing: cubicIn }}
-            class="flex items-center gap-xs text-caption-sm font-bold"
-            style="height:34px;padding:0 14px;border-radius:9999px;background:#ffffff;color:#f73b20;white-space:nowrap;"
-            on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
-            aria-label="Rider profile">
-            <User class="w-3.5 h-3.5 flex-shrink-0" />
-            {weight}{imperial ? ' lbs' : ' kg'} · {ftp} W
-          </button>
-        {:else}
-          <button
-            in:scale={{ duration: 200, start: 0.7, easing: cubicOut }}
-            out:scale={{ duration: 160, start: 0.7, easing: cubicIn }}
-            class="flex items-center justify-center"
-            style="width:34px;height:34px;border-radius:50%;background:#ffffff;"
-            on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
-            aria-label="Set up rider profile">
+        <!-- Profile icon: User when set, UserX when empty -->
+        <button
+          class="flex items-center justify-center"
+          style="width:34px;height:34px;border-radius:50%;background:#ffffff;"
+          on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
+          aria-label="{weight > 0 && ftp > 0 ? 'Rider profile' : 'Set up rider profile'}">
+          {#if weight > 0 && ftp > 0}
+            <User class="w-4 h-4" style="color:#f73b20;" />
+          {:else}
             <UserX class="w-4 h-4" style="color:#f73b20;" />
-          </button>
-        {/if}
+          {/if}
+        </button>
         {#if updateAvailable}
           <button class="text-caption-sm font-bold flex items-center gap-xs"
             style="background:#ffffff;color:#f73b20;border-radius:20px;padding:5px 12px;"
@@ -607,8 +578,7 @@
     <div class="mb-lg card-enter card-enter-2">
 
     <!-- Unified setup card -->
-    <div class="rounded-sm overflow-hidden mb-lg"
-      style="background:var(--color-canvas);border:1px solid var(--color-hairline);">
+    <div class="liquid-glass rounded-sm mb-lg" style="overflow:clip;">
 
     <!-- Rider Profile -->
     <div>
@@ -667,10 +637,10 @@
             <span class="text-caption-md font-bold text-[--color-ink]">Units</span>
             <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;">
               <button
-                style="{!imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+                style="{!imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#5f5f61;'}padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
                 on:click={() => { if (imperial) toggleImperial(); }}>km / kg</button>
               <button
-                style="{imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+                style="{imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#5f5f61;'}padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
                 on:click={() => { if (!imperial) toggleImperial(); }}>mi / lbs</button>
             </div>
           </div>
@@ -687,7 +657,7 @@
               {#each SWEAT_LEVELS as { value, drops }}
                 <button
                   class="flex items-center gap-[2px]"
-                  style="{sweatRate === value ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:8px 16px;transition:background 0.15s,color 0.15s;"
+                  style="{sweatRate === value ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#5f5f61;'}padding:8px 16px;transition:background 0.15s,color 0.15s;"
                   aria-label="{value.charAt(0).toUpperCase() + value.slice(1)} sweat rate"
                   aria-pressed={sweatRate === value}
                   on:click={() => (sweatRate = value)}>
@@ -835,7 +805,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-lg mb-lg card-enter card-enter-3">
 
       <!-- Carbs card -->
-      <div class="card p-lg">
+      <div class="liquid-glass rounded-sm p-lg">
         <div class="flex items-start gap-md mb-lg">
           <div class="w-12 h-12 rounded-sm bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
             <Wheat class="w-7 h-7 text-[--color-ink]" />
@@ -866,7 +836,7 @@
       </div>
 
       <!-- Fluids card -->
-      <div class="card p-lg">
+      <div class="liquid-glass rounded-sm p-lg">
         <div class="flex items-start gap-md mb-lg">
           <div class="w-12 h-12 rounded-sm bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
             <Droplet class="w-7 h-7 text-[--color-ink]" />
@@ -895,7 +865,7 @@
     </div>
 
     <!-- Results Row 2: Power (+ speed when available) -->
-    <div class="card p-lg mb-lg card-enter card-enter-4">
+    <div class="liquid-glass rounded-sm p-lg mb-lg card-enter card-enter-4">
       <div class="flex items-start gap-md mb-lg">
         <div class="w-12 h-12 rounded-sm bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
           <Zap class="w-7 h-7 text-[--color-ink]" />
@@ -938,7 +908,7 @@
     </div>
 
     <!-- Totals + Fueling Schedule + Bottle Planner — tabbed dark card -->
-    <div bind:this={tabCard} class="card-campaign rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5">
+    <div bind:this={tabCard} class="liquid-glass-dark rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5">
 
       <!-- Tab bar -->
       <div style="display:flex;gap:3px;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:20px;padding:3px;">
@@ -958,19 +928,19 @@
         <div in:fade={{ duration: 250 }}>
         <h2 class="text-caption-md mb-lg text-[--color-on-primary]">Total needs for {formatDuration(duration)}</h2>
         <div class="grid grid-cols-3 gap-md">
-          <div class="rounded-md p-md text-center" style="">
+          <div class="rounded-md p-md text-center">
             <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{Math.round($animatedTotalCarbs)}g</div>
-            <div class="text-caption-sm" style="color:rgba(255,255,255,0.5);">Carbs</div>
+            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">Carbs</div>
           </div>
-          <div class="rounded-md p-md text-center" style="">
+          <div class="rounded-md p-md text-center">
             <div class="text-4xl md:text-5xl font-extra-bold mb-xs flex items-center justify-center" style="color:#ffffff;min-height:1.2em;">
               {powerDerived ? Math.round($animatedTotalKcal) : '—'}
             </div>
-            <div class="text-caption-sm" style="color:rgba(255,255,255,0.5);">kcal</div>
+            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">kcal</div>
           </div>
-          <div class="rounded-md p-md text-center" style="">
+          <div class="rounded-md p-md text-center">
             <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{$animatedTotalFluid.toFixed(1)}L</div>
-            <div class="text-caption-sm" style="color:rgba(255,255,255,0.5);">Fluids</div>
+            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">Fluids</div>
           </div>
         </div>
         </div>
@@ -990,26 +960,26 @@
           </div>
         </div>
         {#if fuelingEvents.length === 0}
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;">Ride too short for a fueling schedule.</p>
+          <p style="color:rgba(255,255,255,0.70);font-size:14px;">Ride too short for a fueling schedule.</p>
         {:else if fuelingEvents[0].carbs === 0}
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;">No solid food needed — drink covers all carbs.</p>
+          <p style="color:rgba(255,255,255,0.70);font-size:14px;">No solid food needed — drink covers all carbs.</p>
         {:else}
           <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
             {#each fuelingEvents as event, i}
               <div class="flex items-center justify-between px-lg py-md"
                 style="{i < fuelingEvents.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
-                <span style="color:rgba(255,255,255,0.5);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
+                <span style="color:rgba(255,255,255,0.70);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
                 <span style="color:#ffffff;font-weight:700;font-size:15px;">{event.carbs}g</span>
-                <span style="color:rgba(255,255,255,0.5);font-size:12px;">{event.units}× {solidLabel}</span>
+                <span style="color:rgba(255,255,255,0.70);font-size:12px;">{event.units}× {solidLabel}</span>
               </div>
             {/each}
           </div>
           <div class="flex items-center justify-between mt-md">
-            <p style="color:rgba(255,255,255,0.45);font-size:12px;">First fuel at 20 min · every 20 min after</p>
-            <p style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;">{totalSolidUnits} {solidLabel}s total</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:12px;">First fuel at 20 min · every 20 min after</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:12px;font-weight:600;">{totalSolidUnits} {solidLabel}s total</p>
           </div>
           {#if drinkCarbsPerHour > 0}
-            <p style="color:rgba(255,255,255,0.45);font-size:11px;margin-top:6px;">↑ reduced by {drinkCarbsPerHour}g/h from drink</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:6px;">↑ reduced by {drinkCarbsPerHour}g/h from drink</p>
           {/if}
         {/if}
         </div>
@@ -1018,7 +988,7 @@
       {:else if totalsTab === 'pack'}
         <div in:fade={{ duration: 250 }}>
         {#if bottleCount === 0}
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;">No bottles needed at this intensity.</p>
+          <p style="color:rgba(255,255,255,0.70);font-size:14px;">No bottles needed at this intensity.</p>
         {:else}
           <!-- Drink product picker -->
           <div class="flex items-center justify-between mb-md flex-wrap gap-sm">
@@ -1061,9 +1031,9 @@
             </div>
           </div>
           {#if drinkCarbsPerHour > 0}
-            <p style="color:rgba(255,255,255,0.45);font-size:11px;margin-top:10px;">Drink covers {drinkCarbsPerHour}g/h → less solid food needed. Check Schedule tab.</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:10px;">Drink covers {drinkCarbsPerHour}g/h → less solid food needed. Check Schedule tab.</p>
           {:else}
-            <p style="color:rgba(255,255,255,0.45);font-size:12px;margin-top:10px;">Water only — all carbs from solid food.</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:12px;margin-top:10px;">Water only — all carbs from solid food.</p>
           {/if}
 
           <!-- Pack checklist -->
@@ -1072,7 +1042,7 @@
               <div class="flex items-center justify-between mb-md">
                 <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Pack list</span>
                 {#if checkedPack.size > 0}
-                  <button style="color:rgba(255,255,255,0.5);font-size:11px;" on:click={resetPack}>Reset</button>
+                  <button style="color:rgba(255,255,255,0.70);font-size:11px;" on:click={resetPack}>Reset</button>
                 {/if}
               </div>
               <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1099,7 +1069,7 @@
 
     {:else}
     <!-- Results empty state -->
-    <div class="card py-md px-lg text-center mb-xl card-enter card-enter-3"
+    <div class="liquid-glass rounded-sm py-md px-lg text-center mb-xl card-enter card-enter-3"
       transition:fade={{ duration: 200 }}>
       <p class="text-caption-md text-[--color-mute]">Enter duration and weight to see results.</p>
     </div>
@@ -1139,7 +1109,7 @@
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
 
       <!-- App identity -->
       <div class="flex items-center gap-md mb-lg">
@@ -1150,7 +1120,7 @@
         </div>
       </div>
 
-      <p class="text-body-md mb-lg" style="color:rgba(17,17,17,0.6);">Precision carbohydrate and fluid targets for cyclists — calculated from your FTP and planned ride power.</p>
+      <p class="text-body-md mb-lg" style="color:rgba(17,17,17,0.75);">Precision carbohydrate and fluid targets for cyclists — calculated from your FTP and planned ride power.</p>
 
       <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(17,17,17,0.08);margin-bottom:24px;">
         <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(17,17,17,0.07);">
@@ -1175,40 +1145,10 @@
         </a>
         <button on:click={() => showAboutSheet = false}
           class="flex-1 py-3 rounded-full text-button-md font-extra-bold"
-          style="background:rgba(17,17,17,0.06);color:#111111;">
+          style="background:rgba(17,17,17,0.08);color:#111111;">
           Close
         </button>
       </div>
-    </div>
-  {/if}
-
-  <!-- Changelog sheet -->
-  {#if showChangelogSheet}
-    <div class="fixed inset-0 z-[990] bg-black/40" style="backdrop-filter:blur(2px);"
-      on:click={dismissChangelog} role="presentation" transition:fade={{ duration: 200 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
-      style="background:rgba(255,255,255,0.82);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);color:#111111;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
-      on:touchstart={(e) => onSheetDragStart(e, dismissChangelog)}
-      on:touchmove|preventDefault={onSheetDragMove}
-      on:touchend={onSheetDragEnd}
-      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
-      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
-      <p class="text-heading-md font-extra-bold mb-xs" style="color:#111111;">What's new</p>
-      <p class="text-caption-md mb-lg" style="color:rgba(17,17,17,0.65);">v{VERSION} · {BUILD_NAME}</p>
-      <ul style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-        {#each CHANGELOG_ITEMS as item}
-          <li class="flex items-start gap-md">
-            <span style="color:#f73b20;font-size:16px;line-height:1.4;flex-shrink:0;">·</span>
-            <span style="font-size:15px;color:rgba(17,17,17,0.8);line-height:1.5;">{item}</span>
-          </li>
-        {/each}
-      </ul>
-      <button on:click={dismissChangelog}
-        class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
-        Got it
-      </button>
     </div>
   {/if}
 
@@ -1225,7 +1165,7 @@
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <!-- Drag handle -->
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
 
       <div class="mb-4">
         <p class="text-heading-md font-extra-bold" style="color:#111111;">Works offline</p>
@@ -1272,7 +1212,7 @@
 
       <button on:click={dismissInstallSheet}
         class="mt-6 w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
+        style="background:rgba(17,17,17,0.08);color:#111111;">
         Not now
       </button>
     </div>
@@ -1300,7 +1240,7 @@
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#111111;">Impressum</p>
 
       <p class="text-caption-sm mb-xs" style="color:rgba(17,17,17,0.65);">Legal disclosure · § 5 TMG</p>
@@ -1321,7 +1261,7 @@
 
       <button on:click={() => showImpressumSheet = false}
         class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
+        style="background:rgba(17,17,17,0.08);color:#111111;">
         Close
       </button>
     </div>
@@ -1339,7 +1279,7 @@
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#111111;">How the math works</p>
 
       <div class="mb-lg" style="border-radius:12px;overflow:hidden;border:1px solid rgba(17,17,17,0.08);">
@@ -1367,7 +1307,7 @@
 
       <button on:click={() => showMathSheet = false}
         class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
+        style="background:rgba(17,17,17,0.08);color:#111111;">
         Close
       </button>
     </div>
