@@ -554,7 +554,7 @@
         <!-- Profile icon: User when set, UserX when empty -->
         <button
           class="flex items-center justify-center"
-          style="width:34px;height:34px;border-radius:50%;background:#ffffff;"
+          style="width:44px;height:44px;border-radius:50%;background:#ffffff;"
           on:click={() => { profileOpen = !profileOpen; if (profileOpen) { rideOpen = false; setTimeout(() => setupCard?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); } }}
           aria-label="{weight > 0 && ftp > 0 ? $t.ariaRiderProfile : $t.ariaSetupProfile}">
           {#if weight > 0 && ftp > 0}
@@ -563,10 +563,12 @@
             <UserX class="w-4 h-4" style="color:#09090b;" />
           {/if}
         </button>
+        <!-- Divider -->
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.2);flex-shrink:0;" aria-hidden="true"></div>
         <!-- Theme toggle -->
         <button
           on:click={toggleTheme}
-          style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;"
+          style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;"
           aria-label="Toggle dark mode">
           {#if isDark}
             <Sun class="w-4 h-4" style="color:#ffffff;" />
@@ -578,7 +580,7 @@
           on:click={toggleLang}
           on:animationend={() => langFlipping = false}
           class="{langFlipping ? 'lang-flip' : ''}"
-          style="height:34px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,0.12);color:#ffffff;font-size:13px;font-weight:600;letter-spacing:0.02em;border:none;cursor:pointer;transition:background 0.15s;"
+          style="height:44px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,0.12);color:#ffffff;font-size:13px;font-weight:600;letter-spacing:0.02em;border:none;cursor:pointer;transition:background 0.15s;"
           aria-label="Switch language">
           {$lang === 'en' ? 'DE' : 'EN'}
         </button>
