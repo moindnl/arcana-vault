@@ -493,7 +493,7 @@
         class="inline-flex items-center gap-sm rounded-full pointer-events-auto active:scale-95 transition-transform"
         style="background:#09090b;color:#ffffff;box-shadow:0 4px 20px rgba(0,0,0,0.35);padding:10px 20px 10px 16px;cursor:pointer;border:none;">
         <RefreshCw class="w-4 h-4 flex-shrink-0" style="color:rgba(255,255,255,0.55);" />
-        <span class="text-body-strong" style="color:#ffffff;">Update verfügbar — jetzt installieren</span>
+        <span class="text-body-strong" style="color:#ffffff;">Update available — tap to install</span>
       </button>
     </div>
   {/if}
