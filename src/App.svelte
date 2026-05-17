@@ -979,7 +979,7 @@
     </div>
 
     <!-- Totals + Fueling Schedule + Bottle Planner — tabbed dark card -->
-    <div bind:this={tabCard} class="rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5" style="background:rgba(247,59,32,0.05);border:1px solid rgba(247,59,32,0.12);">
+    <div bind:this={tabCard} class="rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5" style="background:var(--color-soft-cloud);border:1.5px solid rgba(247,59,32,0.22);box-shadow:0 4px 24px rgba(247,59,32,0.09);">
 
       <!-- Tab bar -->
       <div style="display:flex;gap:3px;margin-bottom:18px;background:rgba(17,17,17,0.06);border-radius:20px;padding:3px;">
@@ -999,17 +999,17 @@
         <div in:fade={{ duration: 250 }}>
         <h2 class="text-caption-md mb-lg text-[--color-mute]">Total needs for {formatDuration(duration)}</h2>
         <div class="grid grid-cols-3 gap-md">
-          <div class="rounded-md p-md text-center" style="background:rgba(255,255,255,0.7);">
+          <div class="rounded-md p-md text-center" style="background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
             <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">{Math.round($animatedTotalCarbs)}g</div>
             <div class="text-caption-sm text-[--color-mute]">Carbs</div>
           </div>
-          <div class="rounded-md p-md text-center" style="background:rgba(255,255,255,0.7);">
+          <div class="rounded-md p-md text-center" style="background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
             <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs flex items-center justify-center" style="min-height:1.2em;">
               {powerDerived ? Math.round($animatedTotalKcal) : '—'}
             </div>
             <div class="text-caption-sm text-[--color-mute]">kcal</div>
           </div>
-          <div class="rounded-md p-md text-center" style="background:rgba(255,255,255,0.7);">
+          <div class="rounded-md p-md text-center" style="background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
             <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#477ee9;">{$animatedTotalFluid.toFixed(1)}L</div>
             <div class="text-caption-sm text-[--color-mute]">Fluids</div>
           </div>
