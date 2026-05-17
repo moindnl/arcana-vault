@@ -259,9 +259,19 @@
     deferredInstallPrompt = null;
     if (outcome === 'accepted') installPlatform = null;
   }
-  // Only save after initial load — prevents wiping storage during init
+  // Only save after initial load — debounced to avoid writing on every keystroke
   let _profileReady = false;
-  $: if (_profileReady) localStorage.setItem('bp-profile', JSON.stringify({ weight, ftp, imperial, sweatRate }));
+  let _saveTimer: ReturnType<typeof setTimeout> | null = null;
+  $: if (_profileReady) {
+    if (_saveTimer) clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(() => {
+      localStorage.setItem('bp-profile', JSON.stringify({ weight, ftp, imperial, sweatRate }));
+    }, 600);
+  }
+
+  // Guide: hide once both weight + ftp set; never re-show (avoids flicker on delete)
+  let _guideSeen = false;
+  $: if (weight > 0 && ftp > 0) _guideSeen = true;
 
   // Reset per-ride inputs only; profile persists
   function resetInputs() {
@@ -547,7 +557,7 @@
   <div class="max-w-6xl mx-auto p-sm md:p-md lg:p-lg">
 
     <!-- 3-step how-to — shown on first visit or on demand -->
-    {#if !(weight > 0 || ftp > 0)}
+    {#if !_guideSeen}
     <div transition:fade={{ duration: 200 }} class="mb-lg md:mb-section card-enter card-enter-1">
       <!-- Mobile: horizontal swipe cards -->
       <div class="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-sm pb-sm -mx-sm px-sm" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;" tabindex="0" role="region" aria-label="Result cards">
