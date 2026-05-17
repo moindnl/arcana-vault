@@ -536,11 +536,11 @@
         {#if weight > 0 && ftp > 0}
           <button
             class="relative flex items-center justify-center"
-            style="width:32px;height:32px;border-radius:50%;background:var(--color-hairline-soft);"
-            on:click={() => { profileOpen = true; rideOpen = false; }}
+            style="width:38px;height:38px;border-radius:50%;background:rgba(17,17,17,0.08);border:1.5px solid rgba(17,17,17,0.10);"
+            on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
             aria-label="Rider profile set">
-            <User class="w-4 h-4 text-[--color-ink]" />
-            <span class="absolute" style="top:1px;right:1px;width:9px;height:9px;border-radius:50%;background:#34c759;border:1.5px solid var(--color-canvas);"></span>
+            <User class="w-5 h-5 text-[--color-ink]" />
+            <span class="absolute" style="top:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#34c759;border:2px solid var(--color-canvas);"></span>
           </button>
         {/if}
         {#if updateAvailable}
