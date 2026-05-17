@@ -13,19 +13,22 @@
   let updateAvailable = false;
   let doUpdateSW: () => Promise<void>;
 
+  // Injected at build time by vite.config.js versionPlugin
+  const BUILD_HASH = __BUILD_HASH__;
+
   const swUpdate = registerSW({
     async onNeedRefresh() {
       try {
         const res = await fetch(`/version.json?_=${Date.now()}`);
-        if (!res.ok) { swUpdate(false); return; }
+        if (!res.ok) { updateAvailable = true; return; } // can't check — show prompt
         const data = await res.json();
-        if (data.version !== VERSION || data.build !== BUILD_NAME) {
+        if (data.hash !== BUILD_HASH) {
           updateAvailable = true;
         } else {
-          swUpdate(false); // same version — apply silently, no reload
+          swUpdate(false); // same build — apply silently
         }
       } catch {
-        swUpdate(false); // can't determine version — apply silently
+        updateAvailable = true; // network error — show prompt anyway
       }
     },
     onOfflineReady() {},
