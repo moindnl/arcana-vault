@@ -130,9 +130,9 @@
   } as const;
 
   // Per-ride inputs (reset on Reset)
-  let distance = 0;
+  let distance: number | undefined = undefined;
   let durationRaw = ''; // what user types — e.g. "1.30" or "1:30" or "1.5"
-  let power = 0;
+  let power: number | undefined = undefined;
   let temperature = 20; // °C — no heat bonus below 20°C; resets with ride
 
   // Parse "1:30", "1.30" (dot = minutes when 2+ digits), or "1.5" → decimal hours
@@ -171,14 +171,14 @@
   // Rider profile (persists via localStorage — read synchronously so guide renders correctly on first paint)
   let _savedProfile: Record<string, any> = {};
   try { _savedProfile = JSON.parse(localStorage.getItem('bs-profile') || '{}'); } catch { /* ignore */ }
-  let weight: number = _savedProfile.weight > 0 ? _savedProfile.weight : 0;
-  let ftp: number = _savedProfile.ftp > 0 ? _savedProfile.ftp : 0;
+  let weight: number | undefined = _savedProfile.weight > 0 ? _savedProfile.weight : undefined;
+  let ftp: number | undefined = _savedProfile.ftp > 0 ? _savedProfile.ftp : undefined;
   let imperial: boolean = typeof _savedProfile.imperial === 'boolean' ? _savedProfile.imperial : false;
   let sweatRate: 'light' | 'moderate' | 'heavy' = _savedProfile.sweatRate || 'moderate';
 
   // UI state
   let showMathSheet = false;
-  let profileOpen = false;
+  let profileOpen = !(weight > 0 || ftp > 0); // auto-open on first visit
   let rideOpen = false;
   let rideAutoCollapsed = false;
   let neuralizer = false;        // easter egg F: neuralyzer flash
@@ -190,7 +190,6 @@
     checkedPack = checkedPack;
   }
   function resetPack() { checkedPack.clear(); checkedPack = checkedPack; }
-  let showGuide = false;
 
   const SWEAT_LEVELS = [
     { value: 'light',    drops: 1 },
@@ -302,7 +301,7 @@
 
   // Reset per-ride inputs only; profile persists
   function resetInputs() {
-    distance = 0; durationRaw = ''; power = 0; temperature = 20;
+    distance = undefined; durationRaw = ''; power = undefined; temperature = 20;
     rideOpen = true; rideAutoCollapsed = false;
   }
 
@@ -321,17 +320,17 @@
   // Imperial ↔ metric: convert displayed values on toggle
   function toggleImperial() {
     if (!imperial) {
-      if (weight > 0)   weight   = Math.round(weight * 2.20462);
-      if (distance > 0) distance = Math.round(distance * 0.621371 * 10) / 10;
+      if (weight != null && weight > 0)   weight   = Math.round(weight * 2.20462);
+      if (distance != null && distance > 0) distance = Math.round(distance * 0.621371 * 10) / 10;
     } else {
-      if (weight > 0)   weight   = Math.round(weight / 2.20462);
-      if (distance > 0) distance = Math.round(distance * 1.60934);
+      if (weight != null && weight > 0)   weight   = Math.round(weight / 2.20462);
+      if (distance != null && distance > 0) distance = Math.round(distance * 1.60934);
     }
     imperial = !imperial;
   }
 
   // Metric-normalised values used in all calculations
-  $: weightKg   = imperial ? weight / 2.20462 : weight;
+  $: weightKg   = imperial ? (weight ?? 0) / 2.20462 : (weight ?? 0);
   $: distanceKm = imperial ? distance * 1.60934 : distance;
   $: speedKmh   = distanceKm > 0 && duration > 0 ? distanceKm / duration : 0;
   $: speedUnit  = imperial ? 'mph' : 'km/h';
@@ -377,7 +376,7 @@
   $: fluidPerHour = weight > 0 && duration > 0 ? baseFluid * (weightKg / 70) * sweatMultiplier + heatBonus : 0;
 
   // Carbs: IF-based piecewise when power available, zone midpoint fallback
-  $: carbsPerHour = duration <= 0 || weight <= 0 ? 0 :
+  $: carbsPerHour = !duration || !(weight > 0) ? 0 :
     powerDerived
       ? carbsFromIF(intensityFactor)
       : Math.round((CARB_RANGES[intensity].min + CARB_RANGES[intensity].max) / 2);
@@ -496,7 +495,7 @@
 
   // Fueling schedule: 20-min intake slots (solid food only)
   $: fuelingEvents = (() => {
-    if (duration <= 0 || weight <= 0) return [] as { time: string; carbs: number; units: number }[];
+    if (!duration || !(weight > 0)) return [] as { time: string; carbs: number; units: number }[];
     const events: { time: string; carbs: number; units: number }[] = [];
     const totalMins = Math.round(duration * 60);
     const carbsPerSlot = Math.round(solidCarbsPerHour / 3);
@@ -548,42 +547,40 @@
     </div>
   {/if}
 
-  <!-- App Header -->
-  <header class="w-full py-xl text-center rounded-b-[28px]" style="background:var(--color-soft-cloud);">
-    <div class="flex items-center justify-center mb-sm">
-      <h1 class="text-heading-xl md:text-display-campaign font-extra-bold flex items-center gap-sm md:gap-md" style="color:var(--color-ink);">
-        Banana
+  <!-- App Header — compact bar -->
+  <header class="w-full rounded-b-[20px]" style="height:56px;background:var(--color-soft-cloud);">
+    <div class="max-w-6xl mx-auto px-lg h-full flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-sm">
         <img src="/favicon.svg" alt=""
-          class="w-9 h-9 md:w-[86px] md:h-[86px] flex-shrink-0"
-          style="border-radius:18%;box-shadow:0 0 0 1px rgba(180,100,0,0.25),0 0 10px rgba(180,100,0,0.12);" />
-        Sprocket
-      </h1>
-    </div>
-    <p class="text-caption-md mb-sm" style="color:var(--color-mute);">Precise carb &amp; fluid targets from your FTP and power.</p>
-    <div class="flex items-center justify-center gap-md flex-wrap">
-      {#if weight > 0 || ftp > 0}
-        <button class="inline-flex items-center gap-xs text-caption-sm text-[--color-stone] underline underline-offset-[3px]"
-          on:click={() => (showGuide = !showGuide)}>
-          {#if showGuide}
-            <X class="w-3.5 h-3.5" />Hide guide
-          {:else}
-            <Info class="w-3.5 h-3.5" />Guide
-          {/if}
-        </button>
-      {/if}
-      {#if showWhatsNew}
-        <button class="inline-flex items-center gap-xs text-caption-sm text-[--color-stone] underline underline-offset-[3px]"
-          on:click={() => (showChangelogSheet = true)}>
-          v{VERSION} · {BUILD_NAME} <ChevronRight class="w-3 h-3" />
-        </button>
-      {/if}
+          class="w-7 h-7 flex-shrink-0"
+          style="border-radius:18%;box-shadow:0 0 0 1px rgba(180,100,0,0.20),0 0 8px rgba(180,100,0,0.10);" />
+        <span class="text-body-strong font-extra-bold" style="color:var(--color-ink);">BananaSprocket</span>
+      </div>
+      <!-- Right chips -->
+      <div class="flex items-center gap-sm">
+        {#if weight > 0 && ftp > 0}
+          <button class="badge text-caption-sm flex items-center gap-xs"
+            on:click={() => { profileOpen = true; rideOpen = false; }}>
+            <User class="w-3 h-3" />
+            {weight}{imperial ? 'lb' : 'kg'} · {ftp}W
+          </button>
+        {/if}
+        {#if showWhatsNew}
+          <button class="badge text-caption-sm flex items-center gap-xs"
+            on:click={() => (showChangelogSheet = true)}>
+            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#EF4444;"></span>
+            New
+          </button>
+        {/if}
+      </div>
     </div>
   </header>
 
   <div class="max-w-6xl mx-auto p-sm md:p-md lg:p-lg">
 
     <!-- 3-step how-to — shown on first visit or on demand -->
-    {#if !(weight > 0 || ftp > 0) || showGuide}
+    {#if !(weight > 0 || ftp > 0)}
     <div transition:fade={{ duration: 200 }} class="mb-lg md:mb-section card-enter card-enter-1">
       <!-- Mobile: horizontal swipe cards -->
       <div class="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-sm pb-sm -mx-sm px-sm" style="scrollbar-width:none;-webkit-overflow-scrolling:touch;">
@@ -621,11 +618,6 @@
 
     <!-- Input section -->
     <div class="mb-lg card-enter card-enter-2">
-      <div class="flex items-center gap-md mb-lg">
-        <div class="flex-1 h-px" style="background:var(--color-hairline);"></div>
-        <span class="badge text-utility-xs font-bold uppercase tracking-widest">Setup</span>
-        <div class="flex-1 h-px" style="background:var(--color-hairline);"></div>
-      </div>
 
     <!-- Unified setup card -->
     <div class="rounded-sm overflow-hidden mb-lg"
@@ -795,9 +787,11 @@
             <!-- Row 1: Distance / Duration -->
             <div class="grid grid-cols-1 md:grid-cols-2">
               <div class="flex items-center justify-between px-lg py-lg md:border-r border-[var(--color-hairline)]">
-                <label for="distance" class="text-caption-md text-[--color-ink]">Distance</label>
+                <label for="distance" class="text-caption-md text-[--color-ink]">
+                  Distance <span class="text-caption-sm text-[--color-mute]">(optional)</span>
+                </label>
                 <div class="flex items-center gap-xs">
-                  <input id="distance" type="number" bind:value={distance} min="1" max="500" step="1"
+                  <input id="distance" type="number" bind:value={distance} min="1" max="500" step="1" placeholder="0"
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                     on:focus={focusInput} />
@@ -828,7 +822,7 @@
                   <span class="text-caption-sm text-[--color-mute]">Planned average</span>
                 </div>
                 <div class="flex items-center gap-xs">
-                  <input id="power" type="number" bind:value={power} min="0" max="600" step="1"
+                  <input id="power" type="number" bind:value={power} min="0" max="600" step="1" placeholder="200"
                     class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
                     style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
                     on:focus={focusInput} />
@@ -840,8 +834,12 @@
                 <div class="flex items-center h-10">
                   {#if powerDerived && zoneLabel}
                     <span class="badge-black" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
-                  {:else if ftp === 0}
-                    <span class="text-[--color-mute] text-caption-sm">Enter FTP first</span>
+                  {:else if !(ftp > 0)}
+                    <button class="text-caption-sm flex items-center gap-xxs"
+                      style="color:var(--color-sale);"
+                      on:click={() => { profileOpen = true; rideOpen = false; }}>
+                      Set FTP in profile <ChevronRight class="w-3 h-3" />
+                    </button>
                   {:else}
                     <span class="text-[--color-mute] text-caption-sm">Enter power</span>
                   {/if}
