@@ -1306,7 +1306,7 @@
       <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);margin-bottom:20px;">
         <div class="px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
           <p style="color:#ffffff;font-size:14px;font-weight:600;">Daniel Muschinski</p>
-          <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:2px;">[Straße, PLZ Ort]</p>
+          <p style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:2px;">Freudenbegrstraße 4, 28213 Bremen</p>
         </div>
         <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
           <span style="color:rgba(255,255,255,0.55);font-size:14px;">Kontakt</span>
