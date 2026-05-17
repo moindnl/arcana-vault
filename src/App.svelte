@@ -489,14 +489,12 @@
   {#if updateAvailable}
     <div class="fixed top-0 left-0 right-0 z-[1000] flex justify-center pt-3 px-4 pointer-events-none"
       transition:fly={{ y: -48, duration: 300, easing: cubicOut }}>
-      <div class="inline-flex items-center gap-sm rounded-full pointer-events-auto"
-        style="background:#09090b;color:#ffffff;box-shadow:0 4px 20px rgba(0,0,0,0.35);padding:6px 6px 6px 16px;">
-        <RefreshCw class="w-3.5 h-3.5 flex-shrink-0" style="color:rgba(255,255,255,0.55);" />
-        <span class="text-caption-sm" style="color:rgba(255,255,255,0.8);">New version available</span>
-        <button on:click={() => doUpdateSW()}
-          class="text-caption-sm font-extra-bold rounded-full"
-          style="background:#09090b;color:#ffffff;padding:6px 14px;white-space:nowrap;box-shadow:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset,rgba(117,123,133,0.4) 0px 9px 14px -5px inset,rgb(44,46,52) 0px 0px 0px 1.5px,rgba(0,0,0,0.14) 0px 4px 6px 0px;">Update now</button>
-      </div>
+      <button on:click={() => doUpdateSW()}
+        class="inline-flex items-center gap-sm rounded-full pointer-events-auto active:scale-95 transition-transform"
+        style="background:#09090b;color:#ffffff;box-shadow:0 4px 20px rgba(0,0,0,0.35);padding:10px 20px 10px 16px;cursor:pointer;border:none;">
+        <RefreshCw class="w-4 h-4 flex-shrink-0" style="color:rgba(255,255,255,0.55);" />
+        <span class="text-body-strong" style="color:#ffffff;">Update verfügbar — jetzt installieren</span>
+      </button>
     </div>
   {/if}
 
@@ -522,14 +520,6 @@
             <UserX class="w-4 h-4" style="color:#09090b;" />
           {/if}
         </button>
-        {#if updateAvailable}
-          <button class="text-caption-sm font-bold flex items-center gap-xs"
-            style="background:#ffffff;color:#09090b;border-radius:9999px;padding:5px 12px;"
-            on:click={() => doUpdateSW()}>
-            <RefreshCw class="w-3 h-3" />
-            Update
-          </button>
-        {/if}
       </div>
     </div>
   </header>
