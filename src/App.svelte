@@ -698,14 +698,13 @@
             </span>
           {/if}
           {#if !rideOpen && (duration > 0 || distance > 0 || power > 0)}
-            <span
-              role="button" tabindex="0"
+            <button
               on:click|stopPropagation={resetInputs}
-              on:keydown|stopPropagation={(e) => e.key === 'Enter' && resetInputs()}
-              class="text-caption-sm text-[--color-mute] underline underline-offset-2 cursor-pointer"
-              style="flex-shrink:0;">
-              {$t.resetRide}
-            </span>
+              class="flex items-center justify-center flex-shrink-0"
+              style="width:28px;height:28px;border-radius:50%;background:#f4f4f5;"
+              aria-label="Reset ride inputs">
+              <RotateCcw class="w-3.5 h-3.5 text-[--color-ink]" />
+            </button>
           {/if}
           <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-200 {rideOpen ? 'rotate-180' : ''}" />
         </div>
