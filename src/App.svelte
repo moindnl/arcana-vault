@@ -1307,6 +1307,7 @@
       </div>
 
       <p class="text-caption-sm mb-sm" style="color:rgba(255,255,255,0.55);">Fluids scale with body weight — sweat modifier adjusts ±20–30%.</p>
+      <p class="text-caption-sm mb-sm" style="color:rgba(255,255,255,0.55);">Heat: +0.3 L/h per 5°C above 20°C added to fluid target.</p>
       <p class="text-caption-sm mb-lg" style="color:rgba(255,255,255,0.55);">Rides &gt;2h: add electrolytes — plain water dilutes sodium balance on long efforts.</p>
 
       <button on:click={() => showMathSheet = false}
