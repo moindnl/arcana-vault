@@ -165,6 +165,14 @@
   // PWA install bottom sheet (null = hidden)
   let installPlatform: 'ios' | 'android' | null = null;
   let installSheetTimer: ReturnType<typeof setTimeout> | null = null;
+  let _installOS: 'ios' | 'android' | null = null; // set in onMount if eligible
+  let _installFired = false;
+
+  // Fire install prompt on first meaningful engagement (profile complete)
+  $: if (_installOS && !_installFired && weight > 0 && ftp > 0) {
+    _installFired = true;
+    installSheetTimer = setTimeout(() => { installPlatform = _installOS!; }, 800);
+  }
   let deferredInstallPrompt: any = null;
   const onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); deferredInstallPrompt = e; };
   const onAppInstalled = () => { installPlatform = null; };
@@ -214,7 +222,7 @@
     const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isAndroid = /android/i.test(navigator.userAgent);
     if (isMobile && !standalone && (isIos || isAndroid) && !localStorage.getItem('bs-install-dismissed')) {
-      installSheetTimer = setTimeout(() => { installPlatform = isIos ? 'ios' : 'android'; }, 1200);
+      _installOS = isIos ? 'ios' : 'android'; // reactive block fires when profile complete
     }
 
     window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
