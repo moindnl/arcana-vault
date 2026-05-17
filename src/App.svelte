@@ -134,7 +134,7 @@
     totalsTab = tab;
     setTimeout(() => {
       if (!tabCard) return;
-      const y = tabCard.getBoundingClientRect().top + window.scrollY - 68; // 56px header + 12px gap
+      const y = tabCard.getBoundingClientRect().top + window.scrollY - 76; // 64px header + 12px gap
       window.scrollTo({ top: y, behavior: 'smooth' });
     }, 0);
   }
@@ -512,7 +512,7 @@
   {/if}
 
   <!-- App Header — compact bar -->
-  <header class="w-full rounded-b-[20px]" style="height:56px;background:var(--color-soft-cloud);">
+  <header class="w-full rounded-b-[20px]" style="height:64px;background:var(--color-soft-cloud);">
     <div class="max-w-6xl mx-auto px-lg h-full flex items-center justify-between">
       <!-- Logo -->
       <div class="flex items-center gap-sm">
