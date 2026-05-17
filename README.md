@@ -20,8 +20,8 @@ Precision carbohydrate and fluid targets for endurance cyclists, calculated from
 - **Natural duration entry** — accepts `1:30`, `1.30`, `1,30`, or `1.5` (all parse to 1h 30min)
 - **Privacy** — profile data stored in `localStorage` (weight, FTP, unit preference). No server, no tracking.
 - **Awesomic design system** — neutral dark-on-mist palette, 36px card radius, obsidian pill header
-- **Wordmark animation** — *bonk* italic + proof! red; on load: proof crashes into bonk, bonk wobbles, skull icon flips 360° on impact
-- **Bottom sheets** — smooth `quintOut` enter / `cubicIn` dismiss with drag-to-close; math, about, and impressum sheets
+- **Wordmark animation** — *bonk* italic + proof! red; on load: proof crashes into bonk, bonk wobbles, skull icon flips 360° on impact; `tick()`-based class retrigger for reliable animation replay
+- **Bottom sheets** — smooth `quintOut` enter / `cubicIn` dismiss with drag-to-close; shared drag state guarded against cross-sheet race; z-index hierarchy: header(995) < backdrop(996) < sheet(998) < toast(1000)
 - **WCAG 2.1 AA** — all text and UI components meet contrast requirements
 - **Mobile scroll-to-input** — tapping any input field scrolls it into view above the keyboard
 - **PWA** — installable on phone, full offline support via Workbox service worker

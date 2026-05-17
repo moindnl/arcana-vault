@@ -51,11 +51,7 @@
   }
 
   /* Wordmark sequence: icon → bonk → proof crash → bonk wobble + icon bounce */
-  @keyframes iconSlide {
-    0%   { transform: translateX(-18px); opacity: 0; }
-    100% { transform: translateX(0);     opacity: 1; }
-  }
-  @keyframes iconBounce {
+@keyframes iconBounce {
     0%   { transform: perspective(200px) rotateY(0deg); }
     100% { transform: perspective(200px) rotateY(360deg); }
   }
