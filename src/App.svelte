@@ -1140,20 +1140,22 @@
     {/if}
 
     <!-- Footer -->
-    <div class="flex flex-col items-center gap-sm -mx-sm md:-mx-md lg:-mx-lg px-sm md:px-md lg:px-lg" style="background:var(--color-soft-cloud);padding-top:1.25rem;padding-bottom:max(56px, calc(env(safe-area-inset-bottom) + 32px));">
-      <div class="flex items-center gap-md">
-        <button on:click={() => showMathSheet = true}
-          class="text-caption-sm text-[--color-mute] underline-offset-2 hover:underline"
-          style="padding:10px 12px;">How the math works</button>
-        <button on:click={() => showAboutSheet = true}
-          class="text-caption-sm text-[--color-mute] underline-offset-2 hover:underline"
-          style="padding:10px 12px;">About · v{VERSION}</button>
-      </div>
-      <div class="flex items-center gap-md">
-        <span class="text-caption-sm text-[--color-stone]" style="padding:10px 12px;">© 2026 bonkproof</span>
-        <button on:click={() => showImpressumSheet = true}
-          class="text-caption-sm text-[--color-mute] underline-offset-2 hover:underline"
-          style="padding:10px 12px;">Legal Notice</button>
+    <div style="border-top:1px solid var(--color-hairline);padding-bottom:max(56px, calc(env(safe-area-inset-bottom) + 24px));">
+      <div class="flex items-center justify-between flex-wrap gap-xs" style="padding:12px 0;">
+        <span class="text-caption-sm" style="color:var(--color-stone);padding:4px 0;">© 2026 bonkproof</span>
+        <div class="flex items-center flex-wrap">
+          <button on:click={() => showMathSheet = true}
+            class="text-caption-sm text-[--color-mute] hover:text-[--color-ink]"
+            style="padding:8px 10px;transition:color 0.15s;">How it works</button>
+          <span style="color:var(--color-hairline);user-select:none;">·</span>
+          <button on:click={() => showAboutSheet = true}
+            class="text-caption-sm text-[--color-mute] hover:text-[--color-ink]"
+            style="padding:8px 10px;transition:color 0.15s;">About</button>
+          <span style="color:var(--color-hairline);user-select:none;">·</span>
+          <button on:click={() => showImpressumSheet = true}
+            class="text-caption-sm text-[--color-mute] hover:text-[--color-ink]"
+            style="padding:8px 10px;transition:color 0.15s;">Legal</button>
+        </div>
       </div>
     </div>
 
