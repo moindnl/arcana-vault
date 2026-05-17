@@ -2,7 +2,7 @@
 
 /* Jeton Design System Tokens */
 @theme {
-  --font-sans: 'Sequel Sans', 'Inter', 'Montserrat', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Jeton Brand Colors */
   --color-jeton-red: #f73b20;
@@ -18,7 +18,7 @@
   --color-canvas: #ffffff;
   --color-soft-cloud: #fef6f4;
   --color-charcoal: #39393b;
-  --color-mute: #707072;
+  --color-mute: #5f5f61;
   --color-ash: #4b4b4d;
   --color-stone: #6e6e70;
   --color-hairline: #f0d5cf;
@@ -42,7 +42,12 @@
   }
   
   body {
-    @apply bg-[--color-canvas] text-[--color-ink] min-h-screen;
+    @apply text-[--color-ink] min-h-screen;
+    background: linear-gradient(160deg, #fef6f4 0%, #fde0d5 35%, #fef0ec 65%, #fde8e0 100%);
+    /* background-attachment: fixed creates blur depth on desktop.
+       iOS Safari ignores this in scroll containers — gradient scrolls with
+       the page. Frosted glass still works visually; parallax lock doesn't. */
+    background-attachment: fixed;
   }
 
   /* Easter egg F: neuralyzer flash */
@@ -318,6 +323,24 @@
   }
   .temp-slider::-webkit-slider-runnable-track { border-radius: 2px; }
   .temp-slider::-moz-range-track { border-radius: 2px; }
+
+  /* Liquid glass dark — same system, dark toning */
+  .liquid-glass-dark {
+    background: linear-gradient(
+      145deg,
+      rgba(17, 17, 17, 0.88) 0%,
+      rgba(17, 17, 17, 0.78) 100%
+    );
+    backdrop-filter: blur(28px) saturate(150%) brightness(0.85);
+    -webkit-backdrop-filter: blur(28px) saturate(150%) brightness(0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+      0 8px 32px rgba(0, 0, 0, 0.25),
+      0 2px 8px rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+  }
 
   /* Liquid glass — iOS 26 / Apple inspired */
   .liquid-glass {

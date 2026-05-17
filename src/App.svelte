@@ -1,14 +1,12 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Check, RefreshCw, X, Bike, ExternalLink, Lock } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
   import { onMount, onDestroy } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
 
-  // Named versions — women who shaped cycling
   const VERSION = '1.0';
-  const BUILD_NAME = 'Marianne Vos';
 
   let updateAvailable = false;
   let doUpdateSW: () => Promise<void>;
@@ -34,20 +32,6 @@
     onOfflineReady() {},
   });
   doUpdateSW = swUpdate;
-  const CHANGELOG_ITEMS = [
-    'Pack tab — gear checklist auto-generated from your ride',
-    'One-tap install on Android Chrome via native browser prompt',
-    'Swipe-to-dismiss on install sheet',
-    'Emergency gel only added on rides ≥ 2h',
-    'Contrast fixes across all dark cards (WCAG AA throughout)',
-  ];
-  let showWhatsNew = false;
-  let showChangelogSheet = false;
-  function dismissChangelog() {
-    showChangelogSheet = false;
-    showWhatsNew = false;
-    localStorage.setItem('bp-seen-build', BUILD_NAME);
-  }
 
   let showAboutSheet = false;
 
@@ -222,12 +206,7 @@
 
   onMount(() => {
     // Easter egg: console greeting
-    console.log(
-      '%cbonkproof — Cycling Nutrition Planner\n\nPsst. You\'re looking at the source.\nWhy are you not riding your bike?\n\nBuilt by Daniel Muschinski\nhttps://github.com/moindnl',
-      'color:#FFD700;background:#111111;font-family:monospace;font-size:12px;padding:16px 20px;border-radius:8px;line-height:1.6;'
-    );
-
-    if (localStorage.getItem('bp-seen-build') !== BUILD_NAME) showWhatsNew = true;
+    console.log('bonkproof — Cycling Nutrition Planner\n\nPsst. You\'re looking at the source.\nWhy are you not riding your bike?\n\nBuilt by Daniel Muschinski\nhttps://github.com/moindnl');
 
     const isMobile = window.innerWidth < 768;
     const standalone = window.matchMedia('(display-mode: standalone)').matches
@@ -504,7 +483,7 @@
   }
 </script>
 
-<main class="min-h-screen bg-[--color-canvas]">
+<main class="min-h-screen">
 
   <!-- Update toast -->
   {#if updateAvailable}
@@ -521,47 +500,42 @@
     </div>
   {/if}
 
-  <!-- App Header — compact bar -->
-  <header class="w-full rounded-b-[20px]" style="height:64px;background:var(--color-soft-cloud);">
-    <div class="max-w-6xl mx-auto px-lg h-full flex items-center justify-between">
+  <!-- App Header — floating bar -->
+  <header class="w-full" style="padding:12px 16px 0;position:sticky;top:0;z-index:100;">
+    <div style="max-width:640px;margin:0 auto;height:52px;background:#f73b20;border-radius:9999px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 24px rgba(247,59,32,0.35),0 1px 4px rgba(247,59,32,0.2);">
       <!-- Logo -->
       <div class="flex items-center gap-sm">
-        <img src="/favicon.svg" alt=""
-          class="w-7 h-7 flex-shrink-0"
-          style="border-radius:18%;box-shadow:0 0 0 1px rgba(180,100,0,0.20),0 0 8px rgba(180,100,0,0.10);" />
-        <h1 class="text-body-strong font-extra-bold" style="color:var(--color-ink);margin:0;">bonkproof</h1>
+        <img src="/favicon.svg" alt="" class="w-7 h-7 block flex-shrink-0" style="border-radius:18%;" />
+        <h1 style="margin:0;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:#ffffff;">bonkproof</h1>
       </div>
-      <!-- Right chips -->
+      <!-- Right -->
       <div class="flex items-center gap-sm">
-        {#if weight > 0 && ftp > 0}
-          <button
-            class="relative flex items-center justify-center"
-            style="width:38px;height:38px;border-radius:50%;background:rgba(17,17,17,0.08);border:1.5px solid rgba(17,17,17,0.10);"
-            on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
-            aria-label="Rider profile set">
-            <User class="w-5 h-5 text-[--color-ink]" />
-            <span class="absolute" style="top:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#34c759;border:2px solid var(--color-canvas);"></span>
-          </button>
-        {/if}
+        <!-- Profile icon: User when set, UserX when empty -->
+        <button
+          class="flex items-center justify-center"
+          style="width:34px;height:34px;border-radius:50%;background:#ffffff;"
+          on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
+          aria-label="{weight > 0 && ftp > 0 ? 'Rider profile' : 'Set up rider profile'}">
+          {#if weight > 0 && ftp > 0}
+            <User class="w-4 h-4" style="color:#f73b20;" />
+          {:else}
+            <UserX class="w-4 h-4" style="color:#f73b20;" />
+          {/if}
+        </button>
         {#if updateAvailable}
           <button class="text-caption-sm font-bold flex items-center gap-xs"
-            style="background:#f73b20;color:#ffffff;border-radius:20px;padding:5px 12px;"
+            style="background:#ffffff;color:#f73b20;border-radius:20px;padding:5px 12px;"
             on:click={() => doUpdateSW()}>
             <RefreshCw class="w-3 h-3" />
             Update
-          </button>
-        {:else if showWhatsNew}
-          <button class="badge text-caption-sm flex items-center gap-xs"
-            on:click={() => (showChangelogSheet = true)}>
-            <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#fb2d54;"></span>
-            New
           </button>
         {/if}
       </div>
     </div>
   </header>
 
-  <div class="max-w-6xl mx-auto p-sm md:p-md lg:p-lg">
+
+  <div class="max-w-6xl mx-auto p-sm md:p-md lg:p-lg" style="padding-top:12px;">
 
     <!-- 3-step how-to — shown on first visit or on demand -->
     {#if !_guideSeen}
@@ -604,8 +578,7 @@
     <div class="mb-lg card-enter card-enter-2">
 
     <!-- Unified setup card -->
-    <div class="rounded-sm overflow-hidden mb-lg"
-      style="background:var(--color-canvas);border:1px solid var(--color-hairline);">
+    <div class="liquid-glass rounded-sm mb-lg" style="overflow:clip;">
 
     <!-- Rider Profile -->
     <div>
@@ -614,117 +587,87 @@
         on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
         aria-expanded={profileOpen}
       >
-        <div class="flex flex-wrap items-center gap-sm min-w-0">
-          <div class="flex items-center gap-sm flex-shrink-0">
-            <User class="w-5 h-5 text-[--color-ink]" />
-            <span class="text-heading-md font-bold text-[--color-ink]">Rider Profile</span>
-          </div>
+        <span class="text-heading-md font-bold text-[--color-ink]">Rider Profile</span>
+        <div class="flex items-center gap-md">
           {#if !profileOpen}
-            {#if weight > 0 && ftp > 0}
-              <CheckCircle class="w-5 h-5 text-[--color-success]" />
-            {:else if weight > 0 || ftp > 0}
-              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-mute]">Almost done <ChevronRight class="w-3 h-3" /></span>
-            {:else}
-              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-sale]">Set up profile <ChevronRight class="w-3 h-3" /></span>
-            {/if}
+            <span class="text-caption-sm text-[--color-mute]">
+              {#if weight > 0 || ftp > 0}
+                {[weight ? `${weight} ${imperial ? 'lbs' : 'kg'}` : null, ftp ? `${ftp} W` : null].filter(Boolean).join(' · ')}
+              {:else}
+                Not set
+              {/if}
+            </span>
           {/if}
-        </div>
-        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ml-sm" style="background:var(--color-hairline-soft);">
           <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-200 {profileOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
       {#if profileOpen}
         <div transition:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;">
-          <div class="bg-[--color-soft-cloud] rounded-sm overflow-hidden">
 
-            <!-- Weight -->
-            <div class="flex items-center justify-between px-lg py-lg">
-              <div class="flex items-center gap-sm">
-                <div class="w-7 h-7 rounded-full bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
-                  <Scale class="w-4 h-4 text-[--color-charcoal]" />
-                </div>
-                <label for="weight" class="text-caption-md text-[--color-ink]">Body Weight</label>
-              </div>
-              <div class="flex items-center gap-xs">
-                <input id="weight" type="number" bind:value={weight} min="1" max="400" step="1" placeholder="75"
-                  class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                  style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                  on:focus={focusInput} />
-                <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
-              </div>
+          <!-- Weight -->
+          <div class="flex items-center justify-between py-lg" style="border-top:1px solid var(--color-hairline);">
+            <label for="weight" class="text-caption-md font-bold text-[--color-ink]">Body Weight</label>
+            <div class="flex items-center gap-xs">
+              <input id="weight" type="number" bind:value={weight} min="1" max="400" step="1" placeholder="75"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:20px;border:1px solid #cacacb;padding:0 14px;background:#fff;"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
             </div>
-
-            <!-- FTP -->
-            <div class="flex items-center justify-between px-lg py-lg">
-              <div class="flex items-center gap-sm">
-                <div class="w-7 h-7 rounded-full bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
-                  <Zap class="w-4 h-4 text-[--color-charcoal]" />
-                </div>
-                <div>
-                  <label for="ftp" class="text-caption-md text-[--color-ink] block">FTP</label>
-                  <span class="text-caption-sm text-[--color-mute]">Max 1-hour power</span>
-                </div>
-              </div>
-              <div class="flex items-center gap-xs">
-                <input id="ftp" type="number" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
-                  class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                  style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                  on:focus={focusInput} />
-                <span class="text-caption-sm text-[--color-mute] w-5">W</span>
-              </div>
-            </div>
-
-            <!-- Units — segmented control -->
-            <div class="flex items-center justify-between px-lg py-lg gap-md flex-wrap">
-              <div class="flex items-center gap-sm">
-                <div class="w-7 h-7 rounded-full bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
-                  <Ruler class="w-4 h-4 text-[--color-charcoal]" />
-                </div>
-                <span class="text-caption-md text-[--color-ink]">Units</span>
-              </div>
-              <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;">
-                <button
-                  style="{!imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
-                  on:click={() => { if (imperial) toggleImperial(); }}>km / kg</button>
-                <button
-                  style="{imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
-                  on:click={() => { if (!imperial) toggleImperial(); }}>mi / lbs</button>
-              </div>
-            </div>
-
-            <!-- Sweat Rate — segmented control -->
-            <div class="flex items-center justify-between px-lg py-lg gap-md">
-              <div class="flex items-center gap-sm flex-shrink-0">
-                <div class="w-7 h-7 rounded-full bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
-                  <Droplet class="w-4 h-4 text-[--color-charcoal]" />
-                </div>
-                <div>
-                  <span class="text-caption-md text-[--color-ink] block">Sweat Rate</span>
-                  <span class="text-caption-sm text-[--color-mute]">
-                    {sweatRate === 'light' ? '−20% fluid' : sweatRate === 'heavy' ? '+30% fluid' : 'Baseline'}
-                  </span>
-                </div>
-              </div>
-              <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;flex-shrink:0;">
-                {#each SWEAT_LEVELS as { value, drops }}
-                  <button
-                    class="flex items-center gap-[2px]"
-                    style="{sweatRate === value ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#707072;'}padding:7px 16px;transition:background 0.15s,color 0.15s;"
-                    aria-label="{value.charAt(0).toUpperCase() + value.slice(1)} sweat rate"
-                    aria-pressed={sweatRate === value}
-                    on:click={() => (sweatRate = value)}>
-                    {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
-                  </button>
-                {/each}
-              </div>
-            </div>
-
           </div>
-          <div class="flex items-center gap-xs px-lg pt-xl pb-lg">
-            <Lock class="w-3 h-3 text-[--color-stone] flex-shrink-0" />
-            <p class="text-caption-sm text-[--color-stone]">Stored locally. No server.</p>
+
+          <!-- FTP -->
+          <div class="flex items-center justify-between py-lg" style="border-top:1px solid var(--color-hairline);">
+            <div>
+              <label for="ftp" class="text-caption-md font-bold text-[--color-ink] block">FTP</label>
+              <span class="text-caption-sm text-[--color-mute]">Max 1-hour power</span>
+            </div>
+            <div class="flex items-center gap-xs">
+              <input id="ftp" type="number" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:20px;border:1px solid #cacacb;padding:0 14px;background:#fff;"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+            </div>
           </div>
+
+          <!-- Units -->
+          <div class="flex items-center justify-between py-lg gap-md flex-wrap" style="border-top:1px solid var(--color-hairline);">
+            <span class="text-caption-md font-bold text-[--color-ink]">Units</span>
+            <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;">
+              <button
+                style="{!imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#5f5f61;'}padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+                on:click={() => { if (imperial) toggleImperial(); }}>km / kg</button>
+              <button
+                style="{imperial ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#5f5f61;'}padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,color 0.15s;white-space:nowrap;"
+                on:click={() => { if (!imperial) toggleImperial(); }}>mi / lbs</button>
+            </div>
+          </div>
+
+          <!-- Sweat Rate -->
+          <div class="flex items-center justify-between py-lg gap-md" style="border-top:1px solid var(--color-hairline);">
+            <div class="flex-shrink-0">
+              <span class="text-caption-md font-bold text-[--color-ink] block">Sweat Rate</span>
+              <span class="text-caption-sm text-[--color-mute]">
+                {sweatRate === 'light' ? '−20% fluid' : sweatRate === 'heavy' ? '+30% fluid' : 'Baseline'}
+              </span>
+            </div>
+            <div style="display:flex;border-radius:20px;border:1px solid #cacacb;overflow:hidden;background:#f5f5f5;flex-shrink:0;">
+              {#each SWEAT_LEVELS as { value, drops }}
+                <button
+                  class="flex items-center gap-[2px]"
+                  style="{sweatRate === value ? 'background:#f73b20;color:#ffffff;' : 'background:transparent;color:#5f5f61;'}padding:8px 16px;transition:background 0.15s,color 0.15s;"
+                  aria-label="{value.charAt(0).toUpperCase() + value.slice(1)} sweat rate"
+                  aria-pressed={sweatRate === value}
+                  on:click={() => (sweatRate = value)}>
+                  {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
+                </button>
+              {/each}
+            </div>
+          </div>
+
+
         </div>
       {/if}
     </div>
@@ -739,129 +682,115 @@
         on:click={() => { rideOpen = !rideOpen; if (rideOpen) profileOpen = false; }}
         aria-expanded={rideOpen}
       >
-        <div class="flex flex-wrap items-center gap-sm min-w-0">
-          <div class="flex items-center gap-sm flex-shrink-0">
-            <Bike class="w-5 h-5 text-[--color-ink]" />
-            <span class="text-heading-md font-bold text-[--color-ink]">Ride</span>
-          </div>
+        <span class="text-heading-md font-bold text-[--color-ink]">Ride</span>
+        <div class="flex items-center gap-md">
           {#if !rideOpen}
-            {#if power > 0 && duration > 0}
-              <div class="flex flex-wrap items-center gap-xs">
-                <CheckCircle class="w-5 h-5 text-[--color-success]" />
-                {#if distance > 0}<span class="badge">{distance} {imperial ? 'mi' : 'km'}</span>{/if}
-                <span class="badge">{formatDuration(duration)}</span>
-                <span class="badge">{power} W</span>
-                {#if temperature !== 20}<span class="badge">{temperature}°C</span>{/if}
-              </div>
-            {:else if distance > 0 || duration > 0 || power > 0}
-              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-mute]">Almost done <ChevronRight class="w-3 h-3" /></span>
-            {:else}
-              <span class="inline-flex items-center gap-xxs text-caption-sm text-[--color-sale]">Add ride details <ChevronRight class="w-3 h-3" /></span>
-            {/if}
+            <span class="text-caption-sm text-[--color-mute]">
+              {#if duration > 0 || power > 0}
+                {[duration > 0 ? formatDuration(duration) : null, power > 0 ? `${power} W` : null, temperature !== 20 ? `${temperature}°C` : null].filter(Boolean).join(' · ')}
+              {:else}
+                Not set
+              {/if}
+            </span>
           {/if}
-        </div>
-        <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ml-sm" style="background:var(--color-hairline-soft);">
           <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-200 {rideOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
       {#if rideOpen}
-        <div transition:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;">
-          <div class="bg-[--color-soft-cloud] rounded-sm overflow-hidden"
-            on:focusout={handleRideCardFocusOut}>
+        <div transition:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;"
+          on:focusout={handleRideCardFocusOut}>
 
-            <!-- Row 1: Distance / Duration -->
-            <div class="grid grid-cols-1 md:grid-cols-2">
-              <div class="flex items-center justify-between px-lg py-lg md:border-r border-[var(--color-hairline)]">
-                <label for="distance" class="text-caption-md text-[--color-ink]">
-                  Distance <span class="text-caption-sm text-[--color-mute]">(optional)</span>
-                </label>
-                <div class="flex items-center gap-xs">
-                  <input id="distance" type="number" bind:value={distance} min="1" max="500" step="1" placeholder="0"
-                    class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                    style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                    on:focus={focusInput} />
-                  <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'mi' : 'km'}</span>
-                </div>
-              </div>
-              <div class="flex items-center justify-between px-lg py-lg">
-                <div>
-                  <label for="duration" class="text-caption-md text-[--color-ink]">Duration</label>
-                  <p class="text-utility-xs text-[--color-stone] mt-xxs">e.g. 1:30 or 1.5 for 1h 30min</p>
-                </div>
-                <div class="flex items-center gap-xs">
-                  <input id="duration" type="text" inputmode="decimal" bind:value={durationRaw}
-                    placeholder="1:30"
-                    class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                    style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                    on:focus={focusInput} />
-                  <span class="text-caption-sm text-[--color-mute] w-5">h</span>
-                </div>
-              </div>
+          <!-- Distance -->
+          <div class="flex items-center justify-between py-lg" style="border-top:1px solid var(--color-hairline);">
+            <label for="distance" class="text-caption-md font-bold text-[--color-ink]">
+              Distance <span class="text-caption-sm text-[--color-mute] font-normal">(optional)</span>
+            </label>
+            <div class="flex items-center gap-xs">
+              <input id="distance" type="number" bind:value={distance} min="1" max="500" step="1" placeholder="0"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:20px;border:1px solid #cacacb;padding:0 14px;background:#fff;"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'mi' : 'km'}</span>
             </div>
-
-            <!-- Row 2: Power / Zone -->
-            <div class="grid grid-cols-1 md:grid-cols-2">
-              <div class="flex items-center justify-between px-lg py-lg md:border-r border-[var(--color-hairline)]">
-                <div>
-                  <label for="power" class="text-caption-md text-[--color-ink] block">Ride Power</label>
-                  <span class="text-caption-sm text-[--color-mute]">Planned average</span>
-                </div>
-                <div class="flex items-center gap-xs">
-                  <input id="power" type="number" bind:value={power} min="0" max="600" step="1" placeholder="200"
-                    class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                    style="height:36px;border-radius:20px;border:1px solid #cacacb;padding:0 12px;background:#fff;"
-                    on:focus={focusInput} />
-                  <span class="text-caption-sm text-[--color-mute] w-5">W</span>
-                </div>
-              </div>
-              <div class="flex items-center justify-between px-lg py-lg">
-                <span class="text-caption-md text-[--color-ink]">Zone</span>
-                <div class="flex items-center h-10">
-                  {#if powerDerived && zoneLabel}
-                    <span class="badge-black" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
-                  {:else if !(ftp > 0)}
-                    <button class="text-caption-sm flex items-center gap-xxs"
-                      style="color:var(--color-sale);"
-                      on:click={() => { profileOpen = true; rideOpen = false; }}>
-                      Set FTP in profile <ChevronRight class="w-3 h-3" />
-                    </button>
-                  {:else}
-                    <span class="text-[--color-mute] text-caption-sm">Enter power</span>
-                  {/if}
-                </div>
-              </div>
-            </div>
-
-            <!-- Temperature -->
-            <div class="px-lg py-lg">
-              <div class="flex items-center justify-between mb-sm">
-                <label for="temperature" class="text-caption-md text-[--color-ink]">Temperature</label>
-                <!-- °C intentional — heat formula is Celsius-based regardless of unit preference -->
-                <span class="text-caption-md font-bold text-[--color-ink]">{temperature}°C</span>
-              </div>
-              <input id="temperature" type="range" bind:value={temperature} min="0" max="45" step="1"
-                class="temp-slider w-full"
-                style="--fill:{(temperature / 45 * 100).toFixed(1)}%" />
-              <p class="text-caption-sm mt-md {heatBonus > 0 ? 'text-[--color-sale]' : 'text-[--color-mute]'}">
-                {heatBonus > 0 ? `+${heatBonus.toFixed(1)} L/h heat adjustment` : 'Heat adjustment activates above 20°C'}
-              </p>
-            </div>
-
-            <!-- Reset -->
-            <div class="flex justify-end px-lg py-md">
-              <button class="filter-chip flex items-center gap-xs" on:click={resetInputs}
-                on:mousedown={startHold} on:mouseup={cancelHold} on:mouseleave={cancelHold}
-                on:touchstart|preventDefault={startHold} on:touchend={cancelHold} on:touchcancel={cancelHold}
-                on:contextmenu|preventDefault
-                style="touch-action:manipulation;user-select:none;-webkit-user-select:none;"
-                aria-label="Reset ride inputs">
-                <RotateCcw class="w-4 h-4" />
-                Reset ride
-              </button>
-            </div>
-
           </div>
+
+          <!-- Duration -->
+          <div class="flex items-center justify-between py-lg" style="border-top:1px solid var(--color-hairline);">
+            <div>
+              <label for="duration" class="text-caption-md font-bold text-[--color-ink] block">Duration</label>
+              <p class="text-utility-xs text-[--color-stone] mt-xxs">e.g. 1:30 or 1.5 for 1h 30min</p>
+            </div>
+            <div class="flex items-center gap-xs">
+              <input id="duration" type="text" inputmode="decimal" bind:value={durationRaw}
+                placeholder="1:30"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:20px;border:1px solid #cacacb;padding:0 14px;background:#fff;"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">h</span>
+            </div>
+          </div>
+
+          <!-- Power -->
+          <div class="flex items-center justify-between py-lg" style="border-top:1px solid var(--color-hairline);">
+            <div>
+              <label for="power" class="text-caption-md font-bold text-[--color-ink] block">Ride Power</label>
+              <span class="text-caption-sm text-[--color-mute]">Planned average</span>
+            </div>
+            <div class="flex items-center gap-xs">
+              <input id="power" type="number" bind:value={power} min="0" max="600" step="1" placeholder="200"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:20px;border:1px solid #cacacb;padding:0 14px;background:#fff;"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+            </div>
+          </div>
+
+          <!-- Zone (derived) -->
+          <div class="flex items-center justify-between py-md" style="border-top:1px solid var(--color-hairline);">
+            <span class="text-caption-md font-bold text-[--color-ink]">Zone</span>
+            <div class="flex items-center">
+              {#if powerDerived && zoneLabel}
+                <span class="badge-black" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
+              {:else if !(ftp > 0)}
+                <button class="text-caption-sm flex items-center gap-xxs text-[--color-mute]"
+                  on:click={() => { profileOpen = true; rideOpen = false; }}>
+                  Set FTP first <ChevronRight class="w-3 h-3" />
+                </button>
+              {:else}
+                <span class="text-caption-sm text-[--color-mute]">Enter power</span>
+              {/if}
+            </div>
+          </div>
+
+          <!-- Temperature -->
+          <div class="py-lg" style="border-top:1px solid var(--color-hairline);">
+            <div class="flex items-center justify-between mb-sm">
+              <label for="temperature" class="text-caption-md font-bold text-[--color-ink]">Temperature</label>
+              <!-- °C intentional — heat formula is Celsius-based regardless of unit preference -->
+              <span class="text-caption-md font-bold text-[--color-ink]">{temperature}°C</span>
+            </div>
+            <input id="temperature" type="range" bind:value={temperature} min="0" max="45" step="1"
+              class="temp-slider w-full"
+              style="--fill:{(temperature / 45 * 100).toFixed(1)}%" />
+            <p class="text-caption-sm mt-md {heatBonus > 0 ? 'text-[--color-sale]' : 'text-[--color-mute]'}">
+              {heatBonus > 0 ? `+${heatBonus.toFixed(1)} L/h heat adjustment` : 'Heat adjustment activates above 20°C'}
+            </p>
+          </div>
+
+          <!-- Reset -->
+          <div class="flex justify-end pt-sm" style="border-top:1px solid var(--color-hairline);">
+            <button class="filter-chip flex items-center gap-xs" on:click={resetInputs}
+              on:mousedown={startHold} on:mouseup={cancelHold} on:mouseleave={cancelHold}
+              on:touchstart|preventDefault={startHold} on:touchend={cancelHold} on:touchcancel={cancelHold}
+              on:contextmenu|preventDefault
+              style="touch-action:manipulation;user-select:none;-webkit-user-select:none;"
+              aria-label="Reset ride inputs">
+              <RotateCcw class="w-4 h-4" />
+              Reset ride
+            </button>
+          </div>
+
         </div>
       {/if}
     </div>
@@ -876,7 +805,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-lg mb-lg card-enter card-enter-3">
 
       <!-- Carbs card -->
-      <div class="card p-lg">
+      <div class="liquid-glass rounded-sm p-lg">
         <div class="flex items-start gap-md mb-lg">
           <div class="w-12 h-12 rounded-sm bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
             <Wheat class="w-7 h-7 text-[--color-ink]" />
@@ -907,7 +836,7 @@
       </div>
 
       <!-- Fluids card -->
-      <div class="card p-lg">
+      <div class="liquid-glass rounded-sm p-lg">
         <div class="flex items-start gap-md mb-lg">
           <div class="w-12 h-12 rounded-sm bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
             <Droplet class="w-7 h-7 text-[--color-ink]" />
@@ -936,7 +865,7 @@
     </div>
 
     <!-- Results Row 2: Power (+ speed when available) -->
-    <div class="card p-lg mb-lg card-enter card-enter-4">
+    <div class="liquid-glass rounded-sm p-lg mb-lg card-enter card-enter-4">
       <div class="flex items-start gap-md mb-lg">
         <div class="w-12 h-12 rounded-sm bg-[--color-soft-cloud] flex items-center justify-center flex-shrink-0">
           <Zap class="w-7 h-7 text-[--color-ink]" />
@@ -979,7 +908,7 @@
     </div>
 
     <!-- Totals + Fueling Schedule + Bottle Planner — tabbed dark card -->
-    <div bind:this={tabCard} class="card-campaign rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5">
+    <div bind:this={tabCard} class="liquid-glass-dark rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5">
 
       <!-- Tab bar -->
       <div style="display:flex;gap:3px;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:20px;padding:3px;">
@@ -999,19 +928,19 @@
         <div in:fade={{ duration: 250 }}>
         <h2 class="text-caption-md mb-lg text-[--color-on-primary]">Total needs for {formatDuration(duration)}</h2>
         <div class="grid grid-cols-3 gap-md">
-          <div class="bg-[--color-on-primary] rounded-md p-md text-center">
-            <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs">{Math.round($animatedTotalCarbs)}g</div>
-            <div class="text-caption-sm text-[--color-charcoal]">Carbs</div>
+          <div class="rounded-md p-md text-center">
+            <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{Math.round($animatedTotalCarbs)}g</div>
+            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">Carbs</div>
           </div>
-          <div class="bg-[--color-on-primary] rounded-md p-md text-center">
-            <div class="text-4xl md:text-5xl font-extra-bold text-[--color-ink] mb-xs flex items-center justify-center" style="min-height:1.2em;">
+          <div class="rounded-md p-md text-center">
+            <div class="text-4xl md:text-5xl font-extra-bold mb-xs flex items-center justify-center" style="color:#ffffff;min-height:1.2em;">
               {powerDerived ? Math.round($animatedTotalKcal) : '—'}
             </div>
-            <div class="text-caption-sm text-[--color-charcoal]">kcal</div>
+            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">kcal</div>
           </div>
-          <div class="bg-[--color-on-primary] rounded-md p-md text-center">
-            <div class="text-4xl md:text-5xl font-extra-bold text-[--color-info] mb-xs">{$animatedTotalFluid.toFixed(1)}L</div>
-            <div class="text-caption-sm text-[--color-charcoal]">Fluids</div>
+          <div class="rounded-md p-md text-center">
+            <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{$animatedTotalFluid.toFixed(1)}L</div>
+            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">Fluids</div>
           </div>
         </div>
         </div>
@@ -1031,26 +960,26 @@
           </div>
         </div>
         {#if fuelingEvents.length === 0}
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;">Ride too short for a fueling schedule.</p>
+          <p style="color:rgba(255,255,255,0.70);font-size:14px;">Ride too short for a fueling schedule.</p>
         {:else if fuelingEvents[0].carbs === 0}
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;">No solid food needed — drink covers all carbs.</p>
+          <p style="color:rgba(255,255,255,0.70);font-size:14px;">No solid food needed — drink covers all carbs.</p>
         {:else}
           <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
             {#each fuelingEvents as event, i}
               <div class="flex items-center justify-between px-lg py-md"
                 style="{i < fuelingEvents.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
-                <span style="color:rgba(255,255,255,0.5);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
+                <span style="color:rgba(255,255,255,0.70);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
                 <span style="color:#ffffff;font-weight:700;font-size:15px;">{event.carbs}g</span>
-                <span style="color:rgba(255,255,255,0.5);font-size:12px;">{event.units}× {solidLabel}</span>
+                <span style="color:rgba(255,255,255,0.70);font-size:12px;">{event.units}× {solidLabel}</span>
               </div>
             {/each}
           </div>
           <div class="flex items-center justify-between mt-md">
-            <p style="color:rgba(255,255,255,0.45);font-size:12px;">First fuel at 20 min · every 20 min after</p>
-            <p style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;">{totalSolidUnits} {solidLabel}s total</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:12px;">First fuel at 20 min · every 20 min after</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:12px;font-weight:600;">{totalSolidUnits} {solidLabel}s total</p>
           </div>
           {#if drinkCarbsPerHour > 0}
-            <p style="color:rgba(255,255,255,0.45);font-size:11px;margin-top:6px;">↑ reduced by {drinkCarbsPerHour}g/h from drink</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:6px;">↑ reduced by {drinkCarbsPerHour}g/h from drink</p>
           {/if}
         {/if}
         </div>
@@ -1059,7 +988,7 @@
       {:else if totalsTab === 'pack'}
         <div in:fade={{ duration: 250 }}>
         {#if bottleCount === 0}
-          <p style="color:rgba(255,255,255,0.5);font-size:14px;">No bottles needed at this intensity.</p>
+          <p style="color:rgba(255,255,255,0.70);font-size:14px;">No bottles needed at this intensity.</p>
         {:else}
           <!-- Drink product picker -->
           <div class="flex items-center justify-between mb-md flex-wrap gap-sm">
@@ -1082,16 +1011,16 @@
             </div>
           </div>
           <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
-            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.12);">
               <span style="color:rgba(255,255,255,0.6);font-size:14px;">Bottles needed</span>
               <span style="color:#fff;font-weight:700;font-size:15px;">{bottleCount}</span>
             </div>
-            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.12);">
               <span style="color:rgba(255,255,255,0.6);font-size:14px;">Fluid per bottle</span>
               <span style="color:#fff;font-weight:700;font-size:15px;">{mlPerBottle} ml</span>
             </div>
             {#if drinkCarbsPerBottle > 0}
-              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.12);">
                 <span style="color:rgba(255,255,255,0.6);font-size:14px;">Carbs from drink</span>
                 <span style="color:#fff;font-weight:700;font-size:15px;">{drinkCarbsPerBottle} g/bottle</span>
               </div>
@@ -1102,18 +1031,18 @@
             </div>
           </div>
           {#if drinkCarbsPerHour > 0}
-            <p style="color:rgba(255,255,255,0.45);font-size:11px;margin-top:10px;">Drink covers {drinkCarbsPerHour}g/h → less solid food needed. Check Schedule tab.</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:10px;">Drink covers {drinkCarbsPerHour}g/h → less solid food needed. Check Schedule tab.</p>
           {:else}
-            <p style="color:rgba(255,255,255,0.45);font-size:12px;margin-top:10px;">Water only — all carbs from solid food.</p>
+            <p style="color:rgba(255,255,255,0.70);font-size:12px;margin-top:10px;">Water only — all carbs from solid food.</p>
           {/if}
 
           <!-- Pack checklist -->
           {#if packItems.length > 0}
-            <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;">
+            <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.12);padding-top:16px;">
               <div class="flex items-center justify-between mb-md">
                 <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Pack list</span>
                 {#if checkedPack.size > 0}
-                  <button style="color:rgba(255,255,255,0.5);font-size:11px;" on:click={resetPack}>Reset</button>
+                  <button style="color:rgba(255,255,255,0.70);font-size:11px;" on:click={resetPack}>Reset</button>
                 {/if}
               </div>
               <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1124,7 +1053,7 @@
                     on:click={() => togglePack(item.id)}>
                     <div style="width:22px;height:22px;border-radius:6px;border:1.5px solid {checked ? '#f73b20' : 'rgba(255,255,255,0.25)'};background:{checked ? '#f73b20' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
                       {#if checked}
-                        <Check class="w-3 h-3" style="color:#111111;" />
+                        <Check class="w-3 h-3" style="color:#ffffff;" />
                       {/if}
                     </div>
                     <span style="font-size:14px;color:{checked ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.85)'};text-decoration:{checked ? 'line-through' : 'none'};transition:color 0.15s;">{item.label}</span>
@@ -1140,7 +1069,7 @@
 
     {:else}
     <!-- Results empty state -->
-    <div class="card p-xl text-center mb-xl card-enter card-enter-3"
+    <div class="liquid-glass rounded-sm py-md px-lg text-center mb-xl card-enter card-enter-3"
       transition:fade={{ duration: 200 }}>
       <p class="text-caption-md text-[--color-mute]">Enter duration and weight to see results.</p>
     </div>
@@ -1180,7 +1109,7 @@
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
 
       <!-- App identity -->
       <div class="flex items-center gap-md mb-lg">
@@ -1191,7 +1120,7 @@
         </div>
       </div>
 
-      <p class="text-body-md mb-lg" style="color:rgba(17,17,17,0.6);">Precision carbohydrate and fluid targets for cyclists — calculated from your FTP and planned ride power.</p>
+      <p class="text-body-md mb-lg" style="color:rgba(17,17,17,0.75);">Precision carbohydrate and fluid targets for cyclists — calculated from your FTP and planned ride power.</p>
 
       <div style="border-radius:12px;overflow:hidden;border:1px solid rgba(17,17,17,0.08);margin-bottom:24px;">
         <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(17,17,17,0.07);">
@@ -1216,40 +1145,10 @@
         </a>
         <button on:click={() => showAboutSheet = false}
           class="flex-1 py-3 rounded-full text-button-md font-extra-bold"
-          style="background:rgba(17,17,17,0.06);color:#111111;">
+          style="background:rgba(17,17,17,0.08);color:#111111;">
           Close
         </button>
       </div>
-    </div>
-  {/if}
-
-  <!-- Changelog sheet -->
-  {#if showChangelogSheet}
-    <div class="fixed inset-0 z-[990] bg-black/40" style="backdrop-filter:blur(2px);"
-      on:click={dismissChangelog} role="presentation" transition:fade={{ duration: 200 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
-      style="background:rgba(255,255,255,0.82);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);color:#111111;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
-      on:touchstart={(e) => onSheetDragStart(e, dismissChangelog)}
-      on:touchmove|preventDefault={onSheetDragMove}
-      on:touchend={onSheetDragEnd}
-      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
-      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
-      <p class="text-heading-md font-extra-bold mb-xs" style="color:#111111;">What's new</p>
-      <p class="text-caption-md mb-lg" style="color:rgba(17,17,17,0.65);">v{VERSION} · {BUILD_NAME}</p>
-      <ul style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-        {#each CHANGELOG_ITEMS as item}
-          <li class="flex items-start gap-md">
-            <span style="color:#f73b20;font-size:16px;line-height:1.4;flex-shrink:0;">·</span>
-            <span style="font-size:15px;color:rgba(17,17,17,0.8);line-height:1.5;">{item}</span>
-          </li>
-        {/each}
-      </ul>
-      <button on:click={dismissChangelog}
-        class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
-        Got it
-      </button>
     </div>
   {/if}
 
@@ -1266,7 +1165,7 @@
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <!-- Drag handle -->
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
 
       <div class="mb-4">
         <p class="text-heading-md font-extra-bold" style="color:#111111;">Works offline</p>
@@ -1313,7 +1212,7 @@
 
       <button on:click={dismissInstallSheet}
         class="mt-6 w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
+        style="background:rgba(17,17,17,0.08);color:#111111;">
         Not now
       </button>
     </div>
@@ -1341,7 +1240,7 @@
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#111111;">Impressum</p>
 
       <p class="text-caption-sm mb-xs" style="color:rgba(17,17,17,0.65);">Legal disclosure · § 5 TMG</p>
@@ -1362,7 +1261,7 @@
 
       <button on:click={() => showImpressumSheet = false}
         class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
+        style="background:rgba(17,17,17,0.08);color:#111111;">
         Close
       </button>
     </div>
@@ -1380,7 +1279,7 @@
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 420, duration: 380, easing: cubicOut }}
       out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.20);"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#111111;">How the math works</p>
 
       <div class="mb-lg" style="border-radius:12px;overflow:hidden;border:1px solid rgba(17,17,17,0.08);">
@@ -1408,7 +1307,7 @@
 
       <button on:click={() => showMathSheet = false}
         class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:rgba(17,17,17,0.06);color:#111111;">
+        style="background:rgba(17,17,17,0.08);color:#111111;">
         Close
       </button>
     </div>

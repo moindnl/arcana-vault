@@ -1,4 +1,4 @@
-# BananaSprocket — Cycling Nutrition Planner
+# bonkproof — Cycling Nutrition Planner
 
 Precision carbohydrate and fluid targets for endurance cyclists, calculated from FTP and ride power output.
 
@@ -14,14 +14,14 @@ Precision carbohydrate and fluid targets for endurance cyclists, calculated from
 - **Speed + animal badge** — average pace with Wikipedia-linked animal comparison
 - **Fueling schedule** — 20-min intake slots with gel/bar/chew picker; units per slot calculated automatically
 - **Bottle planner** — bottle count, ml per bottle, carb content; drink product (water/carb mix/isotonic) offsets solid food needs
+- **Pack checklist** — auto-generated gear list from ride data; tap to check off items
 - **Collapsible input cards** — Rider Profile and Ride accordion; ride auto-collapses when all fields filled
 - **Natural duration entry** — accepts `1:30`, `1.30`, `1,30`, or `1.5` (all parse to 1h 30min)
 - **Privacy** — profile data stored in `localStorage` (weight, FTP, unit preference). No server, no tracking.
-- **Mobile sticky bar** — liquid glass overlay showing carbs/fluids/kcal per hour, always visible while scrolling
+- **Liquid glass UI** — iOS 26-inspired frosted glass cards over a fixed gradient background
+- **WCAG 2.1 AA** — all text and UI components meet contrast requirements
 - **Mobile scroll-to-input** — tapping any input field scrolls it into view above the keyboard
-- **Fuel-gauge icon** — dark background, amber→gold arc at 75% fill, glowing banana; works on any wallpaper
 - **PWA** — installable on phone, full offline support via Workbox service worker
-- **Lighthouse 100/100** — Performance, Accessibility, Best Practices, SEO
 
 ## Science
 
@@ -36,7 +36,8 @@ Precision carbohydrate and fluid targets for endurance cyclists, calculated from
 ## Tech Stack
 
 - **Framework**: Svelte 5 + Vite (plain, no SvelteKit)
-- **Styling**: Tailwind CSS v4 with Nike design tokens
+- **Styling**: Tailwind CSS v4 with Jeton Design System tokens
+- **Font**: DM Sans (Google Fonts)
 - **Icons**: Lucide Svelte
 - **Animations**: `svelte/motion` tweened stores, CSS keyframes
 - **PWA**: `vite-plugin-pwa` + Workbox (generateSW mode)
@@ -62,7 +63,7 @@ pnpm preview  # serve dist/ locally
 node scripts/gen-icons.mjs
 ```
 
-Generates `public/icon-192x192.png` and `public/icon-512x512.png` — fuel-gauge design (240° arc track, 75% amber fill, glowing banana), universal across light and dark wallpapers.
+Generates `public/icon-192x192.png` and `public/icon-512x512.png` from the skull favicon SVG.
 
 ## Install as PWA
 
@@ -114,7 +115,7 @@ Once installed, the app works fully **offline** — all assets are precached on 
 
 ```
 ├── public/
-│   ├── favicon.svg               # Fuel-gauge icon (SVG source)
+│   ├── favicon.svg               # Skull icon (SVG source)
 │   ├── icon-192x192.png          # PWA icon
 │   ├── icon-512x512.png          # PWA icon (maskable)
 │   └── robots.txt
@@ -122,8 +123,9 @@ Once installed, the app works fully **offline** — all assets are precached on 
 │   └── gen-icons.mjs             # Playwright icon generator
 ├── src/
 │   ├── App.svelte                # Single-component app
-│   ├── app.css                   # Design tokens + animations + liquid glass
-│   └── main.js                   # Entry point
+│   ├── app.css                   # Jeton design tokens + animations + liquid glass
+│   ├── main.js                   # Entry point
+│   └── vite-env.d.ts             # Vite global type declarations
 ├── vite.config.js                # Vite + PWA plugin config
 └── index.html
 ```
