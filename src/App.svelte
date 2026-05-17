@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Banana, Zap, Gauge, Droplet, ChevronDown, ChevronRight, RotateCcw, User, Ruler, Scale, Wheat, CheckCircle, Check, Info, RefreshCw, X, Bike, ExternalLink, Lock } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
-  import { linear, cubicOut } from 'svelte/easing';
+  import { linear, cubicOut, cubicIn } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
   import { onMount, onDestroy } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
@@ -1142,7 +1142,8 @@
       on:touchstart={onSheetDragStart}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      transition:fly={{ duration: 300, y: 80 }}>
+      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
+      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
 
       <!-- App identity -->
@@ -1195,7 +1196,8 @@
       on:touchstart={onSheetDragStart}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      transition:fly={{ duration: 300, y: 80 }}>
+      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
+      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
       <p class="text-heading-md font-extra-bold mb-xs" style="color:#111111;">What's new</p>
       <p class="text-caption-md mb-lg" style="color:rgba(17,17,17,0.65);">v{VERSION} · {BUILD_NAME}</p>
@@ -1225,7 +1227,8 @@
       on:touchstart={onSheetDragStart}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      transition:fly={{ duration: 300, y: 80 }}>
+      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
+      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <!-- Drag handle -->
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
 
@@ -1300,7 +1303,8 @@
       on:touchstart={onSheetDragStart}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      transition:fly={{ duration: 300, y: 80 }}>
+      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
+      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#111111;">Impressum</p>
 
@@ -1338,7 +1342,8 @@
       on:touchstart={onSheetDragStart}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      transition:fly={{ duration: 300, y: 80 }}>
+      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
+      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:rgba(17,17,17,0.12);"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#111111;">How the math works</p>
 
