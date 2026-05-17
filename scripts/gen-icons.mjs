@@ -39,17 +39,26 @@ function iconHTML(size) {
   // Gradient bounds (horizontal, spans full arc width)
   const gx1 = cx - R, gx2 = cx + R, gy = cy;
 
-  // Dizzy face — centered, slightly above arc center
-  const fcy  = cy - size * 0.024;       // face center y
-  const fr   = size * 0.180;            // face radius
-  const eox  = size * 0.074;            // eye horizontal offset
-  const eoy  = size * 0.025;            // eye vertical offset (up)
-  const earm = size * 0.025;            // eye × arm half-length
-  const esw  = (size * 0.022).toFixed(1); // eye stroke width
-  const lex  = cx - eox, rex = cx + eox, eey = fcy - eoy;
-  const mrx  = size * 0.035;            // mouth rx
-  const mry  = size * 0.023;            // mouth ry
-  const mcy  = fcy + size * 0.069;      // mouth center y
+  // Skull — cranium + jaw, centered slightly above arc center
+  const sk_ccy  = cy - size * 0.062;          // cranium center y
+  const sk_cr   = size * 0.164;               // cranium radius
+  const sk_jaw_y = sk_ccy + size * 0.098;     // jaw top y
+  const sk_jaw_h = size * 0.078;              // jaw height
+  const sk_jaw_w = size * 0.266;              // jaw width
+  const sk_jaw_x = cx - sk_jaw_w / 2;         // jaw left x
+  const sk_jaw_rx = size * 0.027;             // jaw corner radius
+  const sk_ey   = sk_ccy - size * 0.016;      // eye center y
+  const sk_lex  = cx - size * 0.066;          // left eye center x
+  const sk_rex  = cx + size * 0.066;          // right eye center x
+  const sk_er   = size * 0.043;               // eye socket radius
+  const sk_ncy  = sk_ccy + size * 0.059;      // nose center y
+  const sk_nrx  = size * 0.020;               // nose rx
+  const sk_nry  = size * 0.023;               // nose ry
+  const sk_gy   = sk_jaw_y + size * 0.008;    // teeth gap top y
+  const sk_gw   = size * 0.023;               // teeth gap width
+  const sk_gh   = size * 0.059;               // teeth gap height
+  const sk_grx  = size * 0.006;               // teeth gap corner radius
+  const sk_goff = size * 0.0606;              // teeth gap x offset from center
 
   // Glow stdDeviation
   const gsd = (size * 0.015).toFixed(1);
@@ -81,7 +90,7 @@ function iconHTML(size) {
       <feGaussianBlur in="SourceGraphic" stdDeviation="${gsd}" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="face-shadow">
+    <filter id="skull-shadow">
       <feDropShadow dx="0" dy="0" stdDeviation="${(size*0.016).toFixed(1)}" flood-color="rgba(0,0,0,0.4)"/>
     </filter>
   </defs>
@@ -101,16 +110,19 @@ function iconHTML(size) {
       stroke-linecap="round" fill="none"/>
   </g>
 
-  <!-- dizzy face -->
-  <circle cx="${cx.toFixed(1)}" cy="${fcy.toFixed(1)}" r="${fr.toFixed(1)}" fill="#ffffff" filter="url(#face-shadow)"/>
-  <!-- left eye × -->
-  <path d="M${(lex-earm).toFixed(1)},${(eey-earm).toFixed(1)} L${(lex+earm).toFixed(1)},${(eey+earm).toFixed(1)} M${(lex-earm).toFixed(1)},${(eey+earm).toFixed(1)} L${(lex+earm).toFixed(1)},${(eey-earm).toFixed(1)}"
-    stroke="#111111" stroke-width="${esw}" stroke-linecap="round"/>
-  <!-- right eye × -->
-  <path d="M${(rex-earm).toFixed(1)},${(eey-earm).toFixed(1)} L${(rex+earm).toFixed(1)},${(eey+earm).toFixed(1)} M${(rex-earm).toFixed(1)},${(eey+earm).toFixed(1)} L${(rex+earm).toFixed(1)},${(eey-earm).toFixed(1)}"
-    stroke="#111111" stroke-width="${esw}" stroke-linecap="round"/>
-  <!-- mouth — small open oval -->
-  <ellipse cx="${cx.toFixed(1)}" cy="${mcy.toFixed(1)}" rx="${mrx.toFixed(1)}" ry="${mry.toFixed(1)}" fill="#111111"/>
+  <!-- skull cranium -->
+  <circle cx="${cx.toFixed(1)}" cy="${sk_ccy.toFixed(1)}" r="${sk_cr.toFixed(1)}" fill="#ffffff" filter="url(#skull-shadow)"/>
+  <!-- skull jaw (overlaps cranium bottom → merges into one shape) -->
+  <rect x="${sk_jaw_x.toFixed(1)}" y="${sk_jaw_y.toFixed(1)}" width="${sk_jaw_w.toFixed(1)}" height="${sk_jaw_h.toFixed(1)}" rx="${sk_jaw_rx.toFixed(1)}" fill="#ffffff"/>
+  <!-- eye sockets -->
+  <circle cx="${sk_lex.toFixed(1)}" cy="${sk_ey.toFixed(1)}" r="${sk_er.toFixed(1)}" fill="#111111"/>
+  <circle cx="${sk_rex.toFixed(1)}" cy="${sk_ey.toFixed(1)}" r="${sk_er.toFixed(1)}" fill="#111111"/>
+  <!-- nose cavity -->
+  <ellipse cx="${cx.toFixed(1)}" cy="${sk_ncy.toFixed(1)}" rx="${sk_nrx.toFixed(1)}" ry="${sk_nry.toFixed(1)}" fill="#111111"/>
+  <!-- teeth gaps (3) -->
+  <rect x="${(cx - sk_goff - sk_gw/2).toFixed(1)}" y="${sk_gy.toFixed(1)}" width="${sk_gw.toFixed(1)}" height="${sk_gh.toFixed(1)}" rx="${sk_grx.toFixed(1)}" fill="#111111"/>
+  <rect x="${(cx - sk_gw/2).toFixed(1)}" y="${sk_gy.toFixed(1)}" width="${sk_gw.toFixed(1)}" height="${sk_gh.toFixed(1)}" rx="${sk_grx.toFixed(1)}" fill="#111111"/>
+  <rect x="${(cx + sk_goff - sk_gw/2).toFixed(1)}" y="${sk_gy.toFixed(1)}" width="${sk_gw.toFixed(1)}" height="${sk_gh.toFixed(1)}" rx="${sk_grx.toFixed(1)}" fill="#111111"/>
 
   <!-- glass rim -->
   <rect width="${size}" height="${size}" rx="${cr}" ry="${cr}"

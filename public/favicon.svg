@@ -13,7 +13,7 @@
       <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="face-shadow">
+    <filter id="skull-shadow">
       <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(0,0,0,0.4)"/>
     </filter>
   </defs>
@@ -21,7 +21,7 @@
   <!-- Background -->
   <rect width="512" height="512" rx="90" fill="url(#bg)"/>
 
-  <!-- Dim track — full 240° arc -->
+  <!-- Dim track — full 270° arc -->
   <path d="M 87 354 A 195 195 0 1 1 425 354"
     fill="none" stroke="rgba(247,59,32,0.18)" stroke-width="18" stroke-linecap="round"/>
 
@@ -30,17 +30,20 @@
     fill="none" stroke="url(#arc-grad)" stroke-width="18" stroke-linecap="round"
     filter="url(#glow-arc)"/>
 
-  <!-- Face -->
-  <circle cx="256" cy="252" r="92" fill="#ffffff" filter="url(#face-shadow)"/>
+  <!-- Skull cranium -->
+  <circle cx="256" cy="232" r="84" fill="#ffffff" filter="url(#skull-shadow)"/>
+  <!-- Skull jaw (overlaps cranium bottom → merges) -->
+  <rect x="188" y="282" width="136" height="40" rx="14" fill="#ffffff"/>
 
-  <!-- Left eye × (center 218,239) -->
-  <path d="M205,226 L231,252 M205,252 L231,226"
-    stroke="#111111" stroke-width="11" stroke-linecap="round"/>
+  <!-- Eye sockets -->
+  <circle cx="222" cy="224" r="22" fill="#111111"/>
+  <circle cx="290" cy="224" r="22" fill="#111111"/>
 
-  <!-- Right eye × (center 294,239) -->
-  <path d="M281,226 L307,252 M281,252 L307,226"
-    stroke="#111111" stroke-width="11" stroke-linecap="round"/>
+  <!-- Nose cavity -->
+  <ellipse cx="256" cy="262" rx="10" ry="12" fill="#111111"/>
 
-  <!-- Mouth — small open oval -->
-  <ellipse cx="256" cy="287" rx="18" ry="12" fill="#111111"/>
+  <!-- Teeth gaps (3) -->
+  <rect x="219" y="286" width="12" height="30" rx="3" fill="#111111"/>
+  <rect x="250" y="286" width="12" height="30" rx="3" fill="#111111"/>
+  <rect x="281" y="286" width="12" height="30" rx="3" fill="#111111"/>
 </svg>
