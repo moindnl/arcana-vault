@@ -2,9 +2,28 @@ import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { writeFileSync } from 'fs';
+import { execSync } from 'child_process';
+
+// Auto-generate public/version.json at build time using git commit hash
+let _buildHash = '';
+function versionPlugin() {
+  return {
+    name: 'version-json',
+    config() {
+      _buildHash = (() => {
+        try { return execSync('git rev-parse --short HEAD').toString().trim(); }
+        catch { return Date.now().toString(36); }
+      })();
+      writeFileSync('public/version.json', JSON.stringify({ hash: _buildHash }));
+      return { define: { __BUILD_HASH__: JSON.stringify(_buildHash) } };
+    },
+  };
+}
 
 export default defineConfig({
   plugins: [
+    versionPlugin(),
     tailwindcss(),
     svelte(),
     VitePWA({
