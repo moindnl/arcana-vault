@@ -1209,7 +1209,7 @@
       </ul>
       <button on:click={dismissChangelog}
         class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:#f73b20;color:#ffffff;">
+        style="background:rgba(17,17,17,0.06);color:#111111;">
         Got it
       </button>
     </div>
