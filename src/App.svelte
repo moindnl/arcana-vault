@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
-  import { linear, cubicOut, cubicIn } from 'svelte/easing';
+  import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
   import { onMount, onDestroy } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
@@ -35,6 +35,14 @@
   doUpdateSW = swUpdate;
 
   let showAboutSheet = false;
+  let langFlipping = false;
+  function toggleLang() {
+    langFlipping = false;
+    requestAnimationFrame(() => {
+      langFlipping = true;
+      lang.update(l => l === 'en' ? 'de' : 'en');
+    });
+  }
 
 
   // Piecewise linear carb oxidation by IF (Jeukendrup 2004 / ACSM guidelines)
@@ -295,6 +303,29 @@
   $: heatBonus  = temperature > 20 ? Math.round((temperature - 20) / 5 * 0.3 * 10) / 10 : 0;
   $: sweatMultiplier = sweatRate === 'light' ? 0.8 : sweatRate === 'heavy' ? 1.3 : 1.0;
 
+  // Temperature slider: track fill color #09090b → #f73b20 above 20°C
+  $: tempFillColor = temperature <= 20
+    ? '#09090b'
+    : (() => {
+        const p = Math.min((temperature - 20) / 25, 1);
+        const r = Math.round(9  + 238 * p);
+        const g = Math.round(9  +  50 * p);
+        const b = Math.round(11 +  21 * p);
+        return `rgb(${r},${g},${b})`;
+      })();
+
+  // Ping value display when crossing 20°C threshold
+  let heatPing = false;
+  let _prevHeatActive = false;
+  $: {
+    const nowActive = temperature > 20;
+    if (nowActive !== _prevHeatActive) {
+      heatPing = false;
+      requestAnimationFrame(() => { heatPing = true; });
+      _prevHeatActive = nowActive;
+    }
+  }
+
 
   // Power-derived zone
   $: intensityFactor = ftp > 0 && power > 0 ? power / ftp : 0;
@@ -518,8 +549,8 @@
     <div style="max-width:640px;margin:0 auto;height:52px;background:#09090b;border-radius:9999px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset,rgba(117,123,133,0.4) 0px 9px 14px -5px inset,rgb(44,46,52) 0px 0px 0px 1.5px,rgba(0,0,0,0.14) 0px 4px 6px 0px;">
       <!-- Logo -->
       <div class="flex items-center gap-sm">
-        <img src="/favicon.svg" alt="" style="width:34px;height:34px;display:block;flex-shrink:0;border-radius:24%;box-shadow:0 0 0 2px #f73b20;" />
-        <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;color:#ffffff;">bonkproof</h1>
+        <img src="/favicon.svg" alt="" class="icon-anim" style="width:34px;height:34px;display:block;flex-shrink:0;border-radius:24%;box-shadow:0 0 0 2px #f73b20;" />
+        <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1;overflow:hidden;"><span class="bonk-nudge" style="color:#ffffff;font-style:italic;font-size:17px;font-weight:700;vertical-align:baseline;">bonk</span><span class="proof-crash" style="color:#f73b20;font-size:17px;font-weight:700;vertical-align:baseline;">proof!</span></h1>
       </div>
       <!-- Right -->
       <div class="flex items-center gap-sm">
@@ -536,7 +567,9 @@
           {/if}
         </button>
         <button
-          on:click={() => lang.update(l => l === 'en' ? 'de' : 'en')}
+          on:click={toggleLang}
+          on:animationend={() => langFlipping = false}
+          class="{langFlipping ? 'lang-flip' : ''}"
           style="height:34px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,0.12);color:#ffffff;font-size:13px;font-weight:600;letter-spacing:0.02em;border:none;cursor:pointer;transition:background 0.15s;"
           aria-label="Switch language">
           {$lang === 'en' ? 'DE' : 'EN'}
@@ -605,12 +638,12 @@
               {/if}
             </span>
           {/if}
-          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-200 {profileOpen ? 'rotate-180' : ''}" />
+          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-300 ease-out {profileOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
       {#if profileOpen}
-        <div transition:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;">
+        <div in:slide={{ duration: 320, easing: quintOut }} out:slide={{ duration: 200, easing: cubicIn }} class="px-lg" style="padding-bottom:24px;">
 
           <!-- Weight -->
           <div class="flex items-center justify-between py-lg">
@@ -706,12 +739,12 @@
               <RotateCcw class="w-3.5 h-3.5 text-[--color-ink]" />
             </button>
           {/if}
-          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-200 {rideOpen ? 'rotate-180' : ''}" />
+          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-300 ease-out {rideOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
       {#if rideOpen}
-        <div transition:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;"
+        <div in:slide={{ duration: 320, easing: quintOut }} out:slide={{ duration: 200, easing: cubicIn }} class="px-lg" style="padding-bottom:24px;"
           on:focusout={handleRideCardFocusOut}>
 
           <!-- Distance -->
@@ -781,11 +814,13 @@
             <div class="flex items-center justify-between mb-sm">
               <label for="temperature" class="text-caption-md font-bold text-[--color-ink]">{$t.temperature}</label>
               <!-- °C intentional — heat formula is Celsius-based regardless of unit preference -->
-              <span class="text-caption-md font-bold text-[--color-ink]">{temperature}°C</span>
+              <span class="text-caption-md font-bold {heatPing ? 'heat-ping' : ''}"
+                on:animationend={() => heatPing = false}
+                style="color:{tempFillColor};">{temperature}°C</span>
             </div>
             <input id="temperature" type="range" bind:value={temperature} min="0" max="45" step="1"
               class="temp-slider w-full"
-              style="--fill:{(temperature / 45 * 100).toFixed(1)}%" />
+              style="--fill:{(temperature / 45 * 100).toFixed(1)}%;--temp-color:{tempFillColor}" />
             <p class="text-caption-sm mt-md {heatBonus > 0 ? 'text-[--color-sale]' : 'text-[--color-mute]'}">
               {heatBonus > 0 ? $t.heatActive(heatBonus.toFixed(1)) : $t.heatInactive}
             </p>
@@ -1112,21 +1147,21 @@
   {#if showAboutSheet}
     <div class="fixed inset-0 z-[995] bg-black/40"
       on:click={() => showAboutSheet = false} role="presentation"
-      transition:fade={{ duration: 200 }}></div>
+      transition:fade={{ duration: 300 }}></div>
     <div class="fixed bottom-0 left-0 right-0 z-[996] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
-      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
+      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, () => showAboutSheet = false)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
-      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
+      in:fly={{ y: 500, duration: 420, easing: quintOut }}
+      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:#d4d4d8;"></div>
 
       <!-- App identity -->
       <div class="flex items-center gap-md mb-lg">
         <img src="/favicon.svg" alt="" class="w-10 h-10 flex-shrink-0" style="border-radius:18%;" />
         <div>
-          <p class="text-heading-md font-extra-bold" style="color:#18181b;">bonkproof</p>
+          <p class="text-heading-md font-extra-bold" style="color:#18181b;"><span style="font-style:italic;">bonk</span><span style="color:#f73b20;">proof!</span></p>
           <p class="text-caption-sm" style="color:#71717a;">v{VERSION}</p>
         </div>
       </div>
@@ -1166,15 +1201,15 @@
   <!-- PWA install bottom sheet -->
   {#if installPlatform}
     <div class="fixed inset-0 z-[990] bg-black/40"
-      on:click={dismissInstallSheet} role="presentation" transition:fade={{ duration: 200 }}>
+      on:click={dismissInstallSheet} role="presentation" transition:fade={{ duration: 300 }}>
     </div>
     <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
-      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
+      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, dismissInstallSheet)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
-      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
+      in:fly={{ y: 500, duration: 420, easing: quintOut }}
+      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
       <!-- Drag handle -->
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:#d4d4d8;"></div>
 
@@ -1243,14 +1278,14 @@
   {#if showImpressumSheet}
     <div class="fixed inset-0 z-[990] bg-black/40"
       on:click={() => showImpressumSheet = false} role="presentation"
-      transition:fade={{ duration: 200 }}></div>
+      transition:fade={{ duration: 300 }}></div>
     <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
-      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
+      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, () => showImpressumSheet = false)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
-      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
+      in:fly={{ y: 500, duration: 420, easing: quintOut }}
+      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:#d4d4d8;"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#18181b;">{$t.impressum}</p>
 
@@ -1282,26 +1317,28 @@
   {#if showMathSheet}
     <div class="fixed inset-0 z-[990] bg-black/40"
       on:click={() => showMathSheet = false} role="presentation"
-      transition:fade={{ duration: 200 }}></div>
+      transition:fade={{ duration: 300 }}></div>
     <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
-      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.25s ease'};"
+      style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, () => showMathSheet = false)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
-      in:fly={{ y: 420, duration: 380, easing: cubicOut }}
-      out:fly={{ y: 420, duration: 260, easing: cubicIn }}>
+      in:fly={{ y: 500, duration: 420, easing: quintOut }}
+      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:#d4d4d8;"></div>
       <p class="text-heading-md font-extra-bold mb-lg" style="color:#18181b;">{$t.howMathWorks}</p>
 
       <div class="mb-lg" style="border-radius:14px;overflow:hidden;border:1px solid #ececee;">
-        <div class="grid text-caption-sm font-extra-bold uppercase" style="grid-template-columns:1fr auto auto;background:#f4f4f5;padding:8px 14px;color:#71717a;letter-spacing:0.05em;">
-          <span>{$t.zoneCol}</span><span class="text-right pr-4">{$t.ftpCol}</span><span class="text-right">{$t.carbsCol}</span>
+        <div class="grid text-caption-sm font-extra-bold uppercase" style="grid-template-columns:16px 1fr 68px 88px;background:#f4f4f5;padding:8px 14px;gap:8px;color:#71717a;letter-spacing:0.05em;">
+          <span></span><span>{$t.zoneCol}</span><span class="text-right">{$t.ftpCol}</span><span class="text-right">{$t.carbsCol}</span>
         </div>
         {#each $t.mathZones as row, i}
-          <div class="grid text-caption-sm" style="grid-template-columns:1fr auto auto;padding:10px 14px;{i % 2 === 1 ? 'background:#f4f4f5;' : ''}border-top:1px solid #ececee;">
-            <span style="color:#18181b;">{row.zone}</span>
-            <span class="text-right pr-4" style="color:#71717a;">{row.ftp}</span>
-            <span class="text-right" style="color:#52525b;">{row.carbs}</span>
+          {@const dotColor = i === 0 ? '#a1a1aa' : i < 3 ? '#3f3f46' : '#f73b20'}
+          <div class="grid text-caption-sm items-center" style="grid-template-columns:16px 1fr 68px 88px;padding:10px 14px;gap:8px;border-top:1px solid #ececee;">
+            <span style="width:8px;height:8px;border-radius:50%;background:{dotColor};display:block;flex-shrink:0;"></span>
+            <span style="color:#18181b;font-weight:500;">{row.zone}</span>
+            <span class="text-right" style="color:#71717a;">{row.ftp}</span>
+            <span class="text-right" style="color:#52525b;font-weight:600;">{row.carbs}</span>
           </div>
         {/each}
       </div>

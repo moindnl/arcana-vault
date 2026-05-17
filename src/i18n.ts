@@ -295,7 +295,7 @@ const translations = {
     howMathWorks: 'So funktioniert die Berechnung',
     zoneCol: 'Zone',
     ftpCol: '% FTP',
-    carbsCol: 'Kohlenhydrate',
+    carbsCol: 'KH',
     mathFluidNote: 'Flüssigkeit skaliert mit Körpergewicht — Schweißmodifikator ±20–30%.',
     mathHeatNote: 'Hitze: +0,3 L/h pro 5°C über 20°C zum Flüssigkeitsziel.',
     mathElectroNote: 'Fahrten >2h: Elektrolyte hinzufügen — reines Wasser verdünnt die Natriumbalance bei langen Ausfahrten.',

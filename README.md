@@ -1,4 +1,4 @@
-# bonkproof — Cycling Nutrition Planner
+# *bonk*proof! — Cycling Nutrition Planner
 
 Precision carbohydrate and fluid targets for endurance cyclists, calculated from FTP and ride power output.
 
@@ -8,18 +8,20 @@ Precision carbohydrate and fluid targets for endurance cyclists, calculated from
 - **Zone detection** — Recovery → Endurance → Tempo → Threshold → VO₂max+, driven by % FTP
 - **Weight-scaled fluids** — larger athletes sweat more; fluid targets scale accordingly
 - **Sweat rate modifier** — light (−20%), moderate, heavy (+30%) fluid adjustment
-- **Heat adjustment** — +0.3 L/h per 5°C above 20°C
-- **Internationalisation** — English / German with browser language auto-detect; toggle in header persists to `localStorage`
+- **Heat adjustment** — +0.3 L/h per 5°C above 20°C; temperature slider with live color feedback (track shifts dark → red above 20°C)
+- **Internationalisation** — English / German with browser language auto-detect; toggle in header with Y-axis flip animation; persists to `localStorage`
 - **Imperial / metric** — toggle converts all displayed values in place
 - **Energy expenditure** — kcal/h via `power × 3.6` (cycling mechanical efficiency standard)
 - **Speed + animal badge** — average pace with Wikipedia-linked animal comparison
 - **Fueling schedule** — 20-min intake slots with gel/bar/chew picker; units per slot calculated automatically
 - **Bottle planner** — bottle count, ml per bottle, carb content; drink product (water/carb mix/isotonic) offsets solid food needs
 - **Pack checklist** — auto-generated gear list from ride data; tap to check off items
-- **Collapsible input cards** — Rider Profile and Ride accordion; ride auto-collapses when all fields filled
+- **Collapsible input cards** — Rider Profile and Ride accordion with smooth `quintOut` transitions; ride auto-collapses when all fields filled
 - **Natural duration entry** — accepts `1:30`, `1.30`, `1,30`, or `1.5` (all parse to 1h 30min)
 - **Privacy** — profile data stored in `localStorage` (weight, FTP, unit preference). No server, no tracking.
 - **Awesomic design system** — neutral dark-on-mist palette, 36px card radius, obsidian pill header
+- **Wordmark animation** — *bonk* italic + proof! red; on load: proof crashes into bonk, bonk wobbles, skull icon flips 360° on impact
+- **Bottom sheets** — smooth `quintOut` enter / `cubicIn` dismiss with drag-to-close; math, about, and impressum sheets
 - **WCAG 2.1 AA** — all text and UI components meet contrast requirements
 - **Mobile scroll-to-input** — tapping any input field scrolls it into view above the keyboard
 - **PWA** — installable on phone, full offline support via Workbox service worker
