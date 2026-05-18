@@ -2,6 +2,9 @@
 
 Precision carbohydrate and fluid targets for endurance cyclists, calculated from FTP and ride power output.
 
+**Built for ambitious amateur road cyclists who don't have a nutrition coach but still want to prepare properly for their rides.** No subscriptions, no accounts, no tracking — just the math, on your device.
+
+
 ## Features
 
 - **Power-based carb formula** — piecewise model by Intensity Factor (Jeukendrup / ACSM). Two riders at the same watts get different recommendations based on their FTP.
@@ -67,7 +70,9 @@ pnpm preview  # serve dist/ locally
 node scripts/gen-icons.mjs
 ```
 
-Generates `public/icon-192x192.png` and `public/icon-512x512.png` from the banana favicon SVG.
+Renders `public/favicon.svg` via headless Chrome and outputs:
+- **PWA icons** — `public/apple-touch-icon.png` (180px), `icon-192x192.png`, `icon-512x512.png`
+- **App Store set** — `public/appstore/` with all 14 required sizes (1024 → 20px, flat corners)
 
 ## Install as PWA
 
@@ -119,9 +124,11 @@ Once installed, the app works fully **offline** — all assets are precached on 
 
 ```
 ├── public/
-│   ├── favicon.svg               # Banana icon (SVG source)
+│   ├── favicon.svg               # App icon source (SVG)
+│   ├── apple-touch-icon.png      # iOS home screen (180px)
 │   ├── icon-192x192.png          # PWA icon
 │   ├── icon-512x512.png          # PWA icon (maskable)
+│   ├── appstore/                 # App Store icon set (14 sizes, flat corners)
 │   └── robots.txt
 ├── scripts/
 │   └── gen-icons.mjs             # Playwright icon generator
