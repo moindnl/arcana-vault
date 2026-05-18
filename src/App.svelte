@@ -198,12 +198,12 @@
   let bottleSize = 750; // ml
 
   // Nutrition products
-  const SOLID_PRODUCTS = [
-    { id: 'gel',   label: 'Gel',   carbs: 22 },
-    { id: 'bar',   label: 'Bar',   carbs: 40 },
-    { id: 'chew',  label: 'Chew',  carbs: 10 },
-  ] as const;
-  type SolidId = typeof SOLID_PRODUCTS[number]['id'];
+  interface SolidProduct { id: string; label: string; carbs: number }
+  const BASE_SOLID_PRODUCTS: SolidProduct[] = [
+    { id: 'gel',  label: 'Gel',  carbs: 22 },
+    { id: 'bar',  label: 'Bar',  carbs: 40 },
+    { id: 'chew', label: 'Chew', carbs: 10 },
+  ];
 
   const DRINK_PRODUCTS = [
     { id: 'water',    label: 'Water only',  carbsPer500: 0  },
@@ -212,7 +212,33 @@
   ] as const;
   type DrinkId = typeof DRINK_PRODUCTS[number]['id'];
 
-  let solidProduct: SolidId = 'gel';
+  let solidProduct: string = 'gel';
+  // Custom products
+  let customProducts: SolidProduct[] = (() => {
+    try { return JSON.parse(localStorage.getItem('bp-custom-products') || '[]'); }
+    catch { return []; }
+  })();
+  $: allSolidProducts = [...BASE_SOLID_PRODUCTS, ...customProducts];
+
+  let _newProductName = '';
+  let _newProductCarbs: number | undefined = undefined;
+  let _obProductName = '';
+  let _obProductCarbs: number | undefined = undefined;
+
+  function saveCustomProducts() {
+    try { localStorage.setItem('bp-custom-products', JSON.stringify(customProducts)); } catch {}
+    customProducts = customProducts;
+  }
+  function addCustomProduct(label: string, carbs: number) {
+    if (!label.trim() || !carbs || carbs <= 0) return;
+    customProducts = [...customProducts, { id: 'custom-' + Date.now(), label: label.trim(), carbs }];
+    saveCustomProducts();
+  }
+  function removeCustomProduct(id: string) {
+    if (solidProduct === id) solidProduct = 'gel';
+    customProducts = customProducts.filter(p => p.id !== id);
+    saveCustomProducts();
+  }
   let drinkProduct: DrinkId = 'water';
 
   // PWA install bottom sheet (null = hidden)
@@ -360,7 +386,7 @@
   $: themeIdx = theme === 'light' ? 0 : theme === 'system' ? 1 : 2;
   $: sweatIdx = sweatRate === 'light' ? 0 : sweatRate === 'moderate' ? 1 : 2;
   $: tabIdx = totalsTab === 'summary' ? 0 : totalsTab === 'schedule' ? 1 : 2;
-  $: solidIdx = SOLID_PRODUCTS.findIndex(p => p.id === solidProduct);
+  $: solidIdx = allSolidProducts.findIndex(p => p.id === solidProduct);
   $: drinkIdx = DRINK_PRODUCTS.findIndex(p => p.id === drinkProduct);
   $: bottleSizeIdx = bottleSize === 500 ? 0 : bottleSize === 750 ? 1 : 2;
 
@@ -485,7 +511,7 @@
   $: multiCarbNote = intensityFactor >= 0.90;
 
   // Active products
-  $: activeSolid = SOLID_PRODUCTS.find(p => p.id === solidProduct)!;
+  $: activeSolid = allSolidProducts.find(p => p.id === solidProduct) ?? BASE_SOLID_PRODUCTS[0];
   $: activeDrink = DRINK_PRODUCTS.find(p => p.id === drinkProduct)!;
   $: solidLabel = activeSolid.label.toLowerCase();
 
@@ -966,9 +992,9 @@
         <!-- Solid product picker -->
         <div class="flex items-center justify-between mb-md flex-wrap gap-sm">
           <span style="color:rgba(255,255,255,0.7);font-size:13px;">{$t.solidFood}</span>
-          <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
-            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({solidIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-            {#each SOLID_PRODUCTS as p}
+          <div style="position:relative;display:grid;grid-template-columns:repeat({allSolidProducts.length},1fr);border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
+            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / {allSolidProducts.length});border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({solidIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+            {#each allSolidProducts as p}
               <button
                 style="position:relative;padding:6px 10px;font-size:13px;font-weight:500;text-align:center;white-space:nowrap;color:{solidProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
                 aria-pressed={solidProduct === p.id} on:click={() => (solidProduct = p.id)}>{p.label} ({p.carbs}g)</button>
@@ -1222,6 +1248,55 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- Custom Products section -->
+      <p class="text-caption-sm font-semibold uppercase tracking-wide text-[--c-on-surface-2] mb-xs mt-lg">{$t.customProducts}</p>
+      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+        <!-- Add form -->
+        <div class="flex gap-2 px-lg py-sm" style="border-bottom:1px solid var(--c-border);align-items:center;">
+          <input
+            type="text"
+            bind:value={_newProductName}
+            placeholder={$t.productNamePlaceholder}
+            style="flex:1;height:40px;border-radius:10px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:14px;color:var(--c-on-surface);"
+            on:focus={focusInput} />
+          <input
+            type="number"
+            inputmode="numeric"
+            bind:value={_newProductCarbs}
+            placeholder="25"
+            min="1" max="200"
+            style="width:52px;height:40px;border-radius:10px;padding:0 8px;background:var(--c-surface-input);border:none;font-size:14px;color:var(--c-on-surface);text-align:center;"
+            on:focus={focusInput} />
+          <span style="font-size:12px;color:var(--c-on-surface-2);white-space:nowrap;">{$t.productCarbsUnit}</span>
+          <button
+            on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
+            style="height:40px;padding:0 12px;border-radius:10px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:14px;font-weight:600;opacity:{_newProductName.trim() && _newProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_newProductName.trim() && _newProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
+            {$t.addProduct}
+          </button>
+        </div>
+        <!-- Product list -->
+        {#if customProducts.length === 0}
+          <div class="px-lg py-md">
+            <span style="font-size:14px;color:var(--c-on-surface-2);">{$t.noCustomProducts}</span>
+          </div>
+        {:else}
+          {#each customProducts as p (p.id)}
+            <div class="flex items-center justify-between px-lg" style="border-bottom:1px solid var(--c-border);min-height:44px;">
+              <span style="font-size:15px;color:var(--c-on-surface);">{p.label}</span>
+              <div class="flex items-center gap-3">
+                <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g</span>
+                <button
+                  on:click={() => removeCustomProduct(p.id)}
+                  style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-2);"
+                  aria-label={$t.deleteProduct}>
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          {/each}
+        {/if}
       </div>
 
       <button on:click={() => showSettingsSheet = false}
@@ -1486,6 +1561,7 @@
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
         </div>
 
       <!-- Step 1: Profile -->
@@ -1558,10 +1634,90 @@
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
         </div>
 
-      <!-- Step 2: Done -->
+      <!-- Step 2: Products (optional) -->
       {:else if onboardingStep === 2}
+        <div class="flex flex-col flex-1 px-6 pt-2"
+          in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
+          <!-- Nav row -->
+          <div class="flex items-center justify-between" style="margin-bottom:8px;">
+            <button
+              on:click={() => { onboardingStep = 1; }}
+              style="height:44px;padding:0 4px;background:transparent;border:none;cursor:pointer;font-size:15px;font-weight:500;color:var(--c-on-surface-2);display:flex;align-items:center;gap:4px;">
+              ← {$t.onboardingProfileTitle}
+            </button>
+            <button
+              on:click={() => { onboardingStep = 3; }}
+              style="height:44px;padding:0 4px;background:transparent;border:none;cursor:pointer;font-size:15px;font-weight:500;color:var(--c-on-surface-2);">
+              {$t.onboardingSkip} →
+            </button>
+          </div>
+
+          <h2 style="font-size:22px;font-weight:700;color:var(--c-on-surface);margin:0 0 8px;">{$t.onboardingProductsTitle}</h2>
+          <p style="font-size:15px;color:var(--c-on-surface-2);margin:0 0 24px;line-height:1.5;">{$t.onboardingProductsSub}</p>
+
+          <!-- Add product form -->
+          <div class="flex gap-2 mb-4" style="align-items:center;">
+            <input
+              type="text"
+              bind:value={_obProductName}
+              placeholder={$t.productNamePlaceholder}
+              style="flex:1;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);"
+              on:focus={focusInput} />
+            <input
+              type="number"
+              inputmode="numeric"
+              bind:value={_obProductCarbs}
+              placeholder="25"
+              min="1" max="200"
+              style="width:64px;height:44px;border-radius:12px;padding:0 10px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;"
+              on:focus={focusInput} />
+            <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;">{$t.productCarbsUnit}</span>
+            <button
+              on:click={() => { addCustomProduct(_obProductName, _obProductCarbs ?? 0); _obProductName = ''; _obProductCarbs = undefined; }}
+              style="height:44px;min-width:44px;padding:0 14px;border-radius:12px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:15px;font-weight:600;opacity:{_obProductName.trim() && _obProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_obProductName.trim() && _obProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
+              {$t.addProduct}
+            </button>
+          </div>
+
+          <!-- Added products list -->
+          {#each customProducts as p (p.id)}
+            <div class="flex items-center justify-between py-2" style="border-bottom:1px solid var(--c-border);">
+              <span style="font-size:15px;color:var(--c-on-surface);">{p.label}</span>
+              <div class="flex items-center gap-3">
+                <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g</span>
+                <button
+                  on:click={() => removeCustomProduct(p.id)}
+                  style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-2);"
+                  aria-label={$t.deleteProduct}>
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          {/each}
+
+          <div class="flex-1"></div>
+        </div>
+
+        <div class="px-6" style="padding-bottom:8px;">
+          <button
+            on:click={() => { onboardingStep = 3; }}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
+            {$t.onboardingNext} →
+          </button>
+        </div>
+        <!-- Progress dots (4) -->
+        <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+        </div>
+
+      <!-- Step 3: Done -->
+      {:else if onboardingStep === 3}
         <div class="flex flex-col flex-1 items-center justify-center px-8"
           in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
           <div style="width:72px;height:72px;border-radius:50%;background:var(--c-seg-active);color:var(--c-seg-active-text);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
@@ -1577,8 +1733,9 @@
             {$t.onboardingLaunch}
           </button>
         </div>
-        <!-- Progress dots -->
+        <!-- Progress dots (4) -->
         <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>

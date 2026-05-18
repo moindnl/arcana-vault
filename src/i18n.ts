@@ -138,6 +138,16 @@ const translations = {
     sharePlan: 'Share Plan',
     shareCopied: 'Copied!',
 
+    onboardingProductsTitle: 'Your Products',
+    onboardingProductsSub: 'Do you use specific gels or bars? Add them once — bonkproof! will calculate with your actual numbers.',
+    onboardingSkip: 'Skip',
+    productNamePlaceholder: 'e.g. Maurten 100',
+    productCarbsUnit: 'g / unit',
+    addProduct: 'Add',
+    customProducts: 'Custom Products',
+    noCustomProducts: 'No custom products yet.',
+    deleteProduct: 'Delete product',
+
     impressum: 'Impressum',
     impressumSub: 'Legal disclosure · § 5 TMG',
     impressumContact: 'Contact',
@@ -320,6 +330,16 @@ const translations = {
 
     sharePlan: 'Plan teilen',
     shareCopied: 'Kopiert!',
+
+    onboardingProductsTitle: 'Deine Produkte',
+    onboardingProductsSub: 'Nutzt du spezifische Gels oder Riegel? Trag sie einmal ein — bonkproof! rechnet mit deinen genauen Werten.',
+    onboardingSkip: 'Überspringen',
+    productNamePlaceholder: 'z.B. Maurten 100',
+    productCarbsUnit: 'g / Einheit',
+    addProduct: 'Hinzufügen',
+    customProducts: 'Eigene Produkte',
+    noCustomProducts: 'Noch keine eigenen Produkte.',
+    deleteProduct: 'Produkt löschen',
 
     impressum: 'Impressum',
     impressumSub: 'Pflichtangaben · § 5 TMG',
