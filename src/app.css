@@ -171,6 +171,45 @@
     animation: langFlip 0.36s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* ── App Tour animations ─────────────────────────────── */
+  @keyframes tour-slide-in {
+    from { opacity: 0; transform: translateX(-14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes tour-pop {
+    0%   { opacity: 0; transform: scale(0.55) translateY(6px); }
+    65%  { transform: scale(1.07) translateY(-1px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes tour-fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes tour-zone-rise {
+    from { opacity: 0; transform: scaleY(0.3); transform-origin: bottom; }
+    to   { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+  }
+  @keyframes tour-zone-pulse {
+    0%, 100% { box-shadow: 0 0 0 0px rgba(247,59,32,0.0); }
+    50%       { box-shadow: 0 0 0 5px rgba(247,59,32,0.35); }
+  }
+  @keyframes tour-dot-pop {
+    0%   { opacity: 0; transform: scale(0); }
+    70%  { transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes tour-line-draw {
+    from { transform: scaleX(0); transform-origin: left; }
+    to   { transform: scaleX(1); transform-origin: left; }
+  }
+  @keyframes tour-share-bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    20%       { transform: translateY(-14px) rotate(-10deg); }
+    45%       { transform: translateY(-7px) rotate(6deg); }
+    65%       { transform: translateY(-11px) rotate(-4deg); }
+    85%       { transform: translateY(-2px) rotate(1deg); }
+  }
+
   /* Easter egg F: neuralyzer flash */
   @keyframes neuralizer-flash {
     0%   { opacity: 1; }

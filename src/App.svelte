@@ -37,6 +37,32 @@
   let showAboutSheet = false;
   let showSettingsSheet = false;
   let showProductsSheet = false;
+  let showHowToSheet = false;
+  let howToSlide = 0;
+  let _tourDir = 1; // 1 = forward, -1 = backward
+
+  function tourNext() {
+    if (howToSlide >= 3) { showHowToSheet = false; howToSlide = 0; return; }
+    _tourDir = 1; howToSlide++;
+  }
+  function tourBack() {
+    if (howToSlide <= 0) return;
+    _tourDir = -1; howToSlide--;
+  }
+
+  let _tourSwipeStartX = 0;
+  let _tourSwipeStartY = 0;
+  function onTourSwipeStart(e: TouchEvent) {
+    _tourSwipeStartX = e.touches[0].clientX;
+    _tourSwipeStartY = e.touches[0].clientY;
+  }
+  function onTourSwipeEnd(e: TouchEvent) {
+    const dx = e.changedTouches[0].clientX - _tourSwipeStartX;
+    const dy = Math.abs(e.changedTouches[0].clientY - _tourSwipeStartY);
+    if (Math.abs(dx) > 52 && Math.abs(dx) > dy * 1.5) {
+      if (dx < 0) tourNext(); else tourBack();
+    }
+  }
 
   // Dark / light / system mode
   type Theme = 'light' | 'dark' | 'system';
@@ -1271,9 +1297,7 @@
           style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;">
           <span style="font-size:15px;color:var(--c-on-surface);">{$t.customProducts}</span>
           <div style="display:flex;align-items:center;gap:8px;">
-            {#if customProducts.length > 0}
-              <span style="font-size:14px;color:var(--c-on-surface-2);">{customProducts.length}</span>
-            {/if}
+            <span style="font-size:14px;color:var(--c-on-surface-2);">{allSolidProducts.find(p => p.id === solidProduct)?.label ?? ''}</span>
             <ChevronRight size={16} style="color:var(--c-on-surface-3);" />
           </div>
         </button>
@@ -1331,28 +1355,33 @@
         </div>
         <p style="font-size:13px;color:var(--c-on-surface-3);margin:0 0 20px;line-height:1.4;">{$t.productCarbsHint}</p>
 
-        <!-- Product list -->
+        <!-- Product list — all products selectable -->
         <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
-          {#if customProducts.length === 0}
-            <div style="padding:14px 16px;">
-              <span style="font-size:14px;color:var(--c-on-surface-2);">{$t.noCustomProducts}</span>
-            </div>
-          {:else}
-            {#each customProducts as p, i (p.id)}
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:44px;{i < customProducts.length - 1 ? 'border-bottom:1px solid var(--c-border);' : ''}">
-                <span style="font-size:15px;color:var(--c-on-surface);">{p.label}</span>
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g KH</span>
-                  <button
-                    on:click={() => removeCustomProduct(p.id)}
-                    style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-2);"
-                    aria-label={$t.deleteProduct}>
-                    <X size={16} />
-                  </button>
+          {#each allSolidProducts as p, i (p.id)}
+            {@const isActive = p.id === solidProduct}
+            {@const isCustom = !['gel','bar','chew'].includes(p.id)}
+            <div style="display:flex;align-items:center;min-height:44px;{i < allSolidProducts.length - 1 ? 'border-bottom:1px solid var(--c-border);' : ''}">
+              <button
+                on:click={() => solidProduct = p.id}
+                style="flex:1;display:flex;align-items:center;gap:10px;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;text-align:left;">
+                <div style="width:20px;flex-shrink:0;color:{isActive ? 'var(--c-seg-active)' : 'transparent'};">
+                  <Check size={18} />
                 </div>
-              </div>
-            {/each}
-          {/if}
+                <span style="font-size:15px;color:var(--c-on-surface);flex:1;">{p.label}</span>
+                <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g KH</span>
+              </button>
+              {#if isCustom}
+                <button
+                  on:click={() => removeCustomProduct(p.id)}
+                  style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-3);flex-shrink:0;"
+                  aria-label={$t.deleteProduct}>
+                  <X size={16} />
+                </button>
+              {:else}
+                <div style="width:44px;flex-shrink:0;"></div>
+              {/if}
+            </div>
+          {/each}
         </div>
 
         <button on:click={() => showProductsSheet = false}
@@ -1404,6 +1433,10 @@
       </div>
 
       <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+        <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { showAboutSheet = false; setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 60); }}>
+          <span style="color:var(--c-on-surface);font-size:15px;">{$t.tourReplay}</span>
+          <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
+        </button>
         <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { showAboutSheet = false; setTimeout(() => showMathSheet = true, 60); }}>
           <span style="color:var(--c-on-surface);font-size:15px;">{$t.howItWorks}</span>
           <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
@@ -1790,11 +1823,16 @@
           <h2 style="font-size:24px;font-weight:700;color:var(--c-on-surface);margin:0 0 12px;text-align:center;">{$t.onboardingReadyTitle}</h2>
           <p style="font-size:15px;color:var(--c-on-surface-2);text-align:center;max-width:300px;line-height:1.5;margin:0;">{$t.onboardingReadySub}</p>
         </div>
-        <div class="px-6" style="padding-bottom:8px;">
+        <div class="px-6" style="padding-bottom:8px;display:flex;flex-direction:column;gap:10px;">
+          <button
+            on:click={() => { finishOnboarding(); setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 250); }}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
+            {$t.tourStartTour}
+          </button>
           <button
             on:click={finishOnboarding}
-            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
-            {$t.onboardingLaunch}
+            style="width:100%;height:44px;border-radius:14px;background:transparent;color:var(--c-on-surface-2);font-size:15px;border:none;cursor:pointer;">
+            {$t.tourSkipTour}
           </button>
         </div>
         <!-- Progress dots (4) -->
@@ -1805,6 +1843,171 @@
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
         </div>
       {/if}
+
+    </div>
+  {/if}
+
+  <!-- ── How-To Tour sheet ──────────────────────────────── -->
+  {#if showHowToSheet}
+    <div class="fixed inset-0 z-[996] bg-black/55"
+      on:click={() => { showHowToSheet = false; howToSlide = 0; }} role="presentation"
+      transition:fade={{ duration: 220 }}></div>
+
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] max-w-lg mx-auto"
+      style="background:var(--c-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));"
+      in:fly={{ y: 480, duration: 420, easing: quintOut }}
+      out:fly={{ y: 480, duration: 240, easing: cubicIn }}>
+
+      <!-- Drag handle -->
+      <div class="w-10 h-1 rounded-full mx-auto mt-3 mb-1" style="background:var(--c-drag-handle);"></div>
+
+      <!-- Slide area — fixed height, overflow hidden for key-transition -->
+      <div style="position:relative;overflow:hidden;height:248px;margin:8px 24px 0;"
+        on:touchstart={onTourSwipeStart}
+        on:touchend={onTourSwipeEnd}
+        role="region" aria-label="Tour slides">
+
+        {#key howToSlide}
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;"
+            in:fly={{ x: _tourDir * 72, duration: 300, easing: cubicOut }}
+            out:fly={{ x: -_tourDir * 72, duration: 200, easing: cubicIn }}>
+
+            <!-- Illustration — flex:1 so it fills available space above text -->
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0;">
+
+              {#if howToSlide === 0}
+                <!-- Slide 0: Two inputs → result badge -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+                  <div style="width:250px;height:44px;border-radius:12px;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:space-between;padding:0 16px;animation:tour-slide-in 0.35s both 0.05s;">
+                    <span style="font-size:14px;color:var(--c-on-surface-2);">{$lang === 'de' ? 'Dauer' : 'Duration'}</span>
+                    <span style="font-size:15px;font-weight:600;color:var(--c-on-surface);">1:30 h</span>
+                  </div>
+                  <div style="width:250px;height:44px;border-radius:12px;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:space-between;padding:0 16px;animation:tour-slide-in 0.35s both 0.18s;">
+                    <span style="font-size:14px;color:var(--c-on-surface-2);">Power</span>
+                    <span style="font-size:15px;font-weight:600;color:var(--c-on-surface);">220 W</span>
+                  </div>
+                  <div style="font-size:16px;color:var(--c-on-surface-3);animation:tour-fade-up 0.25s both 0.38s;line-height:1;">↓</div>
+                  <div style="background:#f73b20;color:#ffffff;border-radius:20px;padding:7px 20px;font-size:15px;font-weight:700;animation:tour-pop 0.42s both 0.52s;">Tempo · 60 g/h</div>
+                </div>
+
+              {:else if howToSlide === 1}
+                <!-- Slide 1: Zone bars -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+                  <div style="display:flex;gap:3px;height:64px;width:288px;border-radius:12px;overflow:hidden;">
+                    <div style="flex:1;background:#94a3b8;display:flex;align-items:flex-end;padding:0 0 6px 6px;animation:tour-zone-rise 0.3s both 0.08s;">
+                      <span style="font-size:9px;font-weight:600;color:#fff;">R</span>
+                    </div>
+                    <div style="flex:1;background:#477ee9;display:flex;align-items:flex-end;padding:0 0 6px 5px;animation:tour-zone-rise 0.3s both 0.18s;">
+                      <span style="font-size:9px;font-weight:600;color:#fff;">E</span>
+                    </div>
+                    <div style="flex:1;background:#f59e0b;display:flex;align-items:flex-end;padding:0 0 6px 5px;animation:tour-zone-rise 0.3s both 0.28s;">
+                      <span style="font-size:9px;font-weight:600;color:#fff;">T</span>
+                    </div>
+                    <div style="flex:1.3;background:#f73b20;border-radius:0;display:flex;align-items:flex-end;padding:0 0 6px 6px;animation:tour-zone-rise 0.35s both 0.38s,tour-zone-pulse 1.4s ease-in-out 0.8s 3;">
+                      <span style="font-size:10px;font-weight:700;color:#fff;">S</span>
+                    </div>
+                    <div style="flex:1;background:#be185d;display:flex;align-items:flex-end;padding:0 0 6px 4px;animation:tour-zone-rise 0.3s both 0.48s;">
+                      <span style="font-size:9px;font-weight:600;color:#fff;">V</span>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:3px;width:288px;animation:tour-fade-up 0.28s both 0.62s;">
+                    <span style="flex:1;font-size:9px;color:var(--c-on-surface-3);text-align:center;">0–20</span>
+                    <span style="flex:1;font-size:9px;color:var(--c-on-surface-3);text-align:center;">20–40</span>
+                    <span style="flex:1;font-size:9px;color:var(--c-on-surface-3);text-align:center;">40–60</span>
+                    <span style="flex:1.3;font-size:11px;font-weight:700;color:#f73b20;text-align:center;">60–90</span>
+                    <span style="flex:1;font-size:9px;color:var(--c-on-surface-3);text-align:center;">90+</span>
+                  </div>
+                  <span style="font-size:12px;color:var(--c-on-surface-2);animation:tour-fade-up 0.28s both 0.78s;">g {$lang === 'de' ? 'Kohlenhydrate' : 'carbs'} / h</span>
+                </div>
+
+              {:else if howToSlide === 2}
+                <!-- Slide 2: Schedule timeline -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:0;width:280px;">
+                  <!-- Gel icons above dots -->
+                  <div style="display:flex;justify-content:space-around;width:100%;padding:0 14px;margin-bottom:6px;">
+                    {#each [0,1,2,3,4] as i}
+                      <div style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-dot-pop 0.3s both {0.15 + i * 0.14}s;">
+                        <Wheat size={14} style="color:#f73b20;" />
+                      </div>
+                    {/each}
+                  </div>
+                  <!-- Line + dots -->
+                  <div style="position:relative;width:100%;height:20px;display:flex;align-items:center;padding:0 14px;">
+                    <div style="position:absolute;left:14px;right:14px;height:2px;background:var(--c-border);border-radius:2px;">
+                      <div style="height:2px;background:var(--c-on-surface-2);border-radius:2px;animation:tour-line-draw 0.6s both 0.1s;"></div>
+                    </div>
+                    {#each [0,1,2,3,4] as i}
+                      <div style="position:absolute;left:calc({i * 25}% + 14px - 6px);width:12px;height:12px;border-radius:50%;background:var(--c-seg-active);animation:tour-dot-pop 0.28s both {0.55 + i * 0.1}s;"></div>
+                    {/each}
+                  </div>
+                  <!-- Time labels -->
+                  <div style="display:flex;justify-content:space-around;width:100%;padding:6px 8px 0;animation:tour-fade-up 0.28s both 1.1s;">
+                    {#each ['0:20','0:40','1:00','1:20','1:40'] as t}
+                      <span style="font-size:10px;color:var(--c-on-surface-2);width:32px;text-align:center;">{t}</span>
+                    {/each}
+                  </div>
+                </div>
+
+              {:else}
+                <!-- Slide 3: Products + share -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                  <!-- Product pill selector mockup -->
+                  <div style="display:flex;gap:4px;background:var(--c-surface-soft);border-radius:14px;padding:4px;">
+                    {#each ['Gel','Bar', customProducts.length > 0 ? customProducts[0].label : ($lang === 'de' ? 'Eigenes' : 'Custom')] as label, i}
+                      <div style="padding:7px 14px;border-radius:10px;font-size:14px;font-weight:{i === 2 ? '700' : '500'};background:{i === 2 ? 'var(--c-seg-active)' : 'transparent'};color:{i === 2 ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};animation:tour-pop 0.32s both {0.08 + i * 0.14}s;">
+                        {label}
+                      </div>
+                    {/each}
+                  </div>
+                  <!-- Share icon bounce -->
+                  <div style="width:52px;height:52px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-share-bounce 1.2s both 0.55s;">
+                    <Share2 size={22} style="color:var(--c-on-surface);" />
+                  </div>
+                  <!-- Garmin/Wahoo label -->
+                  <div style="font-size:12px;color:var(--c-on-surface-2);animation:tour-fade-up 0.28s both 1.0s;">→ Garmin · Wahoo</div>
+                </div>
+              {/if}
+
+            </div>
+
+            <!-- Title + body text — fixed height anchored at bottom -->
+            <div style="flex-shrink:0;text-align:center;padding:0 8px 4px;">
+              <h3 style="font-size:17px;font-weight:700;color:var(--c-on-surface);margin:0 0 6px;">
+                {[$t.tourSlide0Title,$t.tourSlide1Title,$t.tourSlide2Title,$t.tourSlide3Title][howToSlide]}
+              </h3>
+              <p style="font-size:14px;color:var(--c-on-surface-2);margin:0;line-height:1.45;">
+                {[$t.tourSlide0Body,$t.tourSlide1Body,$t.tourSlide2Body,$t.tourSlide3Body][howToSlide]}
+              </p>
+            </div>
+
+          </div>
+        {/key}
+      </div>
+
+      <!-- Dots + nav -->
+      <div style="padding:16px 24px 0;display:flex;flex-direction:column;gap:12px;">
+        <!-- Dot indicators -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+          {#each [0,1,2,3] as i}
+            <button on:click={() => { _tourDir = i > howToSlide ? 1 : -1; howToSlide = i; }}
+              aria-label="Slide {i + 1}"
+              style="width:{i === howToSlide ? 20 : 7}px;height:7px;border-radius:4px;background:{i === howToSlide ? 'var(--c-seg-active)' : 'var(--c-border-input)'};border:none;cursor:pointer;transition:width 0.25s,background 0.2s;padding:0;"></button>
+          {/each}
+        </div>
+        <!-- Buttons -->
+        <div style="display:flex;gap:8px;">
+          {#if howToSlide > 0}
+            <button on:click={tourBack}
+              style="flex:1;height:48px;border-radius:14px;background:var(--c-surface-soft);color:var(--c-on-surface);font-size:15px;font-weight:600;border:1px solid var(--c-border-input);cursor:pointer;">
+              ←
+            </button>
+          {/if}
+          <button on:click={tourNext}
+            style="flex:3;height:48px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:15px;font-weight:600;border:none;cursor:pointer;">
+            {howToSlide < 3 ? $t.tourNext : $t.tourDone}
+          </button>
+        </div>
+      </div>
 
     </div>
   {/if}
