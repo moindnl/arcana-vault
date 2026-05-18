@@ -687,7 +687,7 @@
           </div>
 
           <!-- FTP -->
-          <div class="flex items-center justify-between py-sm" style="border-top:1px solid var(--c-border);">
+          <div class="flex items-center justify-between py-sm row-sep">
             <div>
               <label for="ftp" class="text-caption-md font-bold text-[--color-ink] block">{$t.ftpLabel}</label>
               <span class="text-caption-sm text-[--color-mute]">{$t.ftpSub}</span>
@@ -702,7 +702,7 @@
           </div>
 
           <!-- Units -->
-          <div class="flex items-center justify-between py-md gap-md flex-wrap" style="border-top:1px solid var(--c-border);">
+          <div class="flex items-center justify-between py-md gap-md flex-wrap row-sep">
             <span class="text-caption-md font-bold text-[--color-ink]">{$t.units}</span>
             <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
               <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({imperial ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
@@ -716,7 +716,7 @@
           </div>
 
           <!-- Sweat Rate -->
-          <div class="flex items-center justify-between py-md gap-md" style="border-top:1px solid var(--c-border);">
+          <div class="flex items-center justify-between py-md gap-md row-sep">
             <div class="flex-shrink-0">
               <span class="text-caption-md font-bold text-[--color-ink] block">{$t.sweatRate}</span>
               <span class="text-caption-sm text-[--color-mute]">
@@ -796,7 +796,7 @@
           </div>
 
           <!-- Duration -->
-          <div class="flex items-center justify-between py-sm" style="border-top:1px solid var(--c-border);">
+          <div class="flex items-center justify-between py-sm row-sep">
             <div>
               <label for="duration" class="text-caption-md font-bold text-[--color-ink] block">{$t.durationLabel}</label>
               <p class="text-utility-xs text-[--color-stone] mt-xxs">{$t.durationHint}</p>
@@ -812,7 +812,7 @@
           </div>
 
           <!-- Power -->
-          <div class="flex items-center justify-between py-sm" style="border-top:1px solid var(--c-border);">
+          <div class="flex items-center justify-between py-sm row-sep">
             <div>
               <label for="power" class="text-caption-md font-bold text-[--color-ink] block">{$t.ridePower}</label>
               <span class="text-caption-sm text-[--color-mute]">{$t.ridePowerSub}</span>
@@ -827,7 +827,7 @@
           </div>
 
           <!-- Zone (derived) -->
-          <div class="flex items-center justify-between py-md" style="border-top:1px solid var(--c-border);">
+          <div class="flex items-center justify-between py-md row-sep">
             <span class="text-caption-md font-bold text-[--color-ink]">{$t.zoneLabel}</span>
             <div class="flex items-center">
               {#if intensityFactor > 0 && zoneLabel}
@@ -844,7 +844,7 @@
           </div>
 
           <!-- Temperature -->
-          <div class="py-md" style="border-top:1px solid var(--c-border);">
+          <div class="py-md row-sep">
             <div class="flex items-center justify-between mb-sm">
               <label for="temperature" class="text-caption-md font-bold text-[--color-ink]">{$t.temperature}</label>
               <!-- °C intentional — heat formula is Celsius-based regardless of unit preference -->
@@ -957,7 +957,7 @@
         <p class="text-caption-sm text-[--color-mute]">{$t.powerEnterHint}</p>
       {/if}
       {#if speedKmh > 0}
-        <div class="flex items-center justify-between mt-md pt-md" style="border-top:1px solid var(--c-border);">
+        <div class="flex items-center justify-between mt-md pt-md row-sep">
           <div class="flex items-baseline gap-sm">
             <span class="text-heading-md font-bold text-[--color-ink]">{Math.round($animatedSpeed)}</span>
             <span class="text-caption-md text-[--color-mute]">{speedUnit}</span>
