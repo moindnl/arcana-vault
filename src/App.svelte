@@ -213,13 +213,18 @@
   ] as const;
   type DrinkId = typeof DRINK_PRODUCTS[number]['id'];
 
-  let solidProduct: string = 'gel';
+  let solidProduct: string = (() => {
+    try { const s = localStorage.getItem('bp-solid-product'); if (s) return s; } catch {}
+    return 'gel';
+  })();
   // Custom products
   let customProducts: SolidProduct[] = (() => {
     try { return JSON.parse(localStorage.getItem('bp-custom-products') || '[]'); }
     catch { return []; }
   })();
   $: allSolidProducts = [...BASE_SOLID_PRODUCTS, ...customProducts];
+  $: { try { localStorage.setItem('bp-solid-product', solidProduct); } catch {} }
+  $: { try { localStorage.setItem('bp-drink-product', drinkProduct); } catch {} }
 
   let _newProductName = '';
   let _newProductCarbs: number | undefined = undefined;
@@ -240,7 +245,13 @@
     customProducts = customProducts.filter(p => p.id !== id);
     saveCustomProducts();
   }
-  let drinkProduct: DrinkId = 'water';
+  let drinkProduct: DrinkId = (() => {
+    try {
+      const s = localStorage.getItem('bp-drink-product') as DrinkId;
+      if (s && DRINK_PRODUCTS.some(p => p.id === s)) return s;
+    } catch {}
+    return 'water';
+  })();
 
   // PWA install bottom sheet (null = hidden)
   let installPlatform: 'ios' | 'android' | null = null;
