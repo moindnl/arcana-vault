@@ -28,7 +28,7 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png', 'og-image.png'],
       manifest: {
         name: 'bonkproof — Cycling Nutrition',
         short_name: 'bonkproof',
