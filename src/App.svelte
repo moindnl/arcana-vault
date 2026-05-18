@@ -626,7 +626,7 @@
         on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
         aria-expanded={profileOpen}
       >
-        <span class="text-heading-md font-bold text-[--color-ink]">{$t.riderProfile}</span>
+        <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.riderProfile}</span>
         <div class="flex items-center gap-md">
           {#if !profileOpen}
             <span class="text-caption-sm text-[--color-mute]">
@@ -720,7 +720,7 @@
         on:click={() => { rideOpen = !rideOpen; if (rideOpen) profileOpen = false; }}
         aria-expanded={rideOpen}
       >
-        <span class="text-heading-md font-bold text-[--color-ink]">{$t.rideLabel}</span>
+        <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.rideLabel}</span>
         <div class="flex items-center gap-md">
           {#if !rideOpen}
             <span class="text-caption-sm text-[--color-mute]">
