@@ -4,7 +4,7 @@ export type Lang = 'en' | 'de';
 
 const translations = {
   en: {
-    updateAvailable: 'Update available — tap to install',
+    updateAvailable: 'Update available',
 
     ariaRiderProfile: 'Rider profile',
     ariaSetupProfile: 'Set up rider profile',
@@ -212,7 +212,7 @@ const translations = {
     packItemBottle: (n: number, ml: number) => `${n} × bottle (${ml}ml)`,
   },
   de: {
-    updateAvailable: 'Update verfügbar — tippen zum Installieren',
+    updateAvailable: 'Update verfügbar',
 
     ariaRiderProfile: 'Fahrerprofil',
     ariaSetupProfile: 'Fahrerprofil einrichten',

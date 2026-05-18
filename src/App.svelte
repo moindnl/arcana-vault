@@ -10,6 +10,7 @@
   const VERSION = '1.0';
 
   let updateAvailable = false;
+  let updateDismissed = false;
   let doUpdateSW: () => Promise<void>;
 
   // Injected at build time by vite.config.js versionPlugin
@@ -633,17 +634,28 @@
 
 <main class="min-h-screen">
 
-  <!-- Update toast -->
-  {#if updateAvailable}
-    <div class="fixed top-0 left-0 right-0 z-[1000] flex justify-center pt-3 px-4 pointer-events-none"
-      transition:fly={{ y: -48, duration: 300, easing: cubicOut }}>
-      <button on:click={() => doUpdateSW()}
-        class="inline-flex items-center gap-sm rounded-full pointer-events-auto active:scale-95 transition-transform"
-        style="background:#f73b20;color:#ffffff;box-shadow:0 4px 20px rgba(247,59,32,0.4);padding:10px 20px 10px 16px;cursor:pointer;border:none;"
-        aria-label={$t.updateAvailable}>
-        <RefreshCw class="w-4 h-4 flex-shrink-0" style="color:rgba(255,255,255,0.75);" />
-        <span class="text-body-strong" style="color:#ffffff;">{$t.updateAvailable}</span>
-      </button>
+  <!-- Update toast — bottom bar, neutral, dismissible -->
+  {#if updateAvailable && !updateDismissed}
+    <div class="fixed bottom-0 left-0 right-0 z-[1000] flex justify-center pointer-events-none"
+      style="padding:0 16px max(calc(env(safe-area-inset-bottom,0px) + 16px),20px);"
+      transition:fly={{ y: 80, duration: 320, easing: cubicOut }}>
+      <div class="inline-flex items-center pointer-events-auto"
+        style="border-radius:999px;background:var(--c-nav-bg);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:0.5px solid var(--c-nav-border);box-shadow:0 4px 24px rgba(0,0,0,0.14);">
+        <button on:click={() => doUpdateSW()}
+          class="inline-flex items-center gap-sm active:scale-95 transition-transform"
+          style="padding:11px 14px 11px 16px;background:transparent;border:none;cursor:pointer;border-radius:999px 0 0 999px;"
+          aria-label={$t.updateAvailable}>
+          <RefreshCw class="w-4 h-4 flex-shrink-0" style="color:var(--c-on-surface-2);" />
+          <span class="text-body-strong" style="color:var(--c-on-surface);">{$t.updateAvailable}</span>
+        </button>
+        <div style="width:0.5px;height:20px;background:var(--c-nav-border);flex-shrink:0;"></div>
+        <button on:click={() => updateDismissed = true}
+          class="inline-flex items-center justify-center active:scale-95 transition-transform"
+          style="padding:11px 14px;background:transparent;border:none;cursor:pointer;border-radius:0 999px 999px 0;"
+          aria-label="Dismiss">
+          <X class="w-4 h-4" style="color:var(--c-on-surface-2);" />
+        </button>
+      </div>
     </div>
   {/if}
 
@@ -1860,27 +1872,30 @@
                 </div>
 
               {:else if howToSlide === 2}
-                <!-- Slide 2: Schedule timeline — single column per slot guarantees alignment -->
+                <!-- Slide 2: Schedule timeline — labels in separate row so dot center is exact -->
                 {@const COL = 50}
-                <div style="position:relative;width:{COL * 5}px;">
-                  <!-- Line: left/right = half column width so it connects dot centres -->
-                  <div style="position:absolute;bottom:22px;left:{COL / 2}px;right:{COL / 2}px;height:2px;background:var(--c-border);border-radius:2px;overflow:hidden;">
-                    <div style="height:100%;background:var(--c-on-surface-2);border-radius:2px;transform-origin:left;animation:tour-line-draw 0.55s cubic-bezier(0.4,0,0.2,1) both 0.1s;"></div>
-                  </div>
-                  <!-- 5 columns -->
-                  <div style="display:flex;justify-content:space-between;">
-                    {#each [0,1,2,3,4] as i}
-                      {@const times = ['0:20','0:40','1:00','1:20','1:40']}
-                      <div style="width:{COL}px;display:flex;flex-direction:column;align-items:center;gap:6px;">
-                        <!-- Icon -->
-                        <div style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-dot-pop 0.3s both {0.1 + i * 0.12}s;">
-                          <Wheat size={13} style="color:#f73b20;" />
+                {@const TIMES = ['0:20','0:40','1:00','1:20','1:40']}
+                <div style="display:flex;flex-direction:column;gap:5px;width:{COL * 5}px;">
+                  <!-- Icon + dot row (line at bottom:5px → center at 6px = dot center) -->
+                  <div style="position:relative;">
+                    <div style="position:absolute;bottom:5px;left:{COL / 2}px;right:{COL / 2}px;height:2px;background:var(--c-border);border-radius:2px;overflow:hidden;">
+                      <div style="height:100%;background:var(--c-on-surface-2);border-radius:2px;transform-origin:left;animation:tour-line-draw 0.55s cubic-bezier(0.4,0,0.2,1) both 0.1s;"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;">
+                      {#each [0,1,2,3,4] as i}
+                        <div style="width:{COL}px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                          <div style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-dot-pop 0.3s both {0.1 + i * 0.12}s;">
+                            <Wheat size={13} style="color:#f73b20;" />
+                          </div>
+                          <div style="width:12px;height:12px;border-radius:50%;background:var(--c-seg-active);animation:tour-dot-pop 0.26s both {0.48 + i * 0.1}s;"></div>
                         </div>
-                        <!-- Dot -->
-                        <div style="width:12px;height:12px;border-radius:50%;background:var(--c-seg-active);animation:tour-dot-pop 0.26s both {0.48 + i * 0.1}s;"></div>
-                        <!-- Label -->
-                        <span style="font-size:10px;color:var(--c-on-surface-2);animation:tour-fade-up 0.24s both {1.0 + i * 0.05}s;">{times[i]}</span>
-                      </div>
+                      {/each}
+                    </div>
+                  </div>
+                  <!-- Time labels row — separate so they don't affect dot position -->
+                  <div style="display:flex;justify-content:space-between;">
+                    {#each TIMES as label, i}
+                      <span style="width:{COL}px;text-align:center;font-size:10px;color:var(--c-on-surface-2);animation:tour-fade-up 0.24s both {1.0 + i * 0.05}s;">{label}</span>
                     {/each}
                   </div>
                 </div>
