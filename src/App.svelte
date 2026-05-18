@@ -2,7 +2,7 @@
   import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
-  import { fly, fade, slide } from 'svelte/transition';
+  import { fly, fade } from 'svelte/transition';
   import { onMount, onDestroy, tick } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
   import { t, lang } from './i18n';
@@ -133,21 +133,46 @@
   let showMathSheet = false;
   let showImpressumSheet = false;
   let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
-  let rideOpen = false;
+  // Ride card swipe-to-reset
+  let rideSwipeX = 0;
+  let _rideSwipeStartX = 0;
+  let _rideSwipeStartY = 0;
+  let _rideSwipeLocked: boolean | null = null;
+
+  function onRideSwipeStart(e: TouchEvent) {
+    if ((e.target as HTMLElement).closest('input, button')) return;
+    _rideSwipeStartX = e.touches[0].clientX;
+    _rideSwipeStartY = e.touches[0].clientY;
+    _rideSwipeLocked = null;
+    if (rideSwipeX > 0) { rideSwipeX = 0; }
+  }
+  function onRideSwipeMove(e: TouchEvent) {
+    if (_rideSwipeLocked === false) return;
+    const dx = _rideSwipeStartX - e.touches[0].clientX;
+    const dy = Math.abs(e.touches[0].clientY - _rideSwipeStartY);
+    if (_rideSwipeLocked === null) {
+      if (Math.abs(dx) < 6 && dy < 6) return;
+      _rideSwipeLocked = Math.abs(dx) > dy;
+      if (!_rideSwipeLocked) return;
+    }
+    rideSwipeX = Math.max(0, Math.min(92, dx));
+  }
+  function onRideSwipeEnd() {
+    if (_rideSwipeLocked !== true) { _rideSwipeLocked = null; return; }
+    _rideSwipeLocked = null;
+    rideSwipeX = rideSwipeX >= 48 ? 80 : 0;
+  }
 
   function finishOnboarding() {
     localStorage.setItem('bp-onboarding-done', '1');
     _guideSeen = true;
     localStorage.setItem('bp-guide-seen', '1');
     onboardingStep = -1;
-    rideOpen = true;
   }
-  let rideAutoCollapsed = false;
   let neuralizer = false;        // easter egg F: neuralyzer flash
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
   let totalsTab: 'summary' | 'schedule' | 'pack' = 'summary';
   let tabCard: HTMLElement;
-  let setupCard: HTMLElement;
   function switchTab(tab: typeof totalsTab) {
     totalsTab = tab;
     setTimeout(() => {
@@ -298,7 +323,7 @@
   // Reset per-ride inputs only; profile persists
   function resetInputs() {
     distance = undefined; durationRaw = ''; power = undefined; temperature = 20;
-    rideOpen = true; rideAutoCollapsed = false;
+    rideSwipeX = 0;
   }
 
   // Easter egg F: hold Reset 3s → neuralyzer flash
@@ -459,16 +484,6 @@
 
   $: multiCarbNote = intensityFactor >= 0.90;
 
-  // Auto-collapse ride card when focus leaves it and all fields are filled
-  function handleRideCardFocusOut(e: FocusEvent) {
-    const related = e.relatedTarget as Node | null;
-    const card = e.currentTarget as Node;
-    if (!card.contains(related) && distance > 0 && duration > 0 && power > 0 && !rideAutoCollapsed) {
-      rideOpen = false;
-      rideAutoCollapsed = true;
-    }
-  }
-
   // Active products
   $: activeSolid = SOLID_PRODUCTS.find(p => p.id === solidProduct)!;
   $: activeDrink = DRINK_PRODUCTS.find(p => p.id === drinkProduct)!;
@@ -624,27 +639,33 @@
     </div>
     {/if}
 
-    <!-- Unified setup card -->
-    <div bind:this={setupCard} class="mb-lg card-enter card-enter-2" style="background:var(--c-surface);border-radius:16px;box-shadow:var(--c-shadow-card);overflow:hidden;">
+    <!-- Ride card — always open, swipe left to reveal reset -->
+    <div class="mb-lg card-enter card-enter-2"
+      style="position:relative;border-radius:16px;box-shadow:var(--c-shadow-card);overflow:hidden;">
 
-    <!-- Ride Input -->
-    <div>
-      <button
-        class="w-full flex items-center justify-between p-lg text-left cursor-pointer focus:outline-none"
-        on:click={() => { rideOpen = !rideOpen; }}
-        aria-expanded={rideOpen}
-      >
-        <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.rideLabel}</span>
-        <div class="flex items-center gap-md">
-          {#if !rideOpen}
-            <span class="text-caption-sm text-[--c-on-surface-2]">
-              {#if duration > 0 || power > 0}
-                {[duration > 0 ? formatDuration(duration) : null, power > 0 ? `${power} W` : null, temperature !== 20 ? `${temperature}°C` : null].filter(Boolean).join(' · ')}
-              {:else}
-                {$t.notSet}
-              {/if}
-            </span>
-          {/if}
+      <!-- Swipe-to-reset action zone (revealed behind card on left-swipe) -->
+      {#if duration > 0 || distance > 0 || power > 0}
+        <div style="position:absolute;right:0;top:0;bottom:0;width:80px;background:#f73b20;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <button
+            on:click={resetInputs}
+            style="display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;cursor:pointer;padding:16px 8px;min-height:64px;"
+            aria-label={$t.resetRide}>
+            <RefreshCw class="w-5 h-5" style="color:#ffffff;" />
+            <span style="color:#ffffff;font-size:11px;font-weight:600;">{$t.reset}</span>
+          </button>
+        </div>
+      {/if}
+
+      <!-- Sliding card surface -->
+      <div style="background:var(--c-surface);border-radius:16px;transform:translateX(-{rideSwipeX}px);transition:{_rideSwipeLocked === true ? 'none' : 'transform 0.3s cubic-bezier(0.35,0,0.25,1)'};"
+        on:touchstart={onRideSwipeStart}
+        on:touchmove={onRideSwipeMove}
+        on:touchend={onRideSwipeEnd}
+        on:touchcancel={onRideSwipeEnd}>
+
+        <!-- Card header -->
+        <div class="flex items-center justify-between p-lg">
+          <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.rideLabel}</span>
           {#if duration > 0 || distance > 0 || power > 0}
             <button
               on:click|stopPropagation={resetInputs}
@@ -657,13 +678,10 @@
               <X class="w-3.5 h-3.5 text-[--c-on-surface]" />
             </button>
           {/if}
-          <ChevronDown class="w-4 h-4 text-[--c-on-surface] transition-transform duration-300 ease-out {rideOpen ? 'rotate-180' : ''}" />
         </div>
-      </button>
 
-      {#if rideOpen}
-        <div in:slide={{ duration: 300, easing: quintOut, delay: 80 }} out:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;"
-          on:focusout={handleRideCardFocusOut}>
+        <!-- Always-visible form fields -->
+        <div class="px-lg" style="padding-bottom:24px;">
 
           <!-- Distance -->
           <div class="flex items-center justify-between py-sm">
@@ -718,7 +736,7 @@
                 <span class="badge" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
               {:else if !(ftp > 0)}
                 <button class="text-caption-sm flex items-center gap-xxs text-[--c-on-surface-2]"
-                  on:click={() => { showSettingsSheet = true; rideOpen = false; }}>
+                  on:click={() => { showSettingsSheet = true; }}>
                   {$t.setFtpFirst} <ChevronRight class="w-3 h-3" />
                 </button>
               {:else}
@@ -745,10 +763,8 @@
           </div>
 
         </div>
-      {/if}
-    </div>
-
-    </div><!-- /Unified setup card -->
+      </div>
+    </div><!-- /Ride card -->
 
     {#if duration > 0 && (weight > 0)}
 
