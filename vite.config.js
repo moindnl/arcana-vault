@@ -28,7 +28,7 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType: 'prompt',
-      includeAssets: ['favicon.svg', 'icon-192x192.png', 'icon-512x512.png', 'icon-192x192-dark.png', 'icon-512x512-dark.png'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png'],
       manifest: {
         name: 'bonkproof — Cycling Nutrition',
         short_name: 'bonkproof',
@@ -40,13 +40,15 @@ export default defineConfig({
         scope: '/',
         start_url: '/',
         icons: [
-          { src: 'icon-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'icon-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: 'apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+          { src: 'icon-192x192.png',     sizes: '192x192', type: 'image/png' },
+          { src: 'icon-512x512.png',     sizes: '512x512', type: 'image/png' },
+          { src: 'icon-512x512.png',     sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globIgnores: ['appstore/**'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
