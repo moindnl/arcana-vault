@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, Monitor } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
@@ -43,13 +43,30 @@
     lang.update(l => l === 'en' ? 'de' : 'en');
   }
 
-  // Dark / light mode
-  let isDark: boolean = localStorage.getItem('bp-theme') === 'dark';
-  function applyTheme(dark: boolean) {
+  // Dark / light / system mode
+  type Theme = 'light' | 'dark' | 'system';
+  let theme: Theme = (localStorage.getItem('bp-theme') as Theme) || 'system';
+  let isDark: boolean = false; // reflects actual rendered state (used for tempColor)
+  let _sysMq: MediaQueryList | null = null;
+
+  function _resolveAndApply(t: Theme) {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const dark = t === 'dark' || (t === 'system' && prefersDark);
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    localStorage.setItem('bp-theme', dark ? 'dark' : 'light');
+    isDark = dark;
   }
-  function toggleTheme() { isDark = !isDark; applyTheme(isDark); }
+  function applyTheme(t: Theme) {
+    localStorage.setItem('bp-theme', t);
+    _resolveAndApply(t);
+  }
+  function cycleTheme() {
+    const order: Theme[] = ['system', 'light', 'dark'];
+    theme = order[(order.indexOf(theme) + 1) % order.length];
+    applyTheme(theme);
+  }
+  function _onSysChange(e: MediaQueryListEvent) {
+    if (theme === 'system') { isDark = e.matches; document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light'); }
+  }
 
 
   // Piecewise linear carb oxidation by IF (Jeukendrup 2004 / ACSM guidelines)
@@ -222,8 +239,10 @@
   }
 
   onMount(() => {
-    // Apply persisted theme immediately (before paint if possible — also done inline for SSR safety)
-    applyTheme(isDark);
+    // Apply persisted theme and wire system-preference listener
+    applyTheme(theme);
+    _sysMq = window.matchMedia('(prefers-color-scheme: dark)');
+    _sysMq.addEventListener('change', _onSysChange);
 
     // Easter egg: console greeting
     console.log('bonkproof — Cycling Nutrition Planner\n\nPsst. You\'re looking at the source.\nWhy are you not riding your bike?\n\nBuilt by Daniel Muschinski\nhttps://github.com/moindnl');
@@ -243,6 +262,7 @@
   });
 
   onDestroy(() => {
+    if (_sysMq) _sysMq.removeEventListener('change', _onSysChange);
     if (installSheetTimer) clearTimeout(installSheetTimer);
     if (_saveTimer) clearTimeout(_saveTimer);
     if (holdTimer) clearTimeout(holdTimer);
@@ -412,23 +432,23 @@
   $: animatedKcalPerHour.set(kcalPerHour);
 
   const SPEED_LEVELS = [
-    { minKmh: 0,   maxKmh: 10,  key: 'turtle',      tKey: 'turtlePace',        wikiSlug: 'Turtle' },
-    { minKmh: 10,  maxKmh: 15,  key: 'penguin',     tKey: 'penguinCruise',     wikiSlug: 'Penguin' },
-    { minKmh: 15,  maxKmh: 20,  key: 'gazelle',     tKey: 'gazellePace',       wikiSlug: 'Gazelle' },
-    { minKmh: 20,  maxKmh: 25,  key: 'cheetah',     tKey: 'cheetahChase',      wikiSlug: 'Cheetah' },
-    { minKmh: 25,  maxKmh: 30,  key: 'falcon',      tKey: 'falconFlight',      wikiSlug: 'Falcon' },
-    { minKmh: 30,  maxKmh: 40,  key: 'peregrine',   tKey: 'peregrineSpeed',    wikiSlug: 'Peregrine_falcon' },
-    { minKmh: 40,  maxKmh: 55,  key: 'greyhound',   tKey: 'greyhoundSprint',   wikiSlug: 'Greyhound' },
-    { minKmh: 55,  maxKmh: 75,  key: 'downhill',    tKey: 'downhillRecord',    wikiSlug: '%C3%89ric_Barone' },
-    { minKmh: 75,  maxKmh: 100, key: 'motorcycle',  tKey: 'motorcycleTerritory', wikiSlug: 'Motorcycle' },
-    { minKmh: 100, maxKmh: Infinity, key: 'ambulance', tKey: 'callAmbulance',  wikiSlug: 'Ambulance' },
+    { minKmh: 0,   maxKmh: 10,  key: 'turtle',      tKey: 'turtlePace',        wikiSlug: 'Turtle',           wikiSlugDe: 'Landschildkröten' },
+    { minKmh: 10,  maxKmh: 15,  key: 'penguin',     tKey: 'penguinCruise',     wikiSlug: 'Penguin',          wikiSlugDe: 'Pinguine' },
+    { minKmh: 15,  maxKmh: 20,  key: 'gazelle',     tKey: 'gazellePace',       wikiSlug: 'Gazelle',          wikiSlugDe: 'Gazellen' },
+    { minKmh: 20,  maxKmh: 25,  key: 'cheetah',     tKey: 'cheetahChase',      wikiSlug: 'Cheetah',          wikiSlugDe: 'Gepard' },
+    { minKmh: 25,  maxKmh: 30,  key: 'falcon',      tKey: 'falconFlight',      wikiSlug: 'Falcon',           wikiSlugDe: 'Falken' },
+    { minKmh: 30,  maxKmh: 40,  key: 'peregrine',   tKey: 'peregrineSpeed',    wikiSlug: 'Peregrine_falcon', wikiSlugDe: 'Wanderfalke' },
+    { minKmh: 40,  maxKmh: 55,  key: 'greyhound',   tKey: 'greyhoundSprint',   wikiSlug: 'Greyhound',        wikiSlugDe: 'Greyhound' },
+    { minKmh: 55,  maxKmh: 75,  key: 'downhill',    tKey: 'downhillRecord',    wikiSlug: '%C3%89ric_Barone', wikiSlugDe: '%C3%89ric_Barone' },
+    { minKmh: 75,  maxKmh: 100, key: 'motorcycle',  tKey: 'motorcycleTerritory', wikiSlug: 'Motorcycle',     wikiSlugDe: 'Motorrad' },
+    { minKmh: 100, maxKmh: Infinity, key: 'ambulance', tKey: 'callAmbulance',  wikiSlug: 'Ambulance',        wikiSlugDe: 'Krankenwagen' },
   ] as const;
 
   $: speedLevel = speedKmh === 0 ? null :
     SPEED_LEVELS.find(s => speedKmh < s.maxKmh) ?? SPEED_LEVELS[SPEED_LEVELS.length - 1];
 
   $: speedSloganText = speedLevel ? ($t[speedLevel.tKey] as string) : '';
-  $: speedSloganUrl  = speedLevel ? `https://en.wikipedia.org/wiki/${speedLevel.wikiSlug}` : '';
+  $: speedSloganUrl  = speedLevel ? `https://${$lang === 'de' ? 'de' : 'en'}.wikipedia.org/wiki/${$lang === 'de' ? speedLevel.wikiSlugDe : speedLevel.wikiSlug}` : '';
 
   $: multiCarbNote = intensityFactor >= 0.90;
 
@@ -565,15 +585,17 @@
         </button>
         <!-- Divider -->
         <div style="width:1px;height:20px;background:rgba(255,255,255,0.2);flex-shrink:0;" aria-hidden="true"></div>
-        <!-- Theme toggle -->
+        <!-- Theme toggle: cycles system → light → dark -->
         <button
-          on:click={toggleTheme}
+          on:click={cycleTheme}
           style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;"
-          aria-label="Toggle dark mode">
-          {#if isDark}
+          aria-label="Theme: {theme}">
+          {#if theme === 'dark'}
+            <Moon class="w-4 h-4" style="color:#ffffff;" />
+          {:else if theme === 'light'}
             <Sun class="w-4 h-4" style="color:#ffffff;" />
           {:else}
-            <Moon class="w-4 h-4" style="color:#ffffff;" />
+            <Monitor class="w-4 h-4" style="color:#ffffff;" />
           {/if}
         </button>
         <button

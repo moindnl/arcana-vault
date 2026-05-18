@@ -94,7 +94,7 @@ const translations = {
     packItemComputer: 'Bike computer charged',
     packItemPhone: 'Phone charged',
 
-    emptyState: 'Enter duration and weight to see results.',
+    emptyState: 'Add your weight and duration to get started.',
 
     howItWorks: 'How it works',
     about: 'About',
@@ -260,7 +260,7 @@ const translations = {
     packItemComputer: 'Radcomputer aufgeladen',
     packItemPhone: 'Handy aufgeladen',
 
-    emptyState: 'Dauer und Gewicht eingeben für Ergebnisse.',
+    emptyState: 'Gib Gewicht und Dauer ein, um loszulegen.',
 
     howItWorks: 'Formel',
     about: 'Info',
