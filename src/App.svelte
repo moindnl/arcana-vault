@@ -1277,9 +1277,10 @@
             {$t.addProduct}
           </button>
         </div>
+        <p class="px-lg" style="font-size:12px;color:var(--c-on-surface-3);margin:6px 0 0;padding-bottom:8px;">{$t.productCarbsHint}</p>
         <!-- Product list -->
         {#if customProducts.length === 0}
-          <div class="px-lg py-md">
+          <div class="px-lg py-md" style="border-top:1px solid var(--c-border);">
             <span style="font-size:14px;color:var(--c-on-surface-2);">{$t.noCustomProducts}</span>
           </div>
         {:else}
@@ -1660,7 +1661,7 @@
           <p style="font-size:15px;color:var(--c-on-surface-2);margin:0 0 24px;line-height:1.5;">{$t.onboardingProductsSub}</p>
 
           <!-- Add product form — 2-row layout for narrow screens -->
-          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
             <input
               type="text"
               bind:value={_obProductName}
@@ -1684,6 +1685,8 @@
               </button>
             </div>
           </div>
+
+          <p style="font-size:13px;color:var(--c-on-surface-3);margin:0 0 16px;line-height:1.4;">{$t.productCarbsHint}</p>
 
           <!-- Added products list -->
           {#each customProducts as p (p.id)}
