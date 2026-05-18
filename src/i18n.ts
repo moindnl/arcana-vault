@@ -108,6 +108,9 @@ const translations = {
     worksOfflineVal: 'Yes',
     aboutDesc: 'Precision carbohydrate and fluid targets for cyclists — calculated from your FTP and planned ride power.',
     close: 'Close',
+    settings: 'Settings',
+    appearance: 'Appearance',
+    language: 'Language',
 
     installTitle: 'Works offline',
     installSub: 'Save to home screen for instant access.',
@@ -274,6 +277,9 @@ const translations = {
     worksOfflineVal: 'Ja',
     aboutDesc: 'Präzise Kohlenhydrat- und Flüssigkeitsziele für Radfahrer — berechnet aus deinem FTP und geplanter Fahrleistung.',
     close: 'Schließen',
+    settings: 'Einstellungen',
+    appearance: 'Erscheinungsbild',
+    language: 'Sprache',
 
     installTitle: 'Offline verfügbar',
     installSub: 'Zum Startbildschirm hinzufügen für sofortigen Zugriff.',

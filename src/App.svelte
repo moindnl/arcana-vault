@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, X, User, UserX, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
@@ -35,13 +35,7 @@
   doUpdateSW = swUpdate;
 
   let showAboutSheet = false;
-  let langFlipping = false;
-  async function toggleLang() {
-    langFlipping = false;
-    await tick();
-    langFlipping = true;
-    lang.update(l => l === 'en' ? 'de' : 'en');
-  }
+  let showSettingsSheet = false;
 
   // Dark / light / system mode
   type Theme = 'light' | 'dark' | 'system';
@@ -564,46 +558,21 @@
     </div>
   {/if}
 
-  <!-- App Header — floating bar -->
-  <header class="w-full" style="padding:calc(env(safe-area-inset-top) + 12px) 16px 0;position:sticky;top:0;z-index:995;background:var(--c-bg);">
-    <div style="max-width:640px;margin:0 auto;height:52px;background:#09090b;border-radius:9999px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset,rgba(117,123,133,0.4) 0px 9px 14px -5px inset,rgb(44,46,52) 0px 0px 0px 1.5px,rgba(0,0,0,0.14) 0px 4px 6px 0px;">
-      <!-- Logo — tappable, opens About sheet -->
-      <button class="flex items-center gap-sm" style="background:transparent;border:none;padding:0;cursor:pointer;" on:click={() => showAboutSheet = true} aria-label="About bonkproof!">
-        <img src="/favicon.svg" alt="" class="icon-anim" style="width:34px;height:34px;display:block;flex-shrink:0;border-radius:24%;box-shadow:0 0 0 2px #f73b20;" />
-        <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1;"><span class="bonk-nudge" style="color:#ffffff;font-style:italic;font-size:17px;font-weight:700;vertical-align:baseline;">bonk</span><span class="proof-crash" style="color:#f73b20;font-size:17px;font-weight:700;vertical-align:baseline;">proof!</span></h1>
+  <!-- App Header — iOS UINavigationBar style -->
+  <header style="position:sticky;top:0;z-index:995;background:var(--c-bg);border-bottom:0.5px solid var(--c-border);padding-top:env(safe-area-inset-top,0px);">
+    <div style="height:44px;max-width:640px;margin:0 auto;padding:0 4px;display:flex;align-items:center;justify-content:space-between;">
+      <!-- Left: logo + wordmark → opens About sheet -->
+      <button class="flex items-center gap-sm" style="height:44px;padding:0 12px;background:transparent;border:none;cursor:pointer;flex-shrink:0;" on:click={() => showAboutSheet = true} aria-label="About bonkproof!">
+        <img src="/favicon.svg" alt="" class="icon-anim" style="width:28px;height:28px;display:block;flex-shrink:0;border-radius:20%;" />
+        <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1;"><span class="bonk-nudge" style="color:var(--c-on-surface);font-style:italic;font-size:17px;font-weight:700;vertical-align:baseline;">bonk</span><span class="proof-crash" style="color:#f73b20;font-size:17px;font-weight:700;vertical-align:baseline;">proof!</span></h1>
       </button>
-      <!-- Right -->
-      <div class="flex items-center gap-sm">
-        <!-- Profile icon: User when set, UserX when empty -->
-        <button
-          class="flex items-center justify-center"
-          style="width:44px;height:44px;border-radius:50%;background:#ffffff;"
-          on:click={(e) => { profileOpen = !profileOpen; if (profileOpen) { rideOpen = false; setTimeout(() => setupCard?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); } else { (e.currentTarget as HTMLButtonElement).blur(); } }}
-          aria-label="{weight > 0 && ftp > 0 ? $t.ariaRiderProfile : $t.ariaSetupProfile}">
-          {#if weight > 0 && ftp > 0}
-            <User class="w-4 h-4" style="color:#09090b;" />
-          {:else}
-            <UserX class="w-4 h-4" style="color:#09090b;" />
-          {/if}
-        </button>
-        <!-- Divider -->
-        <div style="width:1px;height:20px;background:rgba(255,255,255,0.2);flex-shrink:0;" aria-hidden="true"></div>
-        <!-- Theme pill: ☀ · A · 🌙 -->
-        <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);height:44px;border-radius:999px;background:rgba(255,255,255,0.1);padding:5px;" role="group" aria-label="Theme">
-          <div style="position:absolute;left:5px;top:5px;bottom:5px;width:calc((100% - 10px) / 3);border-radius:999px;background:rgba(255,255,255,0.22);box-shadow:0 1px 2px rgba(0,0,0,0.25);transform:translateX(calc({themeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-          <button style="position:relative;display:flex;align-items:center;justify-content:center;background:transparent;border:none;color:{theme === 'light' ? '#ffffff' : 'rgba(255,255,255,0.4)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-3.5 h-3.5" /></button>
-          <button style="position:relative;display:flex;align-items:center;justify-content:center;background:transparent;border:none;color:{theme === 'system' ? '#ffffff' : 'rgba(255,255,255,0.4)'};font-size:11px;font-weight:700;letter-spacing:0.03em;transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}>A</button>
-          <button style="position:relative;display:flex;align-items:center;justify-content:center;background:transparent;border:none;color:{theme === 'dark' ? '#ffffff' : 'rgba(255,255,255,0.4)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-3.5 h-3.5" /></button>
-        </div>
-        <button
-          on:click={toggleLang}
-          on:animationend={() => langFlipping = false}
-          class="{langFlipping ? 'lang-flip' : ''}"
-          style="height:44px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,0.12);color:#ffffff;font-size:13px;font-weight:600;letter-spacing:0.02em;border:none;cursor:pointer;transition:background 0.15s;"
-          aria-label="Switch language">
-          {$lang === 'en' ? 'DE' : 'EN'}
-        </button>
-      </div>
+      <!-- Right: settings icon -->
+      <button
+        on:click={() => showSettingsSheet = true}
+        style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;flex-shrink:0;"
+        aria-label="Settings">
+        <SlidersHorizontal class="w-5 h-5" style="color:var(--c-on-surface);" />
+      </button>
     </div>
   </header>
 
@@ -1150,6 +1119,50 @@
     <div style="padding-bottom:max(24px, env(safe-area-inset-bottom));"></div>
 
   </div>
+
+  <!-- Settings sheet -->
+  {#if showSettingsSheet}
+    <div class="fixed inset-0 z-[996] bg-black/55"
+      on:click={() => showSettingsSheet = false} role="presentation"
+      transition:fade={{ duration: 300 }}></div>
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[20px] px-6 pt-5 max-w-lg mx-auto"
+      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
+      on:touchstart={(e) => onSheetDragStart(e, () => showSettingsSheet = false)}
+      on:touchmove|preventDefault={onSheetDragMove}
+      on:touchend={onSheetDragEnd}
+      in:fly={{ y: 500, duration: 420, easing: quintOut }}
+      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
+      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:var(--c-drag-handle);"></div>
+      <p class="text-heading-md font-bold mb-lg" style="color:var(--c-on-surface);">{$t.settings}</p>
+
+      <!-- Appearance + Language -->
+      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+        <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
+          <span style="color:var(--c-on-surface);font-size:15px;">{$t.appearance}</span>
+          <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({themeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'light' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-4 h-4" /></button>
+            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};font-size:12px;font-weight:700;letter-spacing:0.03em;transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}>A</button>
+            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'dark' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-4 h-4" /></button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between px-lg py-md">
+          <span style="color:var(--c-on-surface);font-size:15px;">{$t.language}</span>
+          <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+            <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({$lang === 'de' ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+            <button on:click={() => lang.update(() => 'en')} style="position:relative;flex:1;padding:6px 16px;font-size:13px;font-weight:500;color:{$lang === 'en' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;">EN</button>
+            <button on:click={() => lang.update(() => 'de')} style="position:relative;flex:1;padding:6px 16px;font-size:13px;font-weight:500;color:{$lang === 'de' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;">DE</button>
+          </div>
+        </div>
+      </div>
+
+      <button on:click={() => showSettingsSheet = false}
+        class="w-full py-3 rounded-full text-button-md font-extra-bold"
+        style="background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
+        {$t.close}
+      </button>
+    </div>
+  {/if}
 
   <!-- About sheet -->
   {#if showAboutSheet}
