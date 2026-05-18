@@ -12,6 +12,8 @@ Precision carbohydrate and fluid targets for endurance cyclists, calculated from
 - **Weight-scaled fluids** — larger athletes sweat more; fluid targets scale accordingly
 - **Sweat type modifier** — light (−20%), moderate, heavy (+30%) fluid adjustment
 - **Heat adjustment** — +0.3 L/h per 5°C above 20°C; temperature slider with live color feedback (track shifts dark → red above 20°C)
+- **Custom products** — add your own gels or bars with exact carb values; bonkproof! uses them throughout the schedule instead of generic estimates; persists to `localStorage`
+- **Selectable products** — tap any product (base or custom) in Settings to set it as active for schedule calculations
 - **Dark / light / system theme** — cycles through all three modes; follows OS preference in system mode; persists to `localStorage`
 - **Internationalisation** — English / German with browser language auto-detect; toggle in header with Y-axis flip animation; persists to `localStorage`; Wikipedia animal links resolve to correct language edition
 - **Imperial / metric** — toggle converts all displayed values in place
@@ -20,7 +22,8 @@ Precision carbohydrate and fluid targets for endurance cyclists, calculated from
 - **Fueling schedule** — 20-min intake slots with gel/bar/chew picker; units per slot calculated automatically
 - **Bottle planner** — bottle count, ml per bottle, carb content; drink product (water/carb mix/isotonic) offsets solid food needs
 - **Pack checklist** — auto-generated gear list from ride data; tap to check off items
-- **Collapsible input cards** — Rider Profile and Ride accordion with smooth `quintOut` transitions; ride auto-collapses when all fields filled
+- **App tour** — optional 4-slide animated how-to after onboarding; replayable from About; CSS keyframe animations per slide
+- **Onboarding** — 4-step flow: welcome → profile → products (optional) → done; browser language auto-detected
 - **Natural duration entry** — accepts `1:30`, `1.30`, `1,30`, or `1.5` (all parse to 1h 30min)
 - **Privacy** — profile data stored in `localStorage` (weight, FTP, unit preference). No server, no tracking.
 - **Awesomic design system** — neutral dark-on-mist palette, 36px card radius, obsidian pill header
@@ -141,6 +144,10 @@ Once installed, the app works fully **offline** — all assets are precached on 
 ├── vite.config.js                # Vite + PWA plugin config
 └── index.html
 ```
+
+## Backlog
+
+- **Spotlight coach-mark tour** — sheet-based tour with real UI highlighted via `box-shadow` cutout; blocked by iOS Safari `overflow:hidden` + `scrollIntoView` conflict on slide transitions
 
 ## License
 
