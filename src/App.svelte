@@ -3,7 +3,7 @@
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
   import { t, lang } from './i18n';
 
@@ -36,12 +36,11 @@
 
   let showAboutSheet = false;
   let langFlipping = false;
-  function toggleLang() {
+  async function toggleLang() {
     langFlipping = false;
-    requestAnimationFrame(() => {
-      langFlipping = true;
-      lang.update(l => l === 'en' ? 'de' : 'en');
-    });
+    await tick();
+    langFlipping = true;
+    lang.update(l => l === 'en' ? 'de' : 'en');
   }
 
 
@@ -240,8 +239,9 @@
 
   function dismissInstallSheet() {
     installPlatform = null;
-    sheetDragOffsetY = 0;
-    sheetIsDragging = false;
+    // Do NOT reset sheetDragOffsetY/sheetIsDragging here — onSheetDragEnd owns
+    // drag state cleanup. Resetting unconditionally would corrupt an active drag
+    // on any other sheet (all sheets share the same drag state variables).
     localStorage.setItem('bp-install-dismissed', '1');
   }
   async function triggerInstall() {
@@ -304,24 +304,25 @@
   $: sweatMultiplier = sweatRate === 'light' ? 0.8 : sweatRate === 'heavy' ? 1.3 : 1.0;
 
   // Temperature slider: track fill color #09090b → #f73b20 above 20°C
-  $: tempFillColor = temperature <= 20
-    ? '#09090b'
-    : (() => {
-        const p = Math.min((temperature - 20) / 25, 1);
-        const r = Math.round(9  + 238 * p);
-        const g = Math.round(9  +  50 * p);
-        const b = Math.round(11 +  21 * p);
-        return `rgb(${r},${g},${b})`;
-      })();
+  function tempColor(t: number): string {
+    if (t <= 20) return '#09090b';
+    const p = Math.min((t - 20) / 25, 1);
+    return `rgb(${Math.round(9 + 238 * p)},${Math.round(9 + 50 * p)},${Math.round(11 + 21 * p)})`;
+  }
+  $: tempFillColor = tempColor(temperature);
 
   // Ping value display when crossing 20°C threshold
   let heatPing = false;
+  async function triggerHeatPing() {
+    heatPing = false;
+    await tick();
+    heatPing = true;
+  }
   let _prevHeatActive = false;
   $: {
     const nowActive = temperature > 20;
     if (nowActive !== _prevHeatActive) {
-      heatPing = false;
-      requestAnimationFrame(() => { heatPing = true; });
+      triggerHeatPing();
       _prevHeatActive = nowActive;
     }
   }
@@ -545,12 +546,12 @@
   {/if}
 
   <!-- App Header — floating bar -->
-  <header class="w-full" style="padding:calc(env(safe-area-inset-top) + 12px) 16px 0;position:sticky;top:0;z-index:100;">
+  <header class="w-full" style="padding:calc(env(safe-area-inset-top) + 12px) 16px 0;position:sticky;top:0;z-index:995;background:#f4f4f5;">
     <div style="max-width:640px;margin:0 auto;height:52px;background:#09090b;border-radius:9999px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset,rgba(117,123,133,0.4) 0px 9px 14px -5px inset,rgb(44,46,52) 0px 0px 0px 1.5px,rgba(0,0,0,0.14) 0px 4px 6px 0px;">
       <!-- Logo -->
       <div class="flex items-center gap-sm">
         <img src="/favicon.svg" alt="" class="icon-anim" style="width:34px;height:34px;display:block;flex-shrink:0;border-radius:24%;box-shadow:0 0 0 2px #f73b20;" />
-        <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1;overflow:hidden;"><span class="bonk-nudge" style="color:#ffffff;font-style:italic;font-size:17px;font-weight:700;vertical-align:baseline;">bonk</span><span class="proof-crash" style="color:#f73b20;font-size:17px;font-weight:700;vertical-align:baseline;">proof!</span></h1>
+        <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1;"><span class="bonk-nudge" style="color:#ffffff;font-style:italic;font-size:17px;font-weight:700;vertical-align:baseline;">bonk</span><span class="proof-crash" style="color:#f73b20;font-size:17px;font-weight:700;vertical-align:baseline;">proof!</span></h1>
       </div>
       <!-- Right -->
       <div class="flex items-center gap-sm">
@@ -1145,10 +1146,10 @@
 
   <!-- About sheet -->
   {#if showAboutSheet}
-    <div class="fixed inset-0 z-[995] bg-black/40"
+    <div class="fixed inset-0 z-[996] bg-black/55"
       on:click={() => showAboutSheet = false} role="presentation"
       transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[996] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, () => showAboutSheet = false)}
       on:touchmove|preventDefault={onSheetDragMove}
@@ -1200,10 +1201,10 @@
 
   <!-- PWA install bottom sheet -->
   {#if installPlatform}
-    <div class="fixed inset-0 z-[990] bg-black/40"
+    <div class="fixed inset-0 z-[996] bg-black/55"
       on:click={dismissInstallSheet} role="presentation" transition:fade={{ duration: 300 }}>
     </div>
-    <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, dismissInstallSheet)}
       on:touchmove|preventDefault={onSheetDragMove}
@@ -1276,10 +1277,10 @@
 
   <!-- Impressum sheet -->
   {#if showImpressumSheet}
-    <div class="fixed inset-0 z-[990] bg-black/40"
+    <div class="fixed inset-0 z-[996] bg-black/55"
       on:click={() => showImpressumSheet = false} role="presentation"
       transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, () => showImpressumSheet = false)}
       on:touchmove|preventDefault={onSheetDragMove}
@@ -1315,10 +1316,10 @@
 
   <!-- Math sheet -->
   {#if showMathSheet}
-    <div class="fixed inset-0 z-[990] bg-black/40"
+    <div class="fixed inset-0 z-[996] bg-black/55"
       on:click={() => showMathSheet = false} role="presentation"
       transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[991] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 pb-8 max-w-lg mx-auto"
       style="background:#ffffff;color:#18181b;box-shadow:rgb(228,228,231) 0px 1px 0px 0px inset,rgba(0,0,0,0.12) 0px -4px 24px 0px;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, () => showMathSheet = false)}
       on:touchmove|preventDefault={onSheetDragMove}
