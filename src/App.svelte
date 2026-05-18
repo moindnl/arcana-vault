@@ -950,14 +950,14 @@
       <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:14px;border:1px solid rgba(255,255,255,0.12);padding:3px;">
         <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({tabIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
         <button
-          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'summary' ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          on:click={() => switchTab('summary')}>{$t.tabTotals}</button>
+          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'summary' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+          aria-pressed={totalsTab === 'summary'} on:click={() => switchTab('summary')}>{$t.tabTotals}</button>
         <button
-          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'schedule' ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          on:click={() => switchTab('schedule')}>{$t.tabSchedule}</button>
+          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'schedule' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+          aria-pressed={totalsTab === 'schedule'} on:click={() => switchTab('schedule')}>{$t.tabSchedule}</button>
         <button
-          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'pack' ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          on:click={() => switchTab('pack')}>{$t.tabPack}</button>
+          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'pack' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+          aria-pressed={totalsTab === 'pack'} on:click={() => switchTab('pack')}>{$t.tabPack}</button>
       </div>
 
       <!-- Totals tab -->
@@ -992,8 +992,8 @@
             <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({solidIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
             {#each SOLID_PRODUCTS as p}
               <button
-                style="position:relative;padding:6px 10px;font-size:13px;font-weight:500;text-align:center;white-space:nowrap;color:{solidProduct === p.id ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                on:click={() => (solidProduct = p.id)}>{p.label} ({p.carbs}g)</button>
+                style="position:relative;padding:6px 10px;font-size:13px;font-weight:500;text-align:center;white-space:nowrap;color:{solidProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                aria-pressed={solidProduct === p.id} on:click={() => (solidProduct = p.id)}>{p.label} ({p.carbs}g)</button>
             {/each}
           </div>
         </div>
@@ -1035,8 +1035,8 @@
               <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({drinkIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
               {#each DRINK_PRODUCTS as p}
                 <button
-                  style="position:relative;padding:6px 10px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                  on:click={() => (drinkProduct = p.id)}>{p.label}</button>
+                  style="position:relative;padding:6px 10px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                  aria-pressed={drinkProduct === p.id} on:click={() => (drinkProduct = p.id)}>{p.label}</button>
               {/each}
             </div>
           </div>
@@ -1045,9 +1045,9 @@
             <span style="color:rgba(255,255,255,0.7);font-size:13px;">{$t.bottleSize}</span>
             <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
               <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({bottleSizeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 500 ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" on:click={() => (bottleSize = 500)}>500ml</button>
-              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 750 ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" on:click={() => (bottleSize = 750)}>750ml</button>
-              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 1000 ? '#09090b' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" on:click={() => (bottleSize = 1000)}>1L</button>
+              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 500 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" aria-pressed={bottleSize === 500} on:click={() => (bottleSize = 500)}>500ml</button>
+              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 750 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" aria-pressed={bottleSize === 750} on:click={() => (bottleSize = 750)}>750ml</button>
+              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 1000 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" aria-pressed={bottleSize === 1000} on:click={() => (bottleSize = 1000)}>1L</button>
             </div>
           </div>
           <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">

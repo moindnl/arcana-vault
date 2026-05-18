@@ -50,8 +50,9 @@
     --c-on-surface-3:    #52525b;
     --c-border:          #ececee;
     --c-border-input:    #d4d4d8;
-    --c-seg-active:      #09090b;
-    --c-seg-active-text: #ffffff;
+    --c-seg-active:           #09090b;
+    --c-seg-active-text:      #ffffff;
+    --c-dark-pill-active-text: #09090b; /* dark card: pill always white → text always near-black */
     --c-num-empty:       #d4d4d8;
     --c-drag-handle:     #d4d4d8;
     --c-slider-track:    #d4d4d8;
@@ -82,8 +83,9 @@
     --c-on-surface-3:    #71717a;
     --c-border:          #27272a;
     --c-border-input:    #3f3f46;
-    --c-seg-active:      #f4f4f5;
-    --c-seg-active-text: #09090b;
+    --c-seg-active:           #f4f4f5;
+    --c-seg-active-text:      #09090b;
+    --c-dark-pill-active-text: #09090b; /* same value, still theme-invariant */
     --c-num-empty:       #3f3f46;
     --c-drag-handle:     #3f3f46;
     --c-slider-track:    #3f3f46;
