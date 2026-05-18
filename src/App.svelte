@@ -551,7 +551,8 @@
       transition:fly={{ y: -48, duration: 300, easing: cubicOut }}>
       <button on:click={() => doUpdateSW()}
         class="inline-flex items-center gap-sm rounded-full pointer-events-auto active:scale-95 transition-transform"
-        style="background:#f73b20;color:#ffffff;box-shadow:0 4px 20px rgba(247,59,32,0.4);padding:10px 20px 10px 16px;cursor:pointer;border:none;">
+        style="background:#f73b20;color:#ffffff;box-shadow:0 4px 20px rgba(247,59,32,0.4);padding:10px 20px 10px 16px;cursor:pointer;border:none;"
+        aria-label={$t.updateAvailable}>
         <RefreshCw class="w-4 h-4 flex-shrink-0" style="color:rgba(255,255,255,0.75);" />
         <span class="text-body-strong" style="color:#ffffff;">{$t.updateAvailable}</span>
       </button>
@@ -1093,7 +1094,7 @@
                     on:click={() => togglePack(item.id)}>
                     <div style="width:22px;height:22px;border-radius:6px;border:1.5px solid {checked ? '#ffffff' : 'rgba(255,255,255,0.25)'};background:{checked ? '#ffffff' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
                       {#if checked}
-                        <Check class="w-3 h-3" style="color:#09090b;" />
+                        <Check class="w-3 h-3" style="color:var(--c-dark-pill-active-text);" />
                       {/if}
                     </div>
                     <span style="font-size:14px;color:{checked ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.85)'};text-decoration:{checked ? 'line-through' : 'none'};transition:color 0.15s;">{item.label}</span>
