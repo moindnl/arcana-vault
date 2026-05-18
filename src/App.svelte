@@ -1658,35 +1658,37 @@
           <h2 style="font-size:22px;font-weight:700;color:var(--c-on-surface);margin:0 0 8px;">{$t.onboardingProductsTitle}</h2>
           <p style="font-size:15px;color:var(--c-on-surface-2);margin:0 0 24px;line-height:1.5;">{$t.onboardingProductsSub}</p>
 
-          <!-- Add product form -->
-          <div class="flex gap-2 mb-4" style="align-items:center;">
+          <!-- Add product form — 2-row layout for narrow screens -->
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
             <input
               type="text"
               bind:value={_obProductName}
               placeholder={$t.productNamePlaceholder}
-              style="flex:1;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);"
+              style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
               on:focus={focusInput} />
-            <input
-              type="number"
-              inputmode="numeric"
-              bind:value={_obProductCarbs}
-              placeholder="25"
-              min="1" max="200"
-              style="width:64px;height:44px;border-radius:12px;padding:0 10px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;"
-              on:focus={focusInput} />
-            <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;">{$t.productCarbsUnit}</span>
-            <button
-              on:click={() => { addCustomProduct(_obProductName, _obProductCarbs ?? 0); _obProductName = ''; _obProductCarbs = undefined; }}
-              style="height:44px;min-width:44px;padding:0 14px;border-radius:12px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:15px;font-weight:600;opacity:{_obProductName.trim() && _obProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_obProductName.trim() && _obProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
-              {$t.addProduct}
-            </button>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input
+                type="number"
+                inputmode="numeric"
+                bind:value={_obProductCarbs}
+                placeholder="25"
+                min="1" max="200"
+                style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
+                on:focus={focusInput} />
+              <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
+              <button
+                on:click={() => { addCustomProduct(_obProductName, _obProductCarbs ?? 0); _obProductName = ''; _obProductCarbs = undefined; }}
+                style="flex:1;height:44px;border-radius:12px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:15px;font-weight:600;opacity:{_obProductName.trim() && _obProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_obProductName.trim() && _obProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
+                {$t.addProduct}
+              </button>
+            </div>
           </div>
 
           <!-- Added products list -->
           {#each customProducts as p (p.id)}
-            <div class="flex items-center justify-between py-2" style="border-bottom:1px solid var(--c-border);">
+            <div class="flex items-center justify-between" style="border-bottom:1px solid var(--c-border);min-height:44px;">
               <span style="font-size:15px;color:var(--c-on-surface);">{p.label}</span>
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2">
                 <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g</span>
                 <button
                   on:click={() => removeCustomProduct(p.id)}
@@ -1697,6 +1699,10 @@
               </div>
             </div>
           {/each}
+
+          {#if customProducts.length === 0}
+            <p style="font-size:14px;color:var(--c-on-surface-3);margin:8px 0 0;">{$t.noCustomProducts}</p>
+          {/if}
 
           <div class="flex-1"></div>
         </div>
