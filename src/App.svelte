@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, Monitor } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, RotateCcw, User, UserX, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, Smartphone } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
@@ -340,7 +340,11 @@
   function tempColor(t: number, dark: boolean): string {
     if (t <= 20) return dark ? '#f4f4f5' : '#09090b';
     const p = Math.min((t - 20) / 25, 1);
-    return `rgb(${Math.round(9 + 238 * p)},${Math.round(9 + 50 * p)},${Math.round(11 + 21 * p)})`;
+    // Light: near-black → bright red. Dark: visible red → bright red (same endpoint).
+    const r0 = dark ? 160 : 9;
+    const g0 = dark ?  40 : 9;
+    const b0 = dark ?  30 : 11;
+    return `rgb(${Math.round(r0 + (247 - r0) * p)},${Math.round(g0 + (59 - g0) * p)},${Math.round(b0 + (32 - b0) * p)})`;
   }
   $: tempFillColor = tempColor(temperature, isDark);
 
@@ -575,7 +579,7 @@
         <button
           class="flex items-center justify-center"
           style="width:44px;height:44px;border-radius:50%;background:#ffffff;"
-          on:click={() => { profileOpen = !profileOpen; if (profileOpen) { rideOpen = false; setTimeout(() => setupCard?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); } }}
+          on:click={(e) => { profileOpen = !profileOpen; if (profileOpen) { rideOpen = false; setTimeout(() => setupCard?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); } else { (e.currentTarget as HTMLButtonElement).blur(); } }}
           aria-label="{weight > 0 && ftp > 0 ? $t.ariaRiderProfile : $t.ariaSetupProfile}">
           {#if weight > 0 && ftp > 0}
             <User class="w-4 h-4" style="color:#09090b;" />
@@ -595,7 +599,7 @@
           {:else if theme === 'light'}
             <Sun class="w-4 h-4" style="color:#ffffff;" />
           {:else}
-            <Monitor class="w-4 h-4" style="color:#ffffff;" />
+            <Smartphone class="w-4 h-4" style="color:#ffffff;" />
           {/if}
         </button>
         <button
@@ -621,8 +625,8 @@
         {#each HOW_TO_STEPS as step, i}
           <div class="snap-center shrink-0 w-[78%] overflow-hidden shimmer-once flex" style="background:var(--c-surface-soft);border-radius:28px;--shimmer-delay:{0.5 + i * 0.1}s"
             in:fly={{ y: 18, duration: 320, delay: 80 + i * 70, easing: cubicOut }}>
-            <div class="flex items-center justify-center flex-shrink-0" style="background:#09090b;min-width:56px;padding:0 18px 0 14px;clip-path:polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);">
-              <span class="text-lg font-bold" style="color:#ffffff;">{step.n}</span>
+            <div class="flex items-center justify-center flex-shrink-0" style="background:var(--c-seg-active);min-width:56px;padding:0 18px 0 14px;clip-path:polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);">
+              <span class="text-lg font-bold" style="color:var(--c-seg-active-text);">{step.n}</span>
             </div>
             <div class="p-lg space-y-xs">
               <h2 class="text-body-strong font-bold text-[--color-ink]">{$t[step.tTitle]}</h2>
@@ -636,8 +640,8 @@
         {#each HOW_TO_STEPS as step, i}
           <div class="flex flex-col"
             in:fly={{ y: 18, duration: 320, delay: 80 + i * 70, easing: cubicOut }}>
-            <div class="flex items-center justify-center py-md" style="background:#09090b;">
-              <span class="text-lg font-bold" style="color:#ffffff;">{step.n}</span>
+            <div class="flex items-center justify-center py-md" style="background:var(--c-seg-active);">
+              <span class="text-lg font-bold" style="color:var(--c-seg-active-text);">{step.n}</span>
             </div>
             <div class="p-lg space-y-xs flex-1">
               <h2 class="text-body-strong font-bold text-[--color-ink]">{$t[step.tTitle]}</h2>
@@ -1216,10 +1220,10 @@
       </div>
 
       <div class="flex gap-sm">
-        <a href="https://github.com/moindnl" target="_blank" rel="noopener noreferrer"
+        <a href="mailto:moindnl@proton.me"
           class="flex-1 py-3 rounded-full text-button-md font-extra-bold text-center"
           style="background:#09090b;color:#ffffff;text-decoration:none;box-shadow:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset,rgba(117,123,133,0.4) 0px 9px 14px -5px inset,rgb(44,46,52) 0px 0px 0px 1.5px,rgba(0,0,0,0.14) 0px 4px 6px 0px;">
-          GitHub <ExternalLink size={14} style="display:inline;vertical-align:middle;margin-left:4px;" />
+          E-Mail <ExternalLink size={14} style="display:inline;vertical-align:middle;margin-left:4px;" />
         </a>
         <button on:click={() => showAboutSheet = false}
           class="flex-1 py-3 rounded-full text-button-md font-extra-bold"
@@ -1329,8 +1333,8 @@
         </div>
         <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
           <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.impressumContact}</span>
-          <a href="https://github.com/moindnl" target="_blank" rel="noopener noreferrer"
-            style="color:var(--c-on-surface);font-size:14px;font-weight:600;text-decoration:none;">github.com/moindnl</a>
+          <a href="mailto:moindnl@proton.me"
+            style="color:var(--c-on-surface);font-size:14px;font-weight:600;text-decoration:none;">moindnl@proton.me</a>
         </div>
         <div class="px-lg py-md">
           <p style="color:var(--c-on-surface-2);font-size:13px;line-height:1.5;">{$t.impressumNote}</p>
