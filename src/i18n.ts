@@ -94,7 +94,8 @@ const translations = {
     packItemComputer: 'Bike computer charged',
     packItemPhone: 'Phone charged',
 
-    emptyState: 'Enter your ride duration above to see carb & fluid targets.',
+    emptyTitle: 'No results yet',
+    emptyState: 'Enter your ride duration to see personalised carb & fluid targets.',
 
     howItWorks: 'How it works',
     about: 'About',
@@ -276,7 +277,8 @@ const translations = {
     packItemComputer: 'Radcomputer aufgeladen',
     packItemPhone: 'Handy aufgeladen',
 
-    emptyState: 'Fahrtdauer eingeben — dann siehst du deine KH- & Flüssigkeitsziele.',
+    emptyTitle: 'Noch keine Ergebnisse',
+    emptyState: 'Fahrtdauer eingeben, um persönliche KH- & Flüssigkeitsziele zu sehen.',
 
     howItWorks: 'Formel',
     about: 'Info',

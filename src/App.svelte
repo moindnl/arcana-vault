@@ -1101,10 +1101,15 @@
     </div>
 
     {:else}
-    <!-- Results empty state -->
-    <div class="awesomic-card rounded-sm py-md px-lg text-center mb-xl card-enter card-enter-3"
+    <!-- Results empty state — iOS HIG: no card, icon + title + body, centered -->
+    <div class="card-enter card-enter-3"
+      style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 32px 32px;"
       transition:fade={{ duration: 200 }}>
-      <p class="text-caption-md text-[--c-on-surface-2]">{$t.emptyState}</p>
+      <div style="width:56px;height:56px;border-radius:16px;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+        <Zap size={26} style="color:var(--c-on-surface-3);" />
+      </div>
+      <p style="font-size:17px;font-weight:600;color:var(--c-on-surface);margin:0 0 6px;">{$t.emptyTitle}</p>
+      <p style="font-size:15px;color:var(--c-on-surface-2);margin:0;line-height:1.45;max-width:260px;">{$t.emptyState}</p>
     </div>
     {/if}
 
