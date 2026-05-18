@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone, Share2 } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade } from 'svelte/transition';
@@ -614,53 +614,6 @@
     return events;
   })();
 
-  // Export / Share
-  let shareCopied = false;
-  let _shareCopiedTimer: ReturnType<typeof setTimeout> | null = null;
-
-  async function shareExport() {
-    const totalMins = Math.round(duration * 60);
-    const dh = Math.floor(totalMins / 60);
-    const dm = totalMins % 60;
-    const durStr = dm > 0 ? `${dh}h ${dm}min` : `${dh}h`;
-    const fluidMl = Math.round(fluidPerHour * 1000);
-    const isDE = $lang === 'de';
-
-    const scheduleLines = fuelingEvents.length > 0
-      ? fuelingEvents.map(e => `  ${e.time} → ${e.units}× ${activeSolid.label} (${e.carbs}g)`).join('\n')
-      : `  ${isDE ? 'Keine feste Nahrung bei dieser Intensität' : 'No solid food at this intensity'}`;
-
-    const text = [
-      `bonkproof! — ${isDE ? 'Ernährungsplan' : 'Nutrition Plan'}`,
-      `${'─'.repeat(34)}`,
-      `${isDE ? 'Dauer' : 'Duration'}: ${durStr}  |  Zone: ${zoneLabel || (isDE ? 'Ausdauer' : 'Endurance')}  |  ${temperature}°C`,
-      ``,
-      `${isDE ? 'Pro Stunde' : 'Per hour'}:`,
-      `  ${isDE ? 'Kohlenhydrate' : 'Carbs'}:  ${carbsPerHour} g/h`,
-      `  ${isDE ? 'Flüssigkeit' : 'Fluid'}:  ${fluidMl} ml/h`,
-      ``,
-      `${isDE ? 'Zeitplan (alle 20 min)' : 'Schedule (every 20 min)'}:`,
-      scheduleLines,
-      ``,
-      `${isDE ? 'Garmin / Wahoo Einstellung' : 'Garmin / Wahoo Setup'}:`,
-      `  ${isDE ? 'Ernährungs-Alert: alle 20 min' : 'Nutrition alert: every 20 min'}`,
-      `  ${isDE ? 'Flüssigkeitsziel' : 'Fluid target'}: ~${fluidMl} ml/h`,
-      ``,
-      `bonkproof.app`,
-    ].join('\n');
-
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'bonkproof!', text });
-      } else {
-        await navigator.clipboard.writeText(text);
-        if (_shareCopiedTimer) clearTimeout(_shareCopiedTimer);
-        shareCopied = true;
-        _shareCopiedTimer = setTimeout(() => { shareCopied = false; }, 2500);
-      }
-    } catch { /* user cancelled share — no-op */ }
-  }
-
   // Scroll input into view after keyboard appears (mobile)
   function focusInput(e: FocusEvent) {
     const el = e.target as HTMLInputElement;
@@ -1148,20 +1101,6 @@
           {/if}
         {/if}
         </div>
-      {/if}
-    </div>
-
-    <!-- Share / Export -->
-    <div class="mb-lg card-enter card-enter-5" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
-      <button
-        on:click={shareExport}
-        style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;padding:0 20px;border-radius:14px;border:1.5px solid var(--c-border);background:var(--c-surface);color:var(--c-on-surface-2);font-size:15px;font-weight:500;cursor:pointer;transition:opacity 0.15s;"
-        aria-label={$t.sharePlan}>
-        <Share2 size={16} />
-        {$t.sharePlan}
-      </button>
-      {#if shareCopied}
-        <span style="font-size:13px;color:var(--c-on-surface-2);" transition:fade={{ duration: 150 }}>{$t.shareCopied}</span>
       {/if}
     </div>
 
@@ -1921,50 +1860,54 @@
                 </div>
 
               {:else if howToSlide === 2}
-                <!-- Slide 2: Schedule timeline -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0;width:280px;">
-                  <!-- Gel icons above dots -->
-                  <div style="display:flex;justify-content:space-around;width:100%;padding:0 14px;margin-bottom:6px;">
+                <!-- Slide 2: Schedule timeline — single column per slot guarantees alignment -->
+                {@const COL = 50}
+                <div style="position:relative;width:{COL * 5}px;">
+                  <!-- Line: left/right = half column width so it connects dot centres -->
+                  <div style="position:absolute;bottom:22px;left:{COL / 2}px;right:{COL / 2}px;height:2px;background:var(--c-border);border-radius:2px;overflow:hidden;">
+                    <div style="height:100%;background:var(--c-on-surface-2);border-radius:2px;transform-origin:left;animation:tour-line-draw 0.55s cubic-bezier(0.4,0,0.2,1) both 0.1s;"></div>
+                  </div>
+                  <!-- 5 columns -->
+                  <div style="display:flex;justify-content:space-between;">
                     {#each [0,1,2,3,4] as i}
-                      <div style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-dot-pop 0.3s both {0.15 + i * 0.14}s;">
-                        <Wheat size={14} style="color:#f73b20;" />
+                      {@const times = ['0:20','0:40','1:00','1:20','1:40']}
+                      <div style="width:{COL}px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                        <!-- Icon -->
+                        <div style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-dot-pop 0.3s both {0.1 + i * 0.12}s;">
+                          <Wheat size={13} style="color:#f73b20;" />
+                        </div>
+                        <!-- Dot -->
+                        <div style="width:12px;height:12px;border-radius:50%;background:var(--c-seg-active);animation:tour-dot-pop 0.26s both {0.48 + i * 0.1}s;"></div>
+                        <!-- Label -->
+                        <span style="font-size:10px;color:var(--c-on-surface-2);animation:tour-fade-up 0.24s both {1.0 + i * 0.05}s;">{times[i]}</span>
                       </div>
-                    {/each}
-                  </div>
-                  <!-- Line + dots -->
-                  <div style="position:relative;width:100%;height:20px;display:flex;align-items:center;padding:0 14px;">
-                    <div style="position:absolute;left:14px;right:14px;height:2px;background:var(--c-border);border-radius:2px;">
-                      <div style="height:2px;background:var(--c-on-surface-2);border-radius:2px;animation:tour-line-draw 0.6s both 0.1s;"></div>
-                    </div>
-                    {#each [0,1,2,3,4] as i}
-                      <div style="position:absolute;left:calc({i * 25}% + 14px - 6px);width:12px;height:12px;border-radius:50%;background:var(--c-seg-active);animation:tour-dot-pop 0.28s both {0.55 + i * 0.1}s;"></div>
-                    {/each}
-                  </div>
-                  <!-- Time labels -->
-                  <div style="display:flex;justify-content:space-around;width:100%;padding:6px 8px 0;animation:tour-fade-up 0.28s both 1.1s;">
-                    {#each ['0:20','0:40','1:00','1:20','1:40'] as t}
-                      <span style="font-size:10px;color:var(--c-on-surface-2);width:32px;text-align:center;">{t}</span>
                     {/each}
                   </div>
                 </div>
 
               {:else}
-                <!-- Slide 3: Products + share -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <!-- Slide 3: Products only -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
                   <!-- Product pill selector mockup -->
-                  <div style="display:flex;gap:4px;background:var(--c-surface-soft);border-radius:14px;padding:4px;">
+                  <div style="display:flex;gap:4px;background:var(--c-surface-soft);border-radius:14px;padding:4px;animation:tour-slide-in 0.35s both 0.05s;">
                     {#each ['Gel','Bar', customProducts.length > 0 ? customProducts[0].label : ($lang === 'de' ? 'Eigenes' : 'Custom')] as label, i}
-                      <div style="padding:7px 14px;border-radius:10px;font-size:14px;font-weight:{i === 2 ? '700' : '500'};background:{i === 2 ? 'var(--c-seg-active)' : 'transparent'};color:{i === 2 ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};animation:tour-pop 0.32s both {0.08 + i * 0.14}s;">
+                      <div style="padding:7px 14px;border-radius:10px;font-size:14px;font-weight:{i === 2 ? '700' : '500'};background:{i === 2 ? 'var(--c-seg-active)' : 'transparent'};color:{i === 2 ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};animation:tour-pop 0.32s both {0.1 + i * 0.14}s;">
                         {label}
                       </div>
                     {/each}
                   </div>
-                  <!-- Share icon bounce -->
-                  <div style="width:52px;height:52px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;animation:tour-share-bounce 1.2s both 0.55s;">
-                    <Share2 size={22} style="color:var(--c-on-surface);" />
+                  <!-- Checkmark + carbs label for active product -->
+                  <div style="display:flex;align-items:center;gap:8px;animation:tour-fade-up 0.3s both 0.55s;">
+                    <div style="width:24px;height:24px;border-radius:50%;background:var(--c-seg-active);display:flex;align-items:center;justify-content:center;">
+                      <Check size={14} style="color:var(--c-seg-active-text);" />
+                    </div>
+                    <span style="font-size:14px;color:var(--c-on-surface-2);">{customProducts.length > 0 ? customProducts[0].carbs : 22}g {$lang === 'de' ? 'KH pro Portion' : 'carbs per serving'}</span>
                   </div>
-                  <!-- Garmin/Wahoo label -->
-                  <div style="font-size:12px;color:var(--c-on-surface-2);animation:tour-fade-up 0.28s both 1.0s;">→ Garmin · Wahoo</div>
+                  <!-- Settings hint -->
+                  <div style="display:flex;align-items:center;gap:6px;animation:tour-fade-up 0.3s both 0.8s;">
+                    <SlidersHorizontal size={14} style="color:var(--c-on-surface-3);" />
+                    <span style="font-size:12px;color:var(--c-on-surface-3);">{$lang === 'de' ? 'Einstellungen → Eigene Produkte' : 'Settings → Custom Products'}</span>
+                  </div>
                 </div>
               {/if}
 

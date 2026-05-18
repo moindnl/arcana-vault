@@ -152,8 +152,8 @@ const translations = {
     tourSlide1Body: 'Intensity factor determines your zone. Each zone has a precise carb range, scaled to your FTP.',
     tourSlide2Title: 'When to eat, not just how much',
     tourSlide2Body: 'The Schedule tab breaks your ride into 20-minute slots — so you always know what to reach for.',
-    tourSlide3Title: 'Your products, your plan',
-    tourSlide3Body: 'Add your gels or bars once. bonkproof! uses your exact carb values throughout the schedule.',
+    tourSlide3Title: 'Your products, your targets',
+    tourSlide3Body: 'Add your gels or bars in Settings. bonkproof! calculates with your exact carb values — not generic estimates.',
 
     productNamePlaceholder: 'e.g. Maurten 100',
     productCarbsUnit: 'g carbs',
@@ -360,8 +360,8 @@ const translations = {
     tourSlide1Body: 'Der Intensitätsfaktor bestimmt deine Zone. Jede Zone hat einen genauen KH-Bereich, skaliert auf dein FTP.',
     tourSlide2Title: 'Wann essen, nicht nur wieviel',
     tourSlide2Body: 'Der Zeitplan unterteilt deine Fahrt in 20-Minuten-Slots — du weißt immer, was als Nächstes dran ist.',
-    tourSlide3Title: 'Deine Produkte, dein Plan',
-    tourSlide3Body: 'Gib deine Gels oder Riegel einmal ein. bonkproof! rechnet mit deinen genauen KH-Werten im Zeitplan.',
+    tourSlide3Title: 'Deine Produkte, deine Ziele',
+    tourSlide3Body: 'Trag deine Gels oder Riegel in den Einstellungen ein. bonkproof! rechnet mit deinen genauen KH-Werten — keine Schätzwerte.',
 
     productNamePlaceholder: 'z.B. Maurten 100',
     productCarbsUnit: 'g KH',
