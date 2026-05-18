@@ -36,6 +36,7 @@
 
   let showAboutSheet = false;
   let showSettingsSheet = false;
+  let showProductsSheet = false;
 
   // Dark / light / system mode
   type Theme = 'light' | 'dark' | 'system';
@@ -1251,54 +1252,20 @@
 
       </div>
 
-      <!-- Custom Products section -->
+      <!-- Custom Products nav row -->
       <p class="text-caption-sm font-semibold uppercase tracking-wide text-[--c-on-surface-2] mb-xs mt-lg">{$t.customProducts}</p>
       <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
-        <!-- Add form -->
-        <div class="flex gap-2 px-lg py-sm" style="border-bottom:1px solid var(--c-border);align-items:center;">
-          <input
-            type="text"
-            bind:value={_newProductName}
-            placeholder={$t.productNamePlaceholder}
-            style="flex:1;height:40px;border-radius:10px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:14px;color:var(--c-on-surface);"
-            on:focus={focusInput} />
-          <input
-            type="number"
-            inputmode="numeric"
-            bind:value={_newProductCarbs}
-            placeholder="25"
-            min="1" max="200"
-            style="width:52px;height:40px;border-radius:10px;padding:0 8px;background:var(--c-surface-input);border:none;font-size:14px;color:var(--c-on-surface);text-align:center;"
-            on:focus={focusInput} />
-          <span style="font-size:12px;color:var(--c-on-surface-2);white-space:nowrap;">{$t.productCarbsUnit}</span>
-          <button
-            on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
-            style="height:40px;padding:0 12px;border-radius:10px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:14px;font-weight:600;opacity:{_newProductName.trim() && _newProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_newProductName.trim() && _newProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
-            {$t.addProduct}
-          </button>
-        </div>
-        <p class="px-lg" style="font-size:12px;color:var(--c-on-surface-3);margin:6px 0 0;padding-bottom:8px;">{$t.productCarbsHint}</p>
-        <!-- Product list -->
-        {#if customProducts.length === 0}
-          <div class="px-lg py-md" style="border-top:1px solid var(--c-border);">
-            <span style="font-size:14px;color:var(--c-on-surface-2);">{$t.noCustomProducts}</span>
+        <button
+          on:click={() => showProductsSheet = true}
+          style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;">
+          <span style="font-size:15px;color:var(--c-on-surface);">{$t.customProducts}</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            {#if customProducts.length > 0}
+              <span style="font-size:14px;color:var(--c-on-surface-2);">{customProducts.length}</span>
+            {/if}
+            <ChevronRight size={16} style="color:var(--c-on-surface-3);" />
           </div>
-        {:else}
-          {#each customProducts as p (p.id)}
-            <div class="flex items-center justify-between px-lg" style="border-bottom:1px solid var(--c-border);min-height:44px;">
-              <span style="font-size:15px;color:var(--c-on-surface);">{p.label}</span>
-              <div class="flex items-center gap-3">
-                <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g</span>
-                <button
-                  on:click={() => removeCustomProduct(p.id)}
-                  style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-2);"
-                  aria-label={$t.deleteProduct}>
-                  <X size={16} />
-                </button>
-              </div>
-            </div>
-          {/each}
-        {/if}
+        </button>
       </div>
 
       <button on:click={() => showSettingsSheet = false}
@@ -1306,6 +1273,82 @@
         style="background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
         {$t.close}
       </button>
+    </div>
+  {/if}
+
+  <!-- Products sub-sheet (z-index above settings) -->
+  {#if showProductsSheet}
+    <div class="fixed inset-0 z-[999] bg-black/40"
+      on:click={() => showProductsSheet = false} role="presentation"
+      transition:fade={{ duration: 200 }}></div>
+    <div class="fixed bottom-0 left-0 right-0 z-[1001] rounded-t-[20px] max-w-lg mx-auto"
+      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
+      on:touchstart={(e) => onSheetDragStart(e, () => showProductsSheet = false)}
+      on:touchmove|preventDefault={onSheetDragMove}
+      on:touchend={onSheetDragEnd}
+      in:fly={{ y: 400, duration: 380, easing: quintOut }}
+      out:fly={{ y: 400, duration: 220, easing: cubicIn }}>
+      <div class="w-10 h-1 rounded-full mx-auto mt-3 mb-4" style="background:var(--c-drag-handle);"></div>
+
+      <div style="padding:0 24px;">
+        <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);margin:0 0 20px;">{$t.customProducts}</p>
+
+        <!-- 2-row add form -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+          <input
+            type="text"
+            bind:value={_newProductName}
+            placeholder={$t.productNamePlaceholder}
+            style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
+            on:focus={focusInput} />
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input
+              type="number"
+              inputmode="numeric"
+              bind:value={_newProductCarbs}
+              placeholder="25"
+              min="1" max="200"
+              style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
+              on:focus={focusInput} />
+            <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
+            <button
+              on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
+              style="flex:1;height:44px;border-radius:12px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:15px;font-weight:600;opacity:{_newProductName.trim() && _newProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_newProductName.trim() && _newProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
+              {$t.addProduct}
+            </button>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--c-on-surface-3);margin:0 0 20px;line-height:1.4;">{$t.productCarbsHint}</p>
+
+        <!-- Product list -->
+        <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
+          {#if customProducts.length === 0}
+            <div style="padding:14px 16px;">
+              <span style="font-size:14px;color:var(--c-on-surface-2);">{$t.noCustomProducts}</span>
+            </div>
+          {:else}
+            {#each customProducts as p, i (p.id)}
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:44px;{i < customProducts.length - 1 ? 'border-bottom:1px solid var(--c-border);' : ''}">
+                <span style="font-size:15px;color:var(--c-on-surface);">{p.label}</span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g KH</span>
+                  <button
+                    on:click={() => removeCustomProduct(p.id)}
+                    style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-2);"
+                    aria-label={$t.deleteProduct}>
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            {/each}
+          {/if}
+        </div>
+
+        <button on:click={() => showProductsSheet = false}
+          style="width:100%;padding:14px;border-radius:14px;background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;font-size:15px;font-weight:600;">
+          {$t.close}
+        </button>
+      </div>
     </div>
   {/if}
 
