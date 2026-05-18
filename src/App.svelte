@@ -583,7 +583,7 @@
   {/if}
 
   <!-- App Header — iOS UINavigationBar style -->
-  <header style="position:sticky;top:0;z-index:995;background:var(--c-bg);border-bottom:0.5px solid var(--c-border);padding-top:env(safe-area-inset-top,0px);">
+  <header style="position:sticky;top:0;z-index:995;background:var(--c-nav-bg);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:0.5px solid var(--c-nav-border);padding-top:env(safe-area-inset-top,0px);">
     <div style="height:44px;max-width:640px;margin:0 auto;padding:0 4px;display:flex;align-items:center;justify-content:space-between;">
       <!-- Left: logo + wordmark → opens About sheet -->
       <button class="flex items-center gap-sm" style="height:44px;padding:0 12px;background:transparent;border:none;cursor:pointer;flex-shrink:0;" on:click={() => showAboutSheet = true} aria-label="About bonkproof!">

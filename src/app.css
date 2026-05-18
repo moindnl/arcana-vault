@@ -60,6 +60,10 @@
     --c-shadow-card-hover: rgb(228,228,231) 0px 1px 0px 0px inset, rgba(0,0,0,0.08) 0px 8px 24px 0px;
     --c-shadow-sheet:    rgb(228,228,231) 0px 1px 0px 0px inset, rgba(0,0,0,0.12) 0px -4px 24px 0px;
 
+    /* Navigation bar glass surface */
+    --c-nav-bg:      rgba(244,244,245,0.82);
+    --c-nav-border:  rgba(0,0,0,0.08);
+
     /* Alias legacy tokens → canonical semantic vars */
     --color-ink:      var(--c-on-surface);
     --color-charcoal: var(--c-on-surface-3);
@@ -94,6 +98,10 @@
     --c-shadow-card:     rgba(255,255,255,0.04) 0px 1px 0px 0px inset, rgba(0,0,0,0.3) 0px 4px 12px 0px;
     --c-shadow-card-hover: rgba(255,255,255,0.04) 0px 1px 0px 0px inset, rgba(0,0,0,0.5) 0px 8px 24px 0px;
     --c-shadow-sheet:    rgba(255,255,255,0.04) 0px 1px 0px 0px inset, rgba(0,0,0,0.4) 0px -4px 24px 0px;
+
+    /* Navigation bar glass surface */
+    --c-nav-bg:      rgba(15,15,18,0.85);
+    --c-nav-border:  rgba(255,255,255,0.08);
 
     /* Alias legacy tokens → canonical semantic vars (auto-adapt to dark) */
     --color-ink:      var(--c-on-surface);
