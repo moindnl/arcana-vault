@@ -567,11 +567,11 @@
   <!-- App Header — floating bar -->
   <header class="w-full" style="padding:calc(env(safe-area-inset-top) + 12px) 16px 0;position:sticky;top:0;z-index:995;background:var(--c-bg);">
     <div style="max-width:640px;margin:0 auto;height:52px;background:#09090b;border-radius:9999px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:rgba(255,255,255,0.5) 0px 0.5px 0px 0px inset,rgba(117,123,133,0.4) 0px 9px 14px -5px inset,rgb(44,46,52) 0px 0px 0px 1.5px,rgba(0,0,0,0.14) 0px 4px 6px 0px;">
-      <!-- Logo -->
-      <div class="flex items-center gap-sm">
+      <!-- Logo — tappable, opens About sheet -->
+      <button class="flex items-center gap-sm" style="background:transparent;border:none;padding:0;cursor:pointer;" on:click={() => showAboutSheet = true} aria-label="About bonkproof!">
         <img src="/favicon.svg" alt="" class="icon-anim" style="width:34px;height:34px;display:block;flex-shrink:0;border-radius:24%;box-shadow:0 0 0 2px #f73b20;" />
         <h1 style="margin:0;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1;"><span class="bonk-nudge" style="color:#ffffff;font-style:italic;font-size:17px;font-weight:700;vertical-align:baseline;">bonk</span><span class="proof-crash" style="color:#f73b20;font-size:17px;font-weight:700;vertical-align:baseline;">proof!</span></h1>
-      </div>
+      </button>
       <!-- Right -->
       <div class="flex items-center gap-sm">
         <!-- Profile icon: User when set, UserX when empty -->
@@ -1156,25 +1156,8 @@
     </div>
     {/if}
 
-    <!-- Footer -->
-    <div style="border-top:1px solid var(--c-border);padding-bottom:max(56px, calc(env(safe-area-inset-bottom) + 24px));">
-      <div class="flex items-center justify-between flex-wrap gap-xs" style="padding:12px 0;">
-        <span class="text-caption-sm" style="color:var(--color-stone);padding:4px 0;">© 2026 Daniel Muschinski</span>
-        <div class="flex items-center flex-wrap">
-          <button on:click={() => showMathSheet = true}
-            class="text-caption-sm text-[--color-mute] hover:text-[--color-ink]"
-            style="padding:8px 10px;transition:color 0.15s;">{$t.howItWorks}</button>
-          <span style="color:var(--color-hairline);user-select:none;">·</span>
-          <button on:click={() => showAboutSheet = true}
-            class="text-caption-sm text-[--color-mute] hover:text-[--color-ink]"
-            style="padding:8px 10px;transition:color 0.15s;">{$t.about}</button>
-          <span style="color:var(--color-hairline);user-select:none;">·</span>
-          <button on:click={() => showImpressumSheet = true}
-            class="text-caption-sm text-[--color-mute] hover:text-[--color-ink]"
-            style="padding:8px 10px;transition:color 0.15s;">{$t.legal}</button>
-        </div>
-      </div>
-    </div>
+    <!-- bottom safe-area spacer -->
+    <div style="padding-bottom:max(24px, env(safe-area-inset-bottom));"></div>
 
   </div>
 
@@ -1216,6 +1199,17 @@
           <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.worksOffline}</span>
           <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.worksOfflineVal}</span>
         </div>
+      </div>
+
+      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+        <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { showAboutSheet = false; setTimeout(() => showMathSheet = true, 60); }}>
+          <span style="color:var(--c-on-surface);font-size:15px;">{$t.howItWorks}</span>
+          <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
+        </button>
+        <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;" on:click={() => { showAboutSheet = false; setTimeout(() => showImpressumSheet = true, 60); }}>
+          <span style="color:var(--c-on-surface);font-size:15px;">{$t.legal}</span>
+          <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
+        </button>
       </div>
 
       <div class="flex gap-sm">
