@@ -283,9 +283,9 @@
     }, 600);
   }
 
-  // Guide: hide once both weight + ftp set; never re-show (avoids flicker on delete)
-  let _guideSeen = false;
-  $: if (weight > 0 && ftp > 0) _guideSeen = true;
+  // Guide: hide permanently once both weight + ftp set; persisted so it never re-shows
+  let _guideSeen = localStorage.getItem('bp-guide-seen') === '1';
+  $: if (weight > 0 && ftp > 0 && !_guideSeen) { _guideSeen = true; localStorage.setItem('bp-guide-seen', '1'); }
 
   // Reset per-ride inputs only; profile persists
   function resetInputs() {
@@ -948,17 +948,17 @@
     <div bind:this={tabCard} class="card-campaign rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5">
 
       <!-- Tab bar -->
-      <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:14px;border:1px solid rgba(255,255,255,0.12);padding:3px;">
-        <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({tabIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-        <button
+      <div role="tablist" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:14px;border:1px solid rgba(255,255,255,0.12);padding:3px;">
+        <div aria-hidden="true" style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({tabIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+        <button role="tab"
           style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'summary' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          aria-pressed={totalsTab === 'summary'} on:click={() => switchTab('summary')}>{$t.tabTotals}</button>
-        <button
+          aria-selected={totalsTab === 'summary'} on:click={() => switchTab('summary')}>{$t.tabTotals}</button>
+        <button role="tab"
           style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'schedule' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          aria-pressed={totalsTab === 'schedule'} on:click={() => switchTab('schedule')}>{$t.tabSchedule}</button>
-        <button
+          aria-selected={totalsTab === 'schedule'} on:click={() => switchTab('schedule')}>{$t.tabSchedule}</button>
+        <button role="tab"
           style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'pack' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          aria-pressed={totalsTab === 'pack'} on:click={() => switchTab('pack')}>{$t.tabPack}</button>
+          aria-selected={totalsTab === 'pack'} on:click={() => switchTab('pack')}>{$t.tabPack}</button>
       </div>
 
       <!-- Totals tab -->
@@ -1003,9 +1003,9 @@
         {:else if fuelingEvents[0].carbs === 0}
           <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.drinkCoversAll}</p>
         {:else}
-          <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
+          <div role="list" style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
             {#each fuelingEvents as event, i}
-              <div class="flex items-center justify-between px-lg py-md"
+              <div role="listitem" class="flex items-center justify-between px-lg py-md"
                 style="{i < fuelingEvents.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
                 <span style="color:rgba(255,255,255,0.70);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
                 <span style="color:#ffffff;font-weight:700;font-size:15px;">{event.carbs}g</span>
