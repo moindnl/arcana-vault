@@ -386,11 +386,11 @@
   $: zoneBadgeStyle = intensityFactor === 0 ? '' :
     tadejMode
       ? 'background:#f0c000;color:#111111;transition:background 0.35s ease,color 0.35s ease'
-      : `background:${
-          intensityFactor < 0.55 ? '#a1a1aa' :
-          intensityFactor < 0.90 ? '#3f3f46' :
-          '#f73b20'
-        };color:#ffffff;transition:background 0.35s ease,color 0.35s ease`;
+      : intensityFactor < 0.55
+        ? 'background:var(--c-surface-soft);color:var(--c-on-surface-2);transition:background 0.35s ease,color 0.35s ease'
+        : intensityFactor < 0.90
+          ? 'background:var(--c-on-surface);color:var(--c-bg);transition:background 0.35s ease,color 0.35s ease'
+          : 'background:#f73b20;color:var(--color-on-primary);transition:background 0.35s ease,color 0.35s ease';
 
 
   $: intensity = (intensityFactor === 0 ? 'moderate' :
@@ -835,7 +835,7 @@
       {#if intensityFactor > 0}
         <div class="flex items-center gap-sm flex-wrap">
           <span class="badge" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}% FTP</span>
-          <span class="badge" style="background:var(--color-accent);color:#ffffff;">~{Math.round($animatedKcalPerHour)} kcal/h</span>
+          <span class="badge" style="background:var(--color-accent);color:var(--color-on-primary);">~{Math.round($animatedKcalPerHour)} kcal/h</span>
         </div>
       {:else}
         <p class="text-caption-sm text-[--color-mute]">{$t.powerEnterHint}</p>
@@ -997,7 +997,7 @@
               <div class="flex items-center justify-between mb-md">
                 <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">{$t.packList}</span>
                 {#if checkedPack.size > 0}
-                  <button style="color:rgba(255,255,255,0.70);font-size:11px;" on:click={resetPack}>{$t.reset}</button>
+                  <button style="color:rgba(255,255,255,0.70);font-size:12px;min-height:44px;padding:0 8px;display:flex;align-items:center;" on:click={resetPack}>{$t.reset}</button>
                 {/if}
               </div>
               <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1005,6 +1005,7 @@
                   {@const checked = checkedPack.has(item.id)}
                   <button
                     class="flex items-center gap-md text-left"
+                    style="min-height:44px;padding:2px 0;"
                     on:click={() => togglePack(item.id)}>
                     <div style="width:22px;height:22px;border-radius:6px;border:1.5px solid {checked ? '#ffffff' : 'rgba(255,255,255,0.25)'};background:{checked ? '#ffffff' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
                       {#if checked}

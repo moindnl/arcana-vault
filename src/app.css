@@ -59,16 +59,18 @@
     --c-shadow-card:     rgb(228,228,231) 0px 1px 0px 0px inset, rgba(0,0,0,0.04) 0px 4px 12px 0px;
     --c-shadow-card-hover: rgb(228,228,231) 0px 1px 0px 0px inset, rgba(0,0,0,0.08) 0px 8px 24px 0px;
     --c-shadow-sheet:    rgb(228,228,231) 0px 1px 0px 0px inset, rgba(0,0,0,0.12) 0px -4px 24px 0px;
+
+    /* Alias legacy tokens → canonical semantic vars */
+    --color-ink:      var(--c-on-surface);
+    --color-charcoal: var(--c-on-surface-3);
+    --color-mute:     var(--c-on-surface-2);
+    --color-stone:    var(--c-on-surface-2);
+    --color-steel:    var(--c-on-surface-2);
   }
 
   /* Dark mode overrides */
   [data-theme="dark"] {
-    /* Override Tailwind @theme tokens so text-[--color-ink] etc. adapt */
-    --color-ink:          #f4f4f5;
-    --color-charcoal:     #d4d4d8;
-    --color-mute:         #a1a1aa;
-    --color-stone:        #a1a1aa;
-    --color-steel:        #a1a1aa;
+    /* Legacy aliases auto-adapt via canonical --c-* vars (no manual overrides needed) */
     --color-hairline:     #27272a;
     --color-hairline-soft: #1c1c1f;
     --color-canvas:       #1c1c1f;
@@ -92,6 +94,13 @@
     --c-shadow-card:     rgba(255,255,255,0.04) 0px 1px 0px 0px inset, rgba(0,0,0,0.3) 0px 4px 12px 0px;
     --c-shadow-card-hover: rgba(255,255,255,0.04) 0px 1px 0px 0px inset, rgba(0,0,0,0.5) 0px 8px 24px 0px;
     --c-shadow-sheet:    rgba(255,255,255,0.04) 0px 1px 0px 0px inset, rgba(0,0,0,0.4) 0px -4px 24px 0px;
+
+    /* Alias legacy tokens → canonical semantic vars (auto-adapt to dark) */
+    --color-ink:      var(--c-on-surface);
+    --color-charcoal: var(--c-on-surface-2);
+    --color-mute:     var(--c-on-surface-2);
+    --color-stone:    var(--c-on-surface-2);
+    --color-steel:    var(--c-on-surface-2);
   }
 
   html {
@@ -362,10 +371,10 @@
     box-shadow: var(--c-shadow-card);
   }
 
-  /* Badge — dark filled */
+  /* Badge — semantic surface fill */
   .badge {
-    background: #3f3f46;
-    color: #fafafa;
+    background: var(--c-surface-soft);
+    color: var(--c-on-surface);
     padding: 4px 10px;
     border-radius: 12px;
     font-size: 12px;
