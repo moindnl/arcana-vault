@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone, Share2 } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade } from 'svelte/transition';
@@ -549,6 +549,53 @@
     return events;
   })();
 
+  // Export / Share
+  let shareCopied = false;
+  let _shareCopiedTimer: ReturnType<typeof setTimeout> | null = null;
+
+  async function shareExport() {
+    const totalMins = Math.round(duration * 60);
+    const dh = Math.floor(totalMins / 60);
+    const dm = totalMins % 60;
+    const durStr = dm > 0 ? `${dh}h ${dm}min` : `${dh}h`;
+    const fluidMl = Math.round(fluidPerHour * 1000);
+    const isDE = $lang === 'de';
+
+    const scheduleLines = fuelingEvents.length > 0
+      ? fuelingEvents.map(e => `  ${e.time} → ${e.units}× ${activeSolid.label} (${e.carbs}g)`).join('\n')
+      : `  ${isDE ? 'Keine feste Nahrung bei dieser Intensität' : 'No solid food at this intensity'}`;
+
+    const text = [
+      `bonkproof! — ${isDE ? 'Ernährungsplan' : 'Nutrition Plan'}`,
+      `${'─'.repeat(34)}`,
+      `${isDE ? 'Dauer' : 'Duration'}: ${durStr}  |  Zone: ${zoneLabel || (isDE ? 'Ausdauer' : 'Endurance')}  |  ${temperature}°C`,
+      ``,
+      `${isDE ? 'Pro Stunde' : 'Per hour'}:`,
+      `  ${isDE ? 'Kohlenhydrate' : 'Carbs'}:  ${carbsPerHour} g/h`,
+      `  ${isDE ? 'Flüssigkeit' : 'Fluid'}:  ${fluidMl} ml/h`,
+      ``,
+      `${isDE ? 'Zeitplan (alle 20 min)' : 'Schedule (every 20 min)'}:`,
+      scheduleLines,
+      ``,
+      `${isDE ? 'Garmin / Wahoo Einstellung' : 'Garmin / Wahoo Setup'}:`,
+      `  ${isDE ? 'Ernährungs-Alert: alle 20 min' : 'Nutrition alert: every 20 min'}`,
+      `  ${isDE ? 'Flüssigkeitsziel' : 'Fluid target'}: ~${fluidMl} ml/h`,
+      ``,
+      `bonkproof.app`,
+    ].join('\n');
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'bonkproof!', text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        if (_shareCopiedTimer) clearTimeout(_shareCopiedTimer);
+        shareCopied = true;
+        _shareCopiedTimer = setTimeout(() => { shareCopied = false; }, 2500);
+      }
+    } catch { /* user cancelled share — no-op */ }
+  }
+
   // Scroll input into view after keyboard appears (mobile)
   function focusInput(e: FocusEvent) {
     const el = e.target as HTMLInputElement;
@@ -1036,6 +1083,20 @@
           {/if}
         {/if}
         </div>
+      {/if}
+    </div>
+
+    <!-- Share / Export -->
+    <div class="mb-lg card-enter card-enter-5" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <button
+        on:click={shareExport}
+        style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;padding:0 20px;border-radius:14px;border:1.5px solid var(--c-border);background:var(--c-surface);color:var(--c-on-surface-2);font-size:15px;font-weight:500;cursor:pointer;transition:opacity 0.15s;"
+        aria-label={$t.sharePlan}>
+        <Share2 size={16} />
+        {$t.sharePlan}
+      </button>
+      {#if shareCopied}
+        <span style="font-size:13px;color:var(--c-on-surface-2);" transition:fade={{ duration: 150 }}>{$t.shareCopied}</span>
       {/if}
     </div>
 

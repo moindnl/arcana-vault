@@ -134,6 +134,9 @@ const translations = {
     installNow: 'Install now',
     notNow: 'Not now',
 
+    sharePlan: 'Share Plan',
+    shareCopied: 'Copied!',
+
     impressum: 'Impressum',
     impressumSub: 'Legal disclosure · § 5 TMG',
     impressumContact: 'Contact',
@@ -312,6 +315,9 @@ const translations = {
     androidNote: 'Chrome zeigt möglicherweise automatisch ein Installations-Banner an.',
     installNow: 'Jetzt installieren',
     notNow: 'Nicht jetzt',
+
+    sharePlan: 'Plan teilen',
+    shareCopied: 'Kopiert!',
 
     impressum: 'Impressum',
     impressumSub: 'Pflichtangaben · § 5 TMG',
