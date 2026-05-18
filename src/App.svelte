@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade, slide } from 'svelte/transition';
@@ -1142,7 +1142,7 @@
           <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
             <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({themeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
             <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'light' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-4 h-4" /></button>
-            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};font-size:12px;font-weight:700;letter-spacing:0.03em;transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}>A</button>
+            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}><Smartphone class="w-4 h-4" /></button>
             <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'dark' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-4 h-4" /></button>
           </div>
         </div>
