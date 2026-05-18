@@ -111,6 +111,16 @@ const translations = {
     settings: 'Settings',
     appearance: 'Appearance',
     language: 'Language',
+    profile: 'Profile',
+
+    onboardingTagline: 'Precision carb & fluid targets for your rides.',
+    onboardingStart: 'Get started',
+    onboardingProfileTitle: 'Your Profile',
+    onboardingProfileSub: 'Enter your weight and FTP once — bonkproof uses them to calculate your personal carb and fluid targets.',
+    onboardingNext: 'Next',
+    onboardingReadyTitle: 'All set!',
+    onboardingReadySub: 'Your profile is saved. You can update it anytime in Settings.',
+    onboardingLaunch: 'Open app',
 
     installTitle: 'Works offline',
     installSub: 'Save to home screen for instant access.',
@@ -280,6 +290,16 @@ const translations = {
     settings: 'Einstellungen',
     appearance: 'Erscheinungsbild',
     language: 'Sprache',
+    profile: 'Profil',
+
+    onboardingTagline: 'Präzise KH- & Flüssigkeitsziele für deine Ausfahrten.',
+    onboardingStart: 'Loslegen',
+    onboardingProfileTitle: 'Dein Profil',
+    onboardingProfileSub: 'Gib Gewicht und FTP einmal ein — bonkproof berechnet daraus deine persönlichen Ziele.',
+    onboardingNext: 'Weiter',
+    onboardingReadyTitle: 'Alles bereit!',
+    onboardingReadySub: 'Dein Profil ist gespeichert. Du kannst es jederzeit in den Einstellungen ändern.',
+    onboardingLaunch: 'App starten',
 
     installTitle: 'Offline verfügbar',
     installSub: 'Zum Startbildschirm hinzufügen für sofortigen Zugriff.',

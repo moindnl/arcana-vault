@@ -132,8 +132,16 @@
   // UI state
   let showMathSheet = false;
   let showImpressumSheet = false;
-  let profileOpen = !(weight > 0 || ftp > 0); // auto-open on first visit
+  let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
   let rideOpen = false;
+
+  function finishOnboarding() {
+    localStorage.setItem('bp-onboarding-done', '1');
+    _guideSeen = true;
+    localStorage.setItem('bp-guide-seen', '1');
+    onboardingStep = -1;
+    rideOpen = true;
+  }
   let rideAutoCollapsed = false;
   let neuralizer = false;        // easter egg F: neuralyzer flash
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
@@ -619,105 +627,11 @@
     <!-- Unified setup card -->
     <div bind:this={setupCard} class="mb-lg card-enter card-enter-2" style="background:var(--c-surface);border-radius:16px;box-shadow:var(--c-shadow-card);overflow:hidden;">
 
-    <!-- Rider Profile -->
-    <div>
-      <button
-        class="w-full flex items-center justify-between p-lg text-left cursor-pointer focus:outline-none"
-        on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
-        aria-expanded={profileOpen}
-      >
-        <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.riderProfile}</span>
-        <div class="flex items-center gap-md">
-          {#if !profileOpen}
-            <span class="text-caption-sm text-[--color-mute]">
-              {#if weight > 0 || ftp > 0}
-                {[weight ? `${weight} ${imperial ? 'lbs' : 'kg'}` : null, ftp ? `${ftp} W` : null].filter(Boolean).join(' · ')}
-              {:else}
-                {$t.notSet}
-              {/if}
-            </span>
-          {/if}
-          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-300 ease-out {profileOpen ? 'rotate-180' : ''}" />
-        </div>
-      </button>
-
-      {#if profileOpen}
-        <div in:slide={{ duration: 300, easing: quintOut, delay: 80 }} out:slide={{ duration: 260, easing: cubicOut }} class="px-lg" style="padding-bottom:24px;">
-
-          <!-- Weight -->
-          <div class="flex items-center justify-between py-sm">
-            <label for="weight" class="text-caption-md font-bold text-[--color-ink]">{$t.bodyWeight}</label>
-            <div class="flex items-center gap-xs">
-              <input id="weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
-            </div>
-          </div>
-
-          <!-- FTP -->
-          <div class="flex items-center justify-between py-sm row-sep">
-            <div>
-              <label for="ftp" class="text-caption-md font-bold text-[--color-ink] block">{$t.ftpLabel}</label>
-              <span class="text-caption-sm text-[--color-mute]">{$t.ftpSub}</span>
-            </div>
-            <div class="flex items-center gap-xs">
-              <input id="ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
-                style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">W</span>
-            </div>
-          </div>
-
-          <!-- Units -->
-          <div class="flex items-center justify-between py-md gap-md flex-wrap row-sep">
-            <span class="text-caption-md font-bold text-[--color-ink]">{$t.units}</span>
-            <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
-              <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({imperial ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-              <button
-                style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{!imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                on:click={() => { if (imperial) toggleImperial(); }}>{$t.kmKg}</button>
-              <button
-                style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                on:click={() => { if (!imperial) toggleImperial(); }}>{$t.miLbs}</button>
-            </div>
-          </div>
-
-          <!-- Sweat Rate -->
-          <div class="flex items-center justify-between py-md gap-md row-sep">
-            <div class="flex-shrink-0">
-              <span class="text-caption-md font-bold text-[--color-ink] block">{$t.sweatRate}</span>
-              <span class="text-caption-sm text-[--color-mute]">
-                {sweatRate === 'light' ? $t.sweatLight : sweatRate === 'heavy' ? $t.sweatHeavy : $t.sweatBaseline}
-              </span>
-            </div>
-            <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;flex-shrink:0;">
-              <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({sweatIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-              {#each SWEAT_LEVELS as { value, drops }, i}
-                <button
-                  class="flex items-center justify-center gap-[2px]"
-                  style="position:relative;padding:6px 12px;color:{sweatRate === value ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                  aria-label="{value === 'light' ? $t.sweatLightAria : value === 'moderate' ? $t.sweatModerateAria : $t.sweatHeavyAria}"
-                  aria-pressed={sweatRate === value}
-                  on:click={() => (sweatRate = value)}>
-                  {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
-                </button>
-              {/each}
-            </div>
-          </div>
-
-
-        </div>
-      {/if}
-    </div>
-
     <!-- Ride Input -->
     <div>
       <button
         class="w-full flex items-center justify-between p-lg text-left cursor-pointer focus:outline-none"
-        on:click={() => { rideOpen = !rideOpen; if (rideOpen) profileOpen = false; }}
+        on:click={() => { rideOpen = !rideOpen; }}
         aria-expanded={rideOpen}
       >
         <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.rideLabel}</span>
@@ -804,7 +718,7 @@
                 <span class="badge" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
               {:else if !(ftp > 0)}
                 <button class="text-caption-sm flex items-center gap-xxs text-[--color-mute]"
-                  on:click={() => { profileOpen = true; rideOpen = false; }}>
+                  on:click={() => { showSettingsSheet = true; rideOpen = false; }}>
                   {$t.setFtpFirst} <ChevronRight class="w-3 h-3" />
                 </button>
               {:else}
@@ -1157,6 +1071,76 @@
         </div>
       </div>
 
+      <!-- Profile section -->
+      <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--c-on-surface-2);margin:16px 0 6px 4px;">{$t.profile}</p>
+      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+
+        <!-- Weight row -->
+        <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
+          <label for="settings-weight" style="font-size:15px;color:var(--c-on-surface);">{$t.bodyWeight}</label>
+          <div class="flex items-center gap-xs">
+            <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
+              class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+              style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+              on:focus={focusInput} />
+            <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
+          </div>
+        </div>
+
+        <!-- FTP row -->
+        <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
+          <div>
+            <label for="settings-ftp" style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.ftpLabel}</label>
+            <span class="text-caption-sm text-[--color-mute]">{$t.ftpSub}</span>
+          </div>
+          <div class="flex items-center gap-xs">
+            <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
+              class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+              style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+              on:focus={focusInput} />
+            <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+          </div>
+        </div>
+
+        <!-- Units row -->
+        <div class="flex items-center justify-between px-lg py-md gap-md flex-wrap" style="border-bottom:1px solid var(--c-border);">
+          <span style="font-size:15px;color:var(--c-on-surface);">{$t.units}</span>
+          <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+            <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({imperial ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+            <button
+              style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{!imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+              on:click={() => { if (imperial) toggleImperial(); }}>{$t.kmKg}</button>
+            <button
+              style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+              on:click={() => { if (!imperial) toggleImperial(); }}>{$t.miLbs}</button>
+          </div>
+        </div>
+
+        <!-- Sweat Rate row -->
+        <div class="flex items-center justify-between px-lg py-md gap-md">
+          <div class="flex-shrink-0">
+            <span style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.sweatRate}</span>
+            <span class="text-caption-sm text-[--color-mute]">
+              {sweatRate === 'light' ? $t.sweatLight : sweatRate === 'heavy' ? $t.sweatHeavy : $t.sweatBaseline}
+            </span>
+          </div>
+          <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;flex-shrink:0;">
+            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({sweatIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+            {#each SWEAT_LEVELS as { value, drops }}
+              <button
+                class="flex items-center justify-center gap-[2px]"
+                style="position:relative;padding:6px 12px;color:{sweatRate === value ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                aria-label="{value === 'light' ? $t.sweatLightAria : value === 'moderate' ? $t.sweatModerateAria : $t.sweatHeavyAria}"
+                aria-pressed={sweatRate === value}
+                on:click={() => (sweatRate = value)}>
+                {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
+              </button>
+            {/each}
+          </div>
+        </div>
+
+      </div>
+
       <button on:click={() => showSettingsSheet = false}
         class="w-full py-3 rounded-full text-button-md font-extra-bold"
         style="background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
@@ -1387,4 +1371,138 @@
       </button>
     </div>
   {/if}
+
+  <!-- Onboarding wizard — fullscreen, first-launch only -->
+  {#if onboardingStep >= 0}
+    <div
+      class="fixed inset-0 z-[2000] flex flex-col"
+      style="background:var(--c-bg);padding-top:env(safe-area-inset-top,44px);padding-bottom:max(40px,env(safe-area-inset-bottom,24px));"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Getting started">
+
+      <!-- Step 0: Welcome -->
+      {#if onboardingStep === 0}
+        <div class="flex flex-col flex-1 items-center justify-center px-8"
+          in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
+          <img src="/favicon.svg" alt="bonkproof!" style="width:72px;height:72px;border-radius:18%;margin-bottom:24px;display:block;" />
+          <h1 style="font-size:28px;font-weight:700;letter-spacing:-0.02em;margin:0 0 10px;text-align:center;color:var(--c-on-surface);">
+            <span style="font-style:italic;color:var(--c-on-surface);">bonk</span><span style="color:#f73b20;">proof!</span>
+          </h1>
+          <p style="font-size:17px;color:var(--c-on-surface-2);text-align:center;max-width:300px;line-height:1.5;margin:0;">{$t.onboardingTagline}</p>
+        </div>
+        <div class="px-6" style="padding-bottom:8px;">
+          <button
+            on:click={() => { onboardingStep = 1; }}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
+            {$t.onboardingStart} →
+          </button>
+        </div>
+        <!-- Progress dots -->
+        <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+        </div>
+
+      <!-- Step 1: Profile -->
+      {:else if onboardingStep === 1}
+        <div class="flex flex-col flex-1 px-6 pt-2"
+          in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
+          <!-- Back button -->
+          <button
+            on:click={() => { onboardingStep = 0; }}
+            style="align-self:flex-start;height:44px;padding:0 4px;background:transparent;border:none;cursor:pointer;font-size:15px;font-weight:500;color:var(--c-on-surface-2);display:flex;align-items:center;gap:4px;margin-bottom:8px;">
+            ← {$t.onboardingStart}
+          </button>
+
+          <h2 style="font-size:22px;font-weight:700;color:var(--c-on-surface);margin:0 0 8px;">{$t.onboardingProfileTitle}</h2>
+          <p style="font-size:15px;color:var(--c-on-surface-2);margin:0 0 28px;line-height:1.5;">{$t.onboardingProfileSub}</p>
+
+          <!-- Weight field -->
+          <div class="flex items-center justify-between py-sm" style="margin-bottom:4px;">
+            <label for="ob-weight" style="font-size:15px;font-weight:600;color:var(--c-on-surface);">{$t.bodyWeight}</label>
+            <div class="flex items-center gap-xs">
+              <input id="ob-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
+            </div>
+          </div>
+
+          <!-- FTP field -->
+          <div class="flex items-center justify-between py-sm" style="margin-bottom:4px;">
+            <div>
+              <label for="ob-ftp" style="font-size:15px;font-weight:600;color:var(--c-on-surface);display:block;">{$t.ftpLabel}</label>
+              <span style="font-size:13px;color:var(--c-on-surface-2);">{$t.ftpSub}</span>
+            </div>
+            <div class="flex items-center gap-xs">
+              <input id="ob-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
+                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                on:focus={focusInput} />
+              <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+            </div>
+          </div>
+
+          <!-- Units toggle -->
+          <div class="flex items-center justify-between py-md gap-md flex-wrap" style="margin-bottom:4px;">
+            <span style="font-size:15px;font-weight:600;color:var(--c-on-surface);">{$t.units}</span>
+            <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+              <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({imperial ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+              <button
+                style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{!imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                on:click={() => { if (imperial) toggleImperial(); }}>{$t.kmKg}</button>
+              <button
+                style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                on:click={() => { if (!imperial) toggleImperial(); }}>{$t.miLbs}</button>
+            </div>
+          </div>
+
+          <div class="flex-1"></div>
+        </div>
+
+        <div class="px-6" style="padding-bottom:8px;">
+          <button
+            on:click={() => { if (weight > 0 && ftp > 0) onboardingStep = 2; }}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;opacity:{weight > 0 && ftp > 0 ? '1' : '0.4'};pointer-events:{weight > 0 && ftp > 0 ? 'auto' : 'none'};transition:opacity 0.2s;">
+            {$t.onboardingNext} →
+          </button>
+        </div>
+        <!-- Progress dots -->
+        <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+        </div>
+
+      <!-- Step 2: Done -->
+      {:else if onboardingStep === 2}
+        <div class="flex flex-col flex-1 items-center justify-center px-8"
+          in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--c-seg-active);color:var(--c-seg-active-text);display:flex;align-items:center;justify-content:center;margin-bottom:24px;">
+            <Check class="w-9 h-9" />
+          </div>
+          <h2 style="font-size:24px;font-weight:700;color:var(--c-on-surface);margin:0 0 12px;text-align:center;">{$t.onboardingReadyTitle}</h2>
+          <p style="font-size:15px;color:var(--c-on-surface-2);text-align:center;max-width:300px;line-height:1.5;margin:0;">{$t.onboardingReadySub}</p>
+        </div>
+        <div class="px-6" style="padding-bottom:8px;">
+          <button
+            on:click={finishOnboarding}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
+            {$t.onboardingLaunch}
+          </button>
+        </div>
+        <!-- Progress dots -->
+        <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
+        </div>
+      {/if}
+
+    </div>
+  {/if}
+
 </main>
