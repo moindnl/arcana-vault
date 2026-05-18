@@ -600,8 +600,8 @@
               <span class="text-lg font-bold" style="color:var(--c-seg-active-text);">{step.n}</span>
             </div>
             <div class="p-lg space-y-xs">
-              <h2 class="text-body-strong font-bold text-[--color-ink]">{$t[step.tTitle]}</h2>
-              <p class="text-caption-md text-[--color-charcoal]">{$t[step.tBody]}</p>
+              <h2 class="text-body-strong font-bold text-[--c-on-surface]">{$t[step.tTitle]}</h2>
+              <p class="text-caption-md text-[--c-on-surface-3]">{$t[step.tBody]}</p>
             </div>
           </div>
         {/each}
@@ -615,8 +615,8 @@
               <span class="text-lg font-bold" style="color:var(--c-seg-active-text);">{step.n}</span>
             </div>
             <div class="p-lg space-y-xs flex-1">
-              <h2 class="text-body-strong font-bold text-[--color-ink]">{$t[step.tTitle]}</h2>
-              <p class="text-caption-md text-[--color-charcoal]">{$t[step.tBody]}</p>
+              <h2 class="text-body-strong font-bold text-[--c-on-surface]">{$t[step.tTitle]}</h2>
+              <p class="text-caption-md text-[--c-on-surface-3]">{$t[step.tBody]}</p>
             </div>
           </div>
         {/each}
@@ -637,7 +637,7 @@
         <span style="font-size:17px;font-weight:400;color:var(--c-on-surface);">{$t.rideLabel}</span>
         <div class="flex items-center gap-md">
           {#if !rideOpen}
-            <span class="text-caption-sm text-[--color-mute]">
+            <span class="text-caption-sm text-[--c-on-surface-2]">
               {#if duration > 0 || power > 0}
                 {[duration > 0 ? formatDuration(duration) : null, power > 0 ? `${power} W` : null, temperature !== 20 ? `${temperature}°C` : null].filter(Boolean).join(' · ')}
               {:else}
@@ -654,10 +654,10 @@
               class="flex items-center justify-center flex-shrink-0"
               style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);touch-action:manipulation;user-select:none;-webkit-user-select:none;"
               aria-label="Reset ride inputs">
-              <X class="w-3.5 h-3.5 text-[--color-ink]" />
+              <X class="w-3.5 h-3.5 text-[--c-on-surface]" />
             </button>
           {/if}
-          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-300 ease-out {rideOpen ? 'rotate-180' : ''}" />
+          <ChevronDown class="w-4 h-4 text-[--c-on-surface] transition-transform duration-300 ease-out {rideOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
@@ -667,62 +667,62 @@
 
           <!-- Distance -->
           <div class="flex items-center justify-between py-sm">
-            <label for="distance" class="text-caption-md font-bold text-[--color-ink]">
-              {$t.distance} <span class="text-caption-sm text-[--color-mute] font-normal">{$t.distanceOptional}</span>
+            <label for="distance" class="text-caption-md font-bold text-[--c-on-surface]">
+              {$t.distance} <span class="text-caption-sm text-[--c-on-surface-2] font-normal">{$t.distanceOptional}</span>
             </label>
             <div class="flex items-center gap-xs">
               <input id="distance" type="number" inputmode="numeric" bind:value={distance} min="1" max="500" step="1" placeholder="0"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
                 on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'mi' : 'km'}</span>
+              <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'mi' : 'km'}</span>
             </div>
           </div>
 
           <!-- Duration -->
           <div class="flex items-center justify-between py-sm row-sep">
             <div>
-              <label for="duration" class="text-caption-md font-bold text-[--color-ink] block">{$t.durationLabel}</label>
-              <p class="text-utility-xs text-[--color-stone] mt-xxs">{$t.durationHint}</p>
+              <label for="duration" class="text-caption-md font-bold text-[--c-on-surface] block">{$t.durationLabel}</label>
+              <p class="text-utility-xs text-[--c-on-surface-2] mt-xxs">{$t.durationHint}</p>
             </div>
             <div class="flex items-center gap-xs">
               <input id="duration" type="text" inputmode="decimal" bind:value={durationRaw}
                 placeholder="1:30"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
                 on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">h</span>
+              <span class="text-caption-sm text-[--c-on-surface-2] w-5">h</span>
             </div>
           </div>
 
           <!-- Power -->
           <div class="flex items-center justify-between py-sm row-sep">
             <div>
-              <label for="power" class="text-caption-md font-bold text-[--color-ink] block">{$t.ridePower}</label>
-              <span class="text-caption-sm text-[--color-mute]">{$t.ridePowerSub}</span>
+              <label for="power" class="text-caption-md font-bold text-[--c-on-surface] block">{$t.ridePower}</label>
+              <span class="text-caption-sm text-[--c-on-surface-2]">{$t.ridePowerSub}</span>
             </div>
             <div class="flex items-center gap-xs">
               <input id="power" type="number" inputmode="numeric" bind:value={power} min="0" max="600" step="1" placeholder="200"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
                 on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+              <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
           </div>
 
           <!-- Zone (derived) -->
           <div class="flex items-center justify-between py-md row-sep">
-            <span class="text-caption-md font-bold text-[--color-ink]">{$t.zoneLabel}</span>
+            <span class="text-caption-md font-bold text-[--c-on-surface]">{$t.zoneLabel}</span>
             <div class="flex items-center">
               {#if intensityFactor > 0 && zoneLabel}
                 <span class="badge" style={zoneBadgeStyle}>{zoneLabel} · {Math.round(intensityFactor * 100)}%</span>
               {:else if !(ftp > 0)}
-                <button class="text-caption-sm flex items-center gap-xxs text-[--color-mute]"
+                <button class="text-caption-sm flex items-center gap-xxs text-[--c-on-surface-2]"
                   on:click={() => { showSettingsSheet = true; rideOpen = false; }}>
                   {$t.setFtpFirst} <ChevronRight class="w-3 h-3" />
                 </button>
               {:else}
-                <span class="text-caption-sm text-[--color-mute]">{$t.enterPower}</span>
+                <span class="text-caption-sm text-[--c-on-surface-2]">{$t.enterPower}</span>
               {/if}
             </div>
           </div>
@@ -730,7 +730,7 @@
           <!-- Temperature -->
           <div class="py-md row-sep">
             <div class="flex items-center justify-between mb-sm">
-              <label for="temperature" class="text-caption-md font-bold text-[--color-ink]">{$t.temperature}</label>
+              <label for="temperature" class="text-caption-md font-bold text-[--c-on-surface]">{$t.temperature}</label>
               <!-- °C intentional — heat formula is Celsius-based regardless of unit preference -->
               <span class="text-caption-md font-bold {heatPing ? 'heat-ping' : ''}"
                 on:animationend={() => heatPing = false}
@@ -739,7 +739,7 @@
             <input id="temperature" type="range" bind:value={temperature} min="0" max="45" step="1"
               class="temp-slider w-full"
               style="--fill:{(temperature / 45 * 100).toFixed(1)}%;--temp-color:{tempFillColor}" />
-            <p class="text-caption-sm mt-md {heatBonus > 0 ? 'text-[--color-sale]' : 'text-[--color-mute]'}">
+            <p class="text-caption-sm mt-md {heatBonus > 0 ? 'text-[--color-accent]' : 'text-[--c-on-surface-2]'}">
               {heatBonus > 0 ? $t.heatActive(heatBonus.toFixed(1)) : $t.heatInactive}
             </p>
           </div>
@@ -759,11 +759,11 @@
       <div class="p-lg" style="background:var(--c-surface);border-radius:16px;box-shadow:var(--c-shadow-card);">
         <div class="flex items-start gap-md mb-lg">
           <div class="w-12 h-12 flex items-center justify-center flex-shrink-0" style="background:var(--c-surface-soft);border-radius:14px;">
-            <Wheat class="w-7 h-7 text-[--color-ink]" />
+            <Wheat class="w-7 h-7 text-[--c-on-surface]" />
           </div>
           <div class="min-w-0">
-            <h2 class="text-heading-lg font-bold text-[--color-ink]">{$t.carbohydrates}</h2>
-            <p class="text-caption-sm text-[--color-mute]">{$t.carbsSub}</p>
+            <h2 class="text-heading-lg font-bold text-[--c-on-surface]">{$t.carbohydrates}</h2>
+            <p class="text-caption-sm text-[--c-on-surface-2]">{$t.carbsSub}</p>
           </div>
         </div>
         <div class="mb-sm">
@@ -771,10 +771,10 @@
             {#key carbsPerHour}
               <span class="text-7xl md:text-8xl font-extra-bold {carbsPerHour > 0 ? 'num-flash' : ''}" style="color:{carbsPerHour > 0 ? 'var(--color-ink)' : 'var(--c-num-empty)'};transition:color 0.3s ease;">{Math.round($animatedCarbs)}</span>
             {/key}
-            <span class="text-3xl text-[--color-mute]">g/h</span>
+            <span class="text-3xl text-[--c-on-surface-2]">g/h</span>
           </div>
         </div>
-        <p class="text-caption-md text-[--color-charcoal]">
+        <p class="text-caption-md text-[--c-on-surface-3]">
           {#if intensityFactor > 0}
             {$t.carbsFromPower(power, Math.round(intensityFactor * 100))}
           {:else}
@@ -782,7 +782,7 @@
           {/if}
         </p>
         {#if multiCarbNote}
-          <p class="text-caption-sm text-[--color-mute] mt-sm">{$t.carbsMultiNote}</p>
+          <p class="text-caption-sm text-[--c-on-surface-2] mt-sm">{$t.carbsMultiNote}</p>
         {/if}
       </div>
 
@@ -790,11 +790,11 @@
       <div class="p-lg" style="background:var(--c-surface);border-radius:16px;box-shadow:var(--c-shadow-card);">
         <div class="flex items-start gap-md mb-lg">
           <div class="w-12 h-12 flex items-center justify-center flex-shrink-0" style="background:var(--c-surface-soft);border-radius:14px;">
-            <Droplet class="w-7 h-7 text-[--color-ink]" />
+            <Droplet class="w-7 h-7 text-[--c-on-surface]" />
           </div>
           <div class="min-w-0">
-            <h2 class="text-heading-lg font-bold text-[--color-ink]">{$t.fluids}</h2>
-            <p class="text-caption-sm text-[--color-mute]">{$t.fluidsSub}</p>
+            <h2 class="text-heading-lg font-bold text-[--c-on-surface]">{$t.fluids}</h2>
+            <p class="text-caption-sm text-[--c-on-surface-2]">{$t.fluidsSub}</p>
           </div>
         </div>
         <div class="mb-sm">
@@ -802,15 +802,15 @@
             {#key fluidPerHour}
               <span class="text-7xl md:text-8xl font-extra-bold {fluidPerHour > 0 ? 'num-flash' : ''}" style="color:{fluidPerHour > 0 ? 'var(--color-ink)' : 'var(--c-num-empty)'};transition:color 0.3s ease;">{$animatedFluid.toFixed(1)}</span>
             {/key}
-            <span class="text-3xl text-[--color-mute]">L/h</span>
+            <span class="text-3xl text-[--c-on-surface-2]">L/h</span>
           </div>
         </div>
-        <p class="text-caption-md text-[--color-charcoal]">{$t.fluidsBased}</p>
+        <p class="text-caption-md text-[--c-on-surface-3]">{$t.fluidsBased}</p>
         {#if sweatRate !== 'moderate'}
-          <p class="text-caption-sm text-[--color-mute] mt-xs">{sweatRate === 'light' ? $t.fluidsLightNote('−20%') : $t.fluidsHeavyNote('+30%')}</p>
+          <p class="text-caption-sm text-[--c-on-surface-2] mt-xs">{sweatRate === 'light' ? $t.fluidsLightNote('−20%') : $t.fluidsHeavyNote('+30%')}</p>
         {/if}
         {#if heatBonus > 0}
-          <p class="text-caption-sm text-[--color-sale] mt-xs">{$t.fluidsHeatNote(heatBonus.toFixed(1), temperature)}</p>
+          <p class="text-caption-sm text-[--color-accent] mt-xs">{$t.fluidsHeatNote(heatBonus.toFixed(1), temperature)}</p>
         {/if}
       </div>
     </div>
@@ -819,17 +819,17 @@
     <div class="p-lg mb-lg card-enter card-enter-4" style="background:var(--c-surface);border-radius:16px;box-shadow:var(--c-shadow-card);">
       <div class="flex items-start gap-md mb-lg">
         <div class="w-12 h-12 flex items-center justify-center flex-shrink-0" style="background:var(--c-surface-soft);border-radius:14px;">
-          <Zap class="w-7 h-7 text-[--color-ink]" />
+          <Zap class="w-7 h-7 text-[--c-on-surface]" />
         </div>
         <div class="min-w-0">
-          <h2 class="text-heading-lg font-bold text-[--color-ink]">{$t.powerLabel}</h2>
-          <p class="text-caption-sm text-[--color-mute]">{$t.powerSub}</p>
+          <h2 class="text-heading-lg font-bold text-[--c-on-surface]">{$t.powerLabel}</h2>
+          <p class="text-caption-sm text-[--c-on-surface-2]">{$t.powerSub}</p>
         </div>
       </div>
       <div class="mb-md">
         <div class="flex items-baseline gap-sm">
           <span class="text-7xl md:text-8xl font-extra-bold" style="color:{power > 0 ? 'var(--c-on-surface)' : 'var(--c-num-empty)'};transition:color 0.3s ease;">{power ?? 0}</span>
-          <span class="text-3xl text-[--color-mute]">W</span>
+          <span class="text-3xl text-[--c-on-surface-2]">W</span>
         </div>
       </div>
       {#if intensityFactor > 0}
@@ -838,13 +838,13 @@
           <span class="badge" style="background:var(--color-accent);color:var(--color-on-primary);">~{Math.round($animatedKcalPerHour)} kcal/h</span>
         </div>
       {:else}
-        <p class="text-caption-sm text-[--color-mute]">{$t.powerEnterHint}</p>
+        <p class="text-caption-sm text-[--c-on-surface-2]">{$t.powerEnterHint}</p>
       {/if}
       {#if speedKmh > 0}
         <div class="flex items-center justify-between mt-md pt-md row-sep">
           <div class="flex items-baseline gap-sm">
-            <span class="text-heading-md font-bold text-[--color-ink]">{Math.round($animatedSpeed)}</span>
-            <span class="text-caption-md text-[--color-mute]">{speedUnit}</span>
+            <span class="text-heading-md font-bold text-[--c-on-surface]">{Math.round($animatedSpeed)}</span>
+            <span class="text-caption-md text-[--c-on-surface-2]">{speedUnit}</span>
           </div>
           {#if speedSloganText}
             <a href={speedSloganUrl} target="_blank" rel="noopener noreferrer">
@@ -1027,7 +1027,7 @@
     <!-- Results empty state -->
     <div class="awesomic-card rounded-sm py-md px-lg text-center mb-xl card-enter card-enter-3"
       transition:fade={{ duration: 200 }}>
-      <p class="text-caption-md text-[--color-mute]">{$t.emptyState}</p>
+      <p class="text-caption-md text-[--c-on-surface-2]">{$t.emptyState}</p>
     </div>
     {/if}
 
@@ -1081,10 +1081,10 @@
           <label for="settings-weight" style="font-size:15px;color:var(--c-on-surface);">{$t.bodyWeight}</label>
           <div class="flex items-center gap-xs">
             <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
-              class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+              class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
               style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
               on:focus={focusInput} />
-            <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
+            <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
           </div>
         </div>
 
@@ -1092,14 +1092,14 @@
         <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
           <div>
             <label for="settings-ftp" style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.ftpLabel}</label>
-            <span class="text-caption-sm text-[--color-mute]">{$t.ftpSub}</span>
+            <span class="text-caption-sm text-[--c-on-surface-2]">{$t.ftpSub}</span>
           </div>
           <div class="flex items-center gap-xs">
             <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
-              class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+              class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
               style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
               on:focus={focusInput} />
-            <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+            <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
           </div>
         </div>
 
@@ -1121,7 +1121,7 @@
         <div class="flex items-center justify-between px-lg py-md gap-md">
           <div class="flex-shrink-0">
             <span style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.sweatRate}</span>
-            <span class="text-caption-sm text-[--color-mute]">
+            <span class="text-caption-sm text-[--c-on-surface-2]">
               {sweatRate === 'light' ? $t.sweatLight : sweatRate === 'heavy' ? $t.sweatHeavy : $t.sweatBaseline}
             </span>
           </div>
@@ -1425,10 +1425,10 @@
             <label for="ob-weight" style="font-size:15px;font-weight:600;color:var(--c-on-surface);">{$t.bodyWeight}</label>
             <div class="flex items-center gap-xs">
               <input id="ob-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
                 on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">{imperial ? 'lbs' : 'kg'}</span>
+              <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
             </div>
           </div>
 
@@ -1440,10 +1440,10 @@
             </div>
             <div class="flex items-center gap-xs">
               <input id="ob-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
-                class="w-24 text-right text-body-strong text-[--color-ink] focus:outline-none"
+                class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
                 on:focus={focusInput} />
-              <span class="text-caption-sm text-[--color-mute] w-5">W</span>
+              <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
           </div>
 
