@@ -652,11 +652,11 @@
     <!-- Rider Profile -->
     <div>
       <button
-        class="w-full flex items-center justify-between px-lg py-sm text-left cursor-pointer focus:outline-none"
+        class="w-full flex items-center justify-between p-lg text-left cursor-pointer focus:outline-none"
         on:click={() => { profileOpen = !profileOpen; if (profileOpen) rideOpen = false; }}
         aria-expanded={profileOpen}
       >
-        <span class="text-caption-sm text-[--color-mute] uppercase tracking-wider">{$t.riderProfile}</span>
+        <span class="text-heading-md font-bold text-[--color-ink]">{$t.riderProfile}</span>
         <div class="flex items-center gap-md">
           {#if !profileOpen}
             <span class="text-caption-sm text-[--color-mute]">
@@ -667,7 +667,7 @@
               {/if}
             </span>
           {/if}
-          <ChevronDown class="w-4 h-4 text-[--color-mute] transition-transform duration-300 ease-out {profileOpen ? 'rotate-180' : ''}" />
+          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-300 ease-out {profileOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
@@ -746,11 +746,11 @@
     <!-- Ride Input -->
     <div>
       <button
-        class="w-full flex items-center justify-between px-lg py-sm text-left cursor-pointer focus:outline-none"
+        class="w-full flex items-center justify-between p-lg text-left cursor-pointer focus:outline-none"
         on:click={() => { rideOpen = !rideOpen; if (rideOpen) profileOpen = false; }}
         aria-expanded={rideOpen}
       >
-        <span class="text-caption-sm text-[--color-mute] uppercase tracking-wider">{$t.rideLabel}</span>
+        <span class="text-heading-md font-bold text-[--color-ink]">{$t.rideLabel}</span>
         <div class="flex items-center gap-md">
           {#if !rideOpen}
             <span class="text-caption-sm text-[--color-mute]">
@@ -773,7 +773,7 @@
               <X class="w-3.5 h-3.5 text-[--color-ink]" />
             </button>
           {/if}
-          <ChevronDown class="w-4 h-4 text-[--color-mute] transition-transform duration-300 ease-out {rideOpen ? 'rotate-180' : ''}" />
+          <ChevronDown class="w-4 h-4 text-[--color-ink] transition-transform duration-300 ease-out {rideOpen ? 'rotate-180' : ''}" />
         </div>
       </button>
 
