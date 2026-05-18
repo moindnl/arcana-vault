@@ -566,11 +566,12 @@
     const events: { time: string; carbs: number; units: number }[] = [];
     const totalMins = Math.round(duration * 60);
     const carbsPerSlot = Math.round(solidCarbsPerHour / 3);
-    const units = carbsPerSlot > 0 ? Math.ceil(carbsPerSlot / activeSolid.carbs) : 0;
+    const units = carbsPerSlot > 0 ? Math.max(0, Math.round(carbsPerSlot / activeSolid.carbs)) : 0;
+    const actualCarbs = units * activeSolid.carbs; // actual carbs delivered (self-consistent with unit count)
     for (let t = 20; t <= totalMins; t += 20) {
       const h = Math.floor(t / 60);
       const m = t % 60;
-      events.push({ time: `${h}:${String(m).padStart(2, '0')}`, carbs: carbsPerSlot, units });
+      events.push({ time: `${h}:${String(m).padStart(2, '0')}`, carbs: actualCarbs, units });
     }
     return events;
   })();
