@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Zap, Droplet, ChevronDown, ChevronRight, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone } from 'lucide-svelte';
+  import { Zap, Droplet, ChevronDown, ChevronRight, ChevronLeft, X, Wheat, Check, RefreshCw, ExternalLink, Moon, Sun, SlidersHorizontal, Smartphone } from 'lucide-svelte';
   import { tweened } from 'svelte/motion';
   import { linear, cubicOut, cubicIn, quintOut } from 'svelte/easing';
   import { fly, fade } from 'svelte/transition';
@@ -37,8 +37,11 @@
 
   let showAboutSheet = false;
   let showSettingsSheet = false;
-  let showProductsSheet = false;
   let showHowToSheet = false;
+  let settingsView: 'main' | 'products' = 'main';
+  let settingsNavDir = 0;
+  let aboutView: 'main' | 'math' | 'impressum' = 'main';
+  let aboutNavDir = 0;
   let howToSlide = 0;
   let _tourDir = 1; // 1 = forward, -1 = backward
 
@@ -158,8 +161,6 @@
   let sweatRate: 'light' | 'moderate' | 'heavy' = _savedProfile.sweatRate || 'moderate';
 
   // UI state
-  let showMathSheet = false;
-  let showImpressumSheet = false;
   let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
   // Ride card swipe-to-reset
   let rideSwipeX = 0;
@@ -199,8 +200,9 @@
   }
   let neuralizer = false;        // easter egg F: neuralyzer flash
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
-  let totalsTab: 'summary' | 'schedule' | 'pack' = 'summary';
+  let totalsTab: 'summary' | 'pack' = 'summary';
   let tabCard: HTMLElement;
+  let showSolidDropdown = false;
   function switchTab(tab: typeof totalsTab) {
     totalsTab = tab;
     setTimeout(() => {
@@ -209,6 +211,15 @@
       window.scrollTo({ top: y, behavior: 'smooth' });
     }, 0);
   }
+  function closeSettings() {
+    showSettingsSheet = false;
+    setTimeout(() => { settingsView = 'main'; settingsNavDir = 0; }, 400);
+  }
+  function closeAbout() {
+    showAboutSheet = false;
+    setTimeout(() => { aboutView = 'main'; aboutNavDir = 0; }, 400);
+  }
+
   let checkedPack: Set<string> = new Set();
   function togglePack(id: string) {
     if (checkedPack.has(id)) checkedPack.delete(id); else checkedPack.add(id);
@@ -424,7 +435,7 @@
   $: sweatMultiplier = sweatRate === 'light' ? 0.8 : sweatRate === 'heavy' ? 1.3 : 1.0;
   $: themeIdx = theme === 'light' ? 0 : theme === 'system' ? 1 : 2;
   $: sweatIdx = sweatRate === 'light' ? 0 : sweatRate === 'moderate' ? 1 : 2;
-  $: tabIdx = totalsTab === 'summary' ? 0 : totalsTab === 'schedule' ? 1 : 2;
+  $: tabIdx = totalsTab === 'summary' ? 0 : 1;
   $: solidIdx = allSolidProducts.findIndex(p => p.id === solidProduct);
   $: drinkIdx = DRINK_PRODUCTS.findIndex(p => p.id === drinkProduct);
   $: bottleSizeIdx = bottleSize === 500 ? 0 : bottleSize === 750 ? 1 : 2;
@@ -615,6 +626,9 @@
     return events;
   })();
 
+  $: allSlotsIdentical = fuelingEvents.length > 0 &&
+    fuelingEvents.every(e => e.carbs === fuelingEvents[0].carbs && e.units === fuelingEvents[0].units);
+
   // Scroll input into view after keyboard appears (mobile)
   function focusInput(e: FocusEvent) {
     const el = e.target as HTMLInputElement;
@@ -631,6 +645,8 @@
 
 
 </script>
+
+<svelte:window on:click={() => { showSolidDropdown = false; }} />
 
 <main class="min-h-screen">
 
@@ -954,146 +970,137 @@
     <!-- Totals + Fueling Schedule + Bottle Planner — tabbed dark card -->
     <div bind:this={tabCard} class="card-campaign rounded-sm p-lg md:p-xl mb-xl card-enter card-enter-5">
 
-      <!-- Tab bar -->
-      <div role="tablist" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:14px;border:1px solid rgba(255,255,255,0.12);padding:3px;">
-        <div aria-hidden="true" style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({tabIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+      <!-- Tab bar — 2 tabs -->
+      <div role="tablist" style="position:relative;display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin-bottom:18px;background:rgba(255,255,255,0.08);border-radius:14px;border:1px solid rgba(255,255,255,0.12);padding:3px;">
+        <div aria-hidden="true" style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 2);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({tabIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
         <button role="tab"
           style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'summary' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
           aria-selected={totalsTab === 'summary'} on:click={() => switchTab('summary')}>{$t.tabTotals}</button>
-        <button role="tab"
-          style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'schedule' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-          aria-selected={totalsTab === 'schedule'} on:click={() => switchTab('schedule')}>{$t.tabSchedule}</button>
         <button role="tab"
           style="position:relative;flex:1;padding:6px 10px;border-radius:10px;font-size:13px;font-weight:500;white-space:nowrap;color:{totalsTab === 'pack' ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
           aria-selected={totalsTab === 'pack'} on:click={() => switchTab('pack')}>{$t.tabPack}</button>
       </div>
 
-      <!-- Totals tab -->
+      <!-- Tab 1: Overview — totals + fueling schedule -->
       {#if totalsTab === 'summary'}
         <div in:fade={{ duration: 250 }}>
-        <h2 class="text-caption-md mb-lg text-[--color-on-primary]">{$t.totalNeeds(formatDuration(duration))}</h2>
-        <div class="grid grid-cols-3 gap-md">
-          <div class="rounded-md p-md text-center">
-            <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{Math.round($animatedTotalCarbs)}g</div>
-            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">{$t.carbsLabel}</div>
-          </div>
-          <div class="rounded-md p-md text-center">
-            <div class="text-4xl md:text-5xl font-extra-bold mb-xs flex items-center justify-center" style="color:#ffffff;min-height:1.2em;">
-              {intensityFactor > 0 ? Math.round($animatedTotalKcal) : '—'}
+          <!-- 3 totals -->
+          <h2 class="text-caption-md mb-lg text-[--color-on-primary]">{$t.totalNeeds(formatDuration(duration))}</h2>
+          <div class="grid grid-cols-3 gap-md mb-lg">
+            <div class="rounded-md p-md text-center">
+              <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{Math.round($animatedTotalCarbs)}g</div>
+              <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">{$t.carbsLabel}</div>
             </div>
-            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">{$t.kcal}</div>
-          </div>
-          <div class="rounded-md p-md text-center">
-            <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{$animatedTotalFluid.toFixed(1)}L</div>
-            <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">{$t.fluidsLabel}</div>
-          </div>
-        </div>
-        </div>
-
-      <!-- Schedule tab -->
-      {:else if totalsTab === 'schedule'}
-        <div in:fade={{ duration: 250 }}>
-        <!-- Solid product picker -->
-        <div class="flex items-center justify-between mb-md flex-wrap gap-sm">
-          <span style="color:rgba(255,255,255,0.7);font-size:13px;">{$t.solidFood}</span>
-          <div style="position:relative;display:grid;grid-template-columns:repeat({allSolidProducts.length},1fr);border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
-            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / {allSolidProducts.length});border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({solidIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-            {#each allSolidProducts as p}
-              <button
-                style="position:relative;padding:6px 10px;font-size:13px;font-weight:500;text-align:center;white-space:nowrap;color:{solidProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                aria-pressed={solidProduct === p.id} on:click={() => (solidProduct = p.id)}>{p.label} ({p.carbs}g)</button>
-            {/each}
-          </div>
-        </div>
-        {#if fuelingEvents.length === 0}
-          <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.rideTooShort}</p>
-        {:else if fuelingEvents[0].carbs === 0}
-          <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.drinkCoversAll}</p>
-        {:else}
-          <div role="list" style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
-            {#each fuelingEvents as event, i}
-              <div role="listitem" class="flex items-center justify-between px-lg py-md"
-                style="{i < fuelingEvents.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
-                <span style="color:rgba(255,255,255,0.70);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
-                <span style="color:#ffffff;font-weight:700;font-size:15px;">{event.carbs}g</span>
-                <span style="color:rgba(255,255,255,0.70);font-size:12px;">{event.units}× {solidLabel}</span>
+            <div class="rounded-md p-md text-center">
+              <div class="text-4xl md:text-5xl font-extra-bold mb-xs flex items-center justify-center" style="color:#ffffff;min-height:1.2em;">
+                {intensityFactor > 0 ? Math.round($animatedTotalKcal) : '—'}
               </div>
-            {/each}
+              <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">{$t.kcal}</div>
+            </div>
+            <div class="rounded-md p-md text-center">
+              <div class="text-4xl md:text-5xl font-extra-bold mb-xs" style="color:#ffffff;">{$animatedTotalFluid.toFixed(1)}L</div>
+              <div class="text-caption-sm" style="color:rgba(255,255,255,0.70);">{$t.fluidsLabel}</div>
+            </div>
           </div>
-          <div class="flex items-center justify-between mt-md">
-            <p style="color:rgba(255,255,255,0.70);font-size:12px;">{$t.firstFuel}</p>
-            <p style="color:rgba(255,255,255,0.70);font-size:12px;font-weight:600;">{$t.solidUnitsTotal(totalSolidUnits, solidLabel)}</p>
-          </div>
-          {#if drinkCarbsPerHour > 0}
-            <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:6px;">{$t.reducedByDrink(drinkCarbsPerHour)}</p>
-          {/if}
-        {/if}
-        </div>
 
-      <!-- Pack tab (bottles + checklist) -->
-      {:else if totalsTab === 'pack'}
-        <div in:fade={{ duration: 250 }}>
-        {#if bottleCount === 0}
-          <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.noBottles}</p>
-        {:else}
-          <!-- Drink product picker -->
-          <div class="flex items-center justify-between mb-md flex-wrap gap-sm">
-            <span style="color:rgba(255,255,255,0.7);font-size:13px;">{$t.drinkType}</span>
-            <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
-              <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({drinkIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-              {#each DRINK_PRODUCTS as p}
-                <button
-                  style="position:relative;padding:6px 10px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                  aria-pressed={drinkProduct === p.id} on:click={() => (drinkProduct = p.id)}>{p.label}</button>
+          <!-- Divider -->
+          <div style="border-top:1px solid rgba(255,255,255,0.12);margin-bottom:16px;"></div>
+
+          <!-- Fueling schedule — product chevron dropdown (scales to any number of products) -->
+          <div class="flex items-center justify-between mb-md">
+            <span style="color:rgba(255,255,255,0.7);font-size:13px;">{$t.solidFood}</span>
+            <div style="position:relative;">
+              <button
+                on:click|stopPropagation={() => showSolidDropdown = !showSolidDropdown}
+                style="display:flex;align-items:center;gap:6px;padding:7px 12px 7px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);font-size:13px;font-weight:500;color:#ffffff;cursor:pointer;white-space:nowrap;">
+                <span>{activeSolid.label} ({activeSolid.carbs}g)</span>
+                <ChevronDown size={14} style="color:rgba(255,255,255,0.55);transition:transform 0.18s cubic-bezier(0.35,0,0.25,1);transform:rotate({showSolidDropdown ? 180 : 0}deg);flex-shrink:0;" />
+              </button>
+              {#if showSolidDropdown}
+                <div
+                  on:click|stopPropagation
+                  style="position:absolute;right:0;top:calc(100% + 6px);background:#1c1c22;border:1px solid rgba(255,255,255,0.15);border-radius:14px;overflow:hidden;min-width:170px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                  {#each allSolidProducts as p, idx}
+                    <button
+                      on:click|stopPropagation={() => { solidProduct = p.id; showSolidDropdown = false; }}
+                      style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 16px;font-size:14px;font-weight:{p.id === solidProduct ? '600' : '400'};color:{p.id === solidProduct ? '#ffffff' : 'rgba(255,255,255,0.65)'};background:{p.id === solidProduct ? 'rgba(255,255,255,0.06)' : 'transparent'};border:none;cursor:pointer;text-align:left;{idx < allSolidProducts.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
+                      <span>{p.label}</span>
+                      <span style="color:rgba(255,255,255,0.4);font-size:12px;margin-left:12px;">{p.carbs}g</span>
+                    </button>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+          </div>
+          {#if fuelingEvents.length === 0}
+            <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.rideTooShort}</p>
+          {:else if fuelingEvents[0].carbs === 0}
+            <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.drinkCoversAll}</p>
+          {:else if allSlotsIdentical}
+            <!-- Compact summary — all slots identical, one-liner -->
+            <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.12);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <div>
+                <div style="color:#ffffff;font-weight:700;font-size:15px;">{fuelingEvents[0].units}× {activeSolid.label} <span style="font-weight:400;color:rgba(255,255,255,0.50);font-size:13px;">({activeSolid.carbs}g)</span></div>
+                <div style="color:rgba(255,255,255,0.50);font-size:12px;margin-top:3px;">{$t.scheduleEvery20min}</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <div style="color:rgba(255,255,255,0.70);font-size:13px;font-variant-numeric:tabular-nums;">{fuelingEvents[0].time} – {fuelingEvents[fuelingEvents.length - 1].time}</div>
+                <div style="color:rgba(255,255,255,0.50);font-size:12px;margin-top:3px;">{$t.solidUnitsTotal(totalSolidUnits, solidLabel)}</div>
+              </div>
+            </div>
+            {#if drinkCarbsPerHour > 0}
+              <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:8px;">{$t.reducedByDrink(drinkCarbsPerHour)}</p>
+            {/if}
+          {:else}
+            <!-- Full list — slots vary -->
+            <div role="list" style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
+              {#each fuelingEvents as event, i}
+                <div role="listitem" class="flex items-center justify-between px-lg py-md"
+                  style="{i < fuelingEvents.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08);' : ''}">
+                  <span style="color:rgba(255,255,255,0.70);font-size:13px;font-variant-numeric:tabular-nums;min-width:2.6rem;">{event.time}</span>
+                  <span style="color:#ffffff;font-weight:700;font-size:15px;">{event.carbs}g</span>
+                  <span style="color:rgba(255,255,255,0.70);font-size:12px;">{event.units}× {solidLabel}</span>
+                </div>
               {/each}
             </div>
-          </div>
-          <!-- Bottle size selector -->
-          <div class="flex items-center justify-between mb-lg flex-wrap gap-sm">
-            <span style="color:rgba(255,255,255,0.7);font-size:13px;">{$t.bottleSize}</span>
-            <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
-              <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({bottleSizeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 500 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" aria-pressed={bottleSize === 500} on:click={() => (bottleSize = 500)}>500ml</button>
-              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 750 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" aria-pressed={bottleSize === 750} on:click={() => (bottleSize = 750)}>750ml</button>
-              <button style="position:relative;padding:6px 14px;font-size:13px;font-weight:500;text-align:center;color:{bottleSize === 1000 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;" aria-pressed={bottleSize === 1000} on:click={() => (bottleSize = 1000)}>1L</button>
+            <div class="flex items-center justify-between mt-md">
+              <p style="color:rgba(255,255,255,0.70);font-size:12px;">{$t.firstFuel}</p>
+              <p style="color:rgba(255,255,255,0.70);font-size:12px;font-weight:600;">{$t.solidUnitsTotal(totalSolidUnits, solidLabel)}</p>
             </div>
-          </div>
-          <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
-            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.12);">
-              <span style="color:rgba(255,255,255,0.6);font-size:14px;">{$t.bottlesNeeded}</span>
-              <span style="color:#fff;font-weight:700;font-size:15px;">{bottleCount}</span>
-            </div>
-            <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.12);">
-              <span style="color:rgba(255,255,255,0.6);font-size:14px;">{$t.fluidPerBottle}</span>
-              <span style="color:#fff;font-weight:700;font-size:15px;">{mlPerBottle} ml</span>
-            </div>
-            {#if drinkCarbsPerBottle > 0}
-              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid rgba(255,255,255,0.12);">
-                <span style="color:rgba(255,255,255,0.6);font-size:14px;">{$t.carbsFromDrink}</span>
-                <span style="color:#fff;font-weight:700;font-size:15px;">{drinkCarbsPerBottle} g/bottle</span>
-              </div>
+            {#if drinkCarbsPerHour > 0}
+              <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:6px;">{$t.reducedByDrink(drinkCarbsPerHour)}</p>
             {/if}
-            <div class="flex items-center justify-between px-lg py-md">
-              <span style="color:rgba(255,255,255,0.6);font-size:14px;">{$t.extraSolidCarbs}</span>
-              <span style="color:#fff;font-weight:700;font-size:15px;">{Math.max(0, carbsPerBottle)} g/bottle</span>
-            </div>
-          </div>
-          {#if drinkCarbsPerHour > 0}
-            <p style="color:rgba(255,255,255,0.70);font-size:11px;margin-top:10px;">{$t.drinkCoversCarbs(drinkCarbsPerHour)}</p>
-          {:else}
-            <p style="color:rgba(255,255,255,0.70);font-size:12px;margin-top:10px;">{$t.waterOnly}</p>
           {/if}
+        </div>
 
-          <!-- Pack checklist -->
-          {#if packItems.length > 0}
-            <div style="margin-top:20px;border-top:1px solid rgba(255,255,255,0.12);padding-top:16px;">
-              <div class="flex items-center justify-between mb-md">
-                <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">{$t.packList}</span>
-                {#if checkedPack.size > 0}
-                  <button style="color:rgba(255,255,255,0.70);font-size:12px;min-height:44px;padding:0 8px;display:flex;align-items:center;" on:click={resetPack}>{$t.reset}</button>
-                {/if}
+      <!-- Tab 2: Checklist — pickers + pack list -->
+      {:else}
+        <div in:fade={{ duration: 250 }}>
+          {#if bottleCount === 0}
+            <p style="color:rgba(255,255,255,0.70);font-size:14px;">{$t.noBottles}</p>
+          {:else}
+            <!-- Compact pickers row -->
+            <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
+              <!-- Drink type -->
+              <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex:1;min-width:160px;">
+                <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:8px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({drinkIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+                {#each DRINK_PRODUCTS as p}
+                  <button style="position:relative;padding:5px 6px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                    aria-pressed={drinkProduct === p.id} on:click={() => (drinkProduct = p.id)}>{p.label}</button>
+                {/each}
               </div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
+              <!-- Bottle size -->
+              <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
+                <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:8px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({bottleSizeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+                <button style="position:relative;padding:5px 10px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 500 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 500} on:click={() => (bottleSize = 500)}>500ml</button>
+                <button style="position:relative;padding:5px 10px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 750 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 750} on:click={() => (bottleSize = 750)}>750ml</button>
+                <button style="position:relative;padding:5px 10px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 1000 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 1000} on:click={() => (bottleSize = 1000)}>1L</button>
+              </div>
+            </div>
+
+            <!-- Checklist -->
+            {#if packItems.length > 0}
+              <div style="display:flex;flex-direction:column;gap:2px;">
                 {#each packItems as item}
                   {@const checked = checkedPack.has(item.id)}
                   <button
@@ -1109,9 +1116,11 @@
                   </button>
                 {/each}
               </div>
-            </div>
+              {#if checkedPack.size > 0}
+                <button style="color:rgba(255,255,255,0.50);font-size:12px;min-height:44px;padding:0;display:flex;align-items:center;margin-top:4px;" on:click={resetPack}>{$t.reset}</button>
+              {/if}
+            {/if}
           {/if}
-        {/if}
         </div>
       {/if}
     </div>
@@ -1134,281 +1143,342 @@
 
   </div>
 
-  <!-- Settings sheet -->
+  <!-- Settings sheet — with in-sheet navigation to products view -->
   {#if showSettingsSheet}
     <div class="fixed inset-0 z-[996] bg-black/55"
-      on:click={() => showSettingsSheet = false} role="presentation"
+      on:click={closeSettings} role="presentation"
       transition:fade={{ duration: 300 }}></div>
     <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[20px] px-6 pt-5 max-w-lg mx-auto"
       style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
-      on:touchstart={(e) => onSheetDragStart(e, () => showSettingsSheet = false)}
+      on:touchstart={(e) => onSheetDragStart(e, closeSettings)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 500, duration: 420, easing: quintOut }}
       out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:var(--c-drag-handle);"></div>
-      <p class="text-heading-md font-bold mb-lg" style="color:var(--c-on-surface);">{$t.settings}</p>
 
-      <!-- Appearance + Language -->
-      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
-        <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-          <span style="color:var(--c-on-surface);font-size:15px;">{$t.appearance}</span>
-          <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
-            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({themeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'light' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-4 h-4" /></button>
-            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}><Smartphone class="w-4 h-4" /></button>
-            <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'dark' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-4 h-4" /></button>
-          </div>
+      <!-- Navigation header -->
+      {#if settingsView === 'main'}
+        <p class="text-heading-md font-bold mb-lg" style="color:var(--c-on-surface);">{$t.settings}</p>
+      {:else}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <button on:click={() => { settingsNavDir = -1; settingsView = 'main'; }}
+            style="display:flex;align-items:center;gap:4px;color:var(--c-on-surface-2);background:transparent;border:none;cursor:pointer;min-height:44px;padding:0;">
+            <ChevronLeft size={18} />
+            <span style="font-size:15px;">{$t.back}</span>
+          </button>
+          <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);">{$t.customProducts}</p>
+          <div style="width:60px;"></div>
         </div>
-        <div class="flex items-center justify-between px-lg py-md">
-          <span style="color:var(--c-on-surface);font-size:15px;">{$t.language}</span>
-          <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
-            <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({$lang === 'de' ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-            <button on:click={() => lang.update(() => 'en')} style="position:relative;flex:1;padding:6px 16px;font-size:13px;font-weight:500;color:{$lang === 'en' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;">EN</button>
-            <button on:click={() => lang.update(() => 'de')} style="position:relative;flex:1;padding:6px 16px;font-size:13px;font-weight:500;color:{$lang === 'de' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;">DE</button>
-          </div>
-        </div>
-      </div>
+      {/if}
 
-      <!-- Profile section -->
-      <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--c-on-surface-2);margin:16px 0 6px 4px;">{$t.profile}</p>
-      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+      <!-- Animated content area -->
+      <div style="overflow-x:hidden;">
+        {#if settingsView === 'main'}
+          <div in:fly={{ x: settingsNavDir * -300, duration: settingsNavDir === 0 ? 0 : 280, easing: quintOut }}>
 
-        <!-- Weight row -->
-        <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
-          <label for="settings-weight" style="font-size:15px;color:var(--c-on-surface);">{$t.bodyWeight}</label>
-          <div class="flex items-center gap-xs">
-            <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
-              class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
-              style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-              on:focus={focusInput} />
-            <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
-          </div>
-        </div>
+            <!-- Appearance + Language -->
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
+                <span style="color:var(--c-on-surface);font-size:15px;">{$t.appearance}</span>
+                <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+                  <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({themeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+                  <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'light' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-4 h-4" /></button>
+                  <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}><Smartphone class="w-4 h-4" /></button>
+                  <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'dark' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-4 h-4" /></button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between px-lg py-md">
+                <span style="color:var(--c-on-surface);font-size:15px;">{$t.language}</span>
+                <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+                  <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({$lang === 'de' ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+                  <button on:click={() => lang.update(() => 'en')} style="position:relative;flex:1;padding:6px 16px;font-size:13px;font-weight:500;color:{$lang === 'en' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;">EN</button>
+                  <button on:click={() => lang.update(() => 'de')} style="position:relative;flex:1;padding:6px 16px;font-size:13px;font-weight:500;color:{$lang === 'de' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;">DE</button>
+                </div>
+              </div>
+            </div>
 
-        <!-- FTP row -->
-        <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
-          <div>
-            <label for="settings-ftp" style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.ftpLabel}</label>
-            <span class="text-caption-sm text-[--c-on-surface-2]">{$t.ftpSub}</span>
-          </div>
-          <div class="flex items-center gap-xs">
-            <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
-              class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
-              style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-              on:focus={focusInput} />
-            <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
-          </div>
-        </div>
+            <!-- Profile section -->
+            <p style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--c-on-surface-2);margin:16px 0 6px 4px;">{$t.profile}</p>
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
 
-        <!-- Units row -->
-        <div class="flex items-center justify-between px-lg py-md gap-md flex-wrap" style="border-bottom:1px solid var(--c-border);">
-          <span style="font-size:15px;color:var(--c-on-surface);">{$t.units}</span>
-          <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
-            <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({imperial ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-            <button
-              style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{!imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-              on:click={() => { if (imperial) toggleImperial(); }}>{$t.kmKg}</button>
-            <button
-              style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-              on:click={() => { if (!imperial) toggleImperial(); }}>{$t.miLbs}</button>
-          </div>
-        </div>
+              <!-- Weight row -->
+              <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
+                <label for="settings-weight" style="font-size:15px;color:var(--c-on-surface);">{$t.bodyWeight}</label>
+                <div class="flex items-center gap-xs">
+                  <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
+                    class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
+                    style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                    on:focus={focusInput} />
+                  <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
+                </div>
+              </div>
 
-        <!-- Sweat Rate row -->
-        <div class="flex items-center justify-between px-lg py-md gap-md">
-          <div class="flex-shrink-0">
-            <span style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.sweatRate}</span>
-            <span class="text-caption-sm text-[--c-on-surface-2]">
-              {sweatRate === 'light' ? $t.sweatLight : sweatRate === 'heavy' ? $t.sweatHeavy : $t.sweatBaseline}
-            </span>
-          </div>
-          <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;flex-shrink:0;">
-            <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({sweatIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-            {#each SWEAT_LEVELS as { value, drops }}
+              <!-- FTP row -->
+              <div class="flex items-center justify-between px-lg py-sm" style="border-bottom:1px solid var(--c-border);">
+                <div>
+                  <label for="settings-ftp" style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.ftpLabel}</label>
+                  <span class="text-caption-sm text-[--c-on-surface-2]">{$t.ftpSub}</span>
+                </div>
+                <div class="flex items-center gap-xs">
+                  <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
+                    class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
+                    style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                    on:focus={focusInput} />
+                  <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
+                </div>
+              </div>
+
+              <!-- Units row -->
+              <div class="flex items-center justify-between px-lg py-md gap-md flex-wrap" style="border-bottom:1px solid var(--c-border);">
+                <span style="font-size:15px;color:var(--c-on-surface);">{$t.units}</span>
+                <div style="position:relative;display:flex;border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+                  <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({imperial ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+                  <button
+                    style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{!imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                    on:click={() => { if (imperial) toggleImperial(); }}>{$t.kmKg}</button>
+                  <button
+                    style="position:relative;flex:1;padding:6px 18px;font-size:13px;font-weight:500;white-space:nowrap;color:{imperial ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                    on:click={() => { if (!imperial) toggleImperial(); }}>{$t.miLbs}</button>
+                </div>
+              </div>
+
+              <!-- Sweat Rate row -->
+              <div class="flex items-center justify-between px-lg py-md gap-md">
+                <div class="flex-shrink-0">
+                  <span style="font-size:15px;color:var(--c-on-surface);display:block;">{$t.sweatRate}</span>
+                  <span class="text-caption-sm text-[--c-on-surface-2]">
+                    {sweatRate === 'light' ? $t.sweatLight : sweatRate === 'heavy' ? $t.sweatHeavy : $t.sweatBaseline}
+                  </span>
+                </div>
+                <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;flex-shrink:0;">
+                  <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({sweatIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
+                  {#each SWEAT_LEVELS as { value, drops }}
+                    <button
+                      class="flex items-center justify-center gap-[2px]"
+                      style="position:relative;padding:6px 12px;color:{sweatRate === value ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                      aria-label="{value === 'light' ? $t.sweatLightAria : value === 'moderate' ? $t.sweatModerateAria : $t.sweatHeavyAria}"
+                      aria-pressed={sweatRate === value}
+                      on:click={() => (sweatRate = value)}>
+                      {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
+                    </button>
+                  {/each}
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Custom Products nav row -->
+            <p class="text-caption-sm font-semibold uppercase tracking-wide text-[--c-on-surface-2] mb-xs mt-lg">{$t.customProducts}</p>
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
               <button
-                class="flex items-center justify-center gap-[2px]"
-                style="position:relative;padding:6px 12px;color:{sweatRate === value ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
-                aria-label="{value === 'light' ? $t.sweatLightAria : value === 'moderate' ? $t.sweatModerateAria : $t.sweatHeavyAria}"
-                aria-pressed={sweatRate === value}
-                on:click={() => (sweatRate = value)}>
-                {#each { length: drops } as _}<Droplet class="w-3.5 h-3.5" />{/each}
+                on:click={() => { settingsNavDir = 1; settingsView = 'products'; }}
+                style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;">
+                <span style="font-size:15px;color:var(--c-on-surface);">{$t.customProducts}</span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:14px;color:var(--c-on-surface-2);">{allSolidProducts.find(p => p.id === solidProduct)?.label ?? ''}</span>
+                  <ChevronRight size={16} style="color:var(--c-on-surface-3);" />
+                </div>
               </button>
-            {/each}
-          </div>
-        </div>
+            </div>
 
-      </div>
-
-      <!-- Custom Products nav row -->
-      <p class="text-caption-sm font-semibold uppercase tracking-wide text-[--c-on-surface-2] mb-xs mt-lg">{$t.customProducts}</p>
-      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
-        <button
-          on:click={() => showProductsSheet = true}
-          style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;">
-          <span style="font-size:15px;color:var(--c-on-surface);">{$t.customProducts}</span>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:14px;color:var(--c-on-surface-2);">{allSolidProducts.find(p => p.id === solidProduct)?.label ?? ''}</span>
-            <ChevronRight size={16} style="color:var(--c-on-surface-3);" />
-          </div>
-        </button>
-      </div>
-
-      <button on:click={() => showSettingsSheet = false}
-        class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
-        {$t.close}
-      </button>
-    </div>
-  {/if}
-
-  <!-- Products sub-sheet (z-index above settings) -->
-  {#if showProductsSheet}
-    <div class="fixed inset-0 z-[999] bg-black/40"
-      on:click={() => showProductsSheet = false} role="presentation"
-      transition:fade={{ duration: 200 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[1001] rounded-t-[20px] max-w-lg mx-auto"
-      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
-      on:touchstart={(e) => onSheetDragStart(e, () => showProductsSheet = false)}
-      on:touchmove|preventDefault={onSheetDragMove}
-      on:touchend={onSheetDragEnd}
-      in:fly={{ y: 400, duration: 380, easing: quintOut }}
-      out:fly={{ y: 400, duration: 220, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mt-3 mb-4" style="background:var(--c-drag-handle);"></div>
-
-      <div style="padding:0 24px;">
-        <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);margin:0 0 20px;">{$t.customProducts}</p>
-
-        <!-- 2-row add form -->
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
-          <input
-            type="text"
-            bind:value={_newProductName}
-            placeholder={$t.productNamePlaceholder}
-            style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
-            on:focus={focusInput} />
-          <div style="display:flex;gap:8px;align-items:center;">
-            <input
-              type="number"
-              inputmode="numeric"
-              bind:value={_newProductCarbs}
-              placeholder="25"
-              min="1" max="200"
-              style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
-              on:focus={focusInput} />
-            <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
-            <button
-              on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
-              style="flex:1;height:44px;border-radius:12px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:15px;font-weight:600;opacity:{_newProductName.trim() && _newProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_newProductName.trim() && _newProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
-              {$t.addProduct}
+            <button on:click={closeSettings}
+              class="w-full py-3 rounded-full text-button-md font-extra-bold"
+              style="background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
+              {$t.close}
             </button>
           </div>
-        </div>
-        <p style="font-size:13px;color:var(--c-on-surface-3);margin:0 0 20px;line-height:1.4;">{$t.productCarbsHint}</p>
 
-        <!-- Product list — all products selectable -->
-        <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
-          {#each allSolidProducts as p, i (p.id)}
-            {@const isActive = p.id === solidProduct}
-            {@const isCustom = !['gel','bar','chew'].includes(p.id)}
-            <div style="display:flex;align-items:center;min-height:44px;{i < allSolidProducts.length - 1 ? 'border-bottom:1px solid var(--c-border);' : ''}">
-              <button
-                on:click={() => solidProduct = p.id}
-                style="flex:1;display:flex;align-items:center;gap:10px;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;text-align:left;">
-                <div style="width:20px;flex-shrink:0;color:{isActive ? 'var(--c-seg-active)' : 'transparent'};">
-                  <Check size={18} />
-                </div>
-                <span style="font-size:15px;color:var(--c-on-surface);flex:1;">{p.label}</span>
-                <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g KH</span>
-              </button>
-              {#if isCustom}
+        {:else}
+          <div in:fly={{ x: settingsNavDir * 300, duration: 280, easing: quintOut }}>
+            <!-- Products view -->
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+              <input
+                type="text"
+                bind:value={_newProductName}
+                placeholder={$t.productNamePlaceholder}
+                style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
+                on:focus={focusInput} />
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input
+                  type="number"
+                  inputmode="numeric"
+                  bind:value={_newProductCarbs}
+                  placeholder="25"
+                  min="1" max="200"
+                  style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
+                  on:focus={focusInput} />
+                <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
                 <button
-                  on:click={() => removeCustomProduct(p.id)}
-                  style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-3);flex-shrink:0;"
-                  aria-label={$t.deleteProduct}>
-                  <X size={16} />
+                  on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
+                  style="flex:1;height:44px;border-radius:12px;background:var(--c-seg-active);color:var(--c-seg-active-text);border:none;cursor:pointer;font-size:15px;font-weight:600;opacity:{_newProductName.trim() && _newProductCarbs > 0 ? '1' : '0.4'};pointer-events:{_newProductName.trim() && _newProductCarbs > 0 ? 'auto' : 'none'};transition:opacity 0.15s;">
+                  {$t.addProduct}
                 </button>
-              {:else}
-                <div style="width:44px;flex-shrink:0;"></div>
-              {/if}
+              </div>
             </div>
-          {/each}
-        </div>
+            <p style="font-size:13px;color:var(--c-on-surface-3);margin:0 0 20px;line-height:1.4;">{$t.productCarbsHint}</p>
 
-        <button on:click={() => showProductsSheet = false}
-          style="width:100%;padding:14px;border-radius:14px;background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;font-size:15px;font-weight:600;">
-          {$t.close}
-        </button>
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
+              {#each allSolidProducts as p, i (p.id)}
+                {@const isActive = p.id === solidProduct}
+                {@const isCustom = !['gel','bar','chew'].includes(p.id)}
+                <div style="display:flex;align-items:center;min-height:44px;{i < allSolidProducts.length - 1 ? 'border-bottom:1px solid var(--c-border);' : ''}">
+                  <button
+                    on:click={() => solidProduct = p.id}
+                    style="flex:1;display:flex;align-items:center;gap:10px;padding:0 16px;min-height:44px;background:transparent;border:none;cursor:pointer;text-align:left;">
+                    <div style="width:20px;flex-shrink:0;color:{isActive ? 'var(--c-seg-active)' : 'transparent'};">
+                      <Check size={18} />
+                    </div>
+                    <span style="font-size:15px;color:var(--c-on-surface);flex:1;">{p.label}</span>
+                    <span style="font-size:14px;color:var(--c-on-surface-2);">{p.carbs}g KH</span>
+                  </button>
+                  {#if isCustom}
+                    <button
+                      on:click={() => removeCustomProduct(p.id)}
+                      style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--c-on-surface-3);flex-shrink:0;"
+                      aria-label={$t.deleteProduct}>
+                      <X size={16} />
+                    </button>
+                  {:else}
+                    <div style="width:44px;flex-shrink:0;"></div>
+                  {/if}
+                </div>
+              {/each}
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
   {/if}
 
-  <!-- About sheet -->
+  <!-- About sheet — with in-sheet navigation to math and impressum views -->
   {#if showAboutSheet}
     <div class="fixed inset-0 z-[996] bg-black/55"
-      on:click={() => showAboutSheet = false} role="presentation"
+      on:click={closeAbout} role="presentation"
       transition:fade={{ duration: 300 }}></div>
     <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 max-w-lg mx-auto"
       style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
-      on:touchstart={(e) => onSheetDragStart(e, () => showAboutSheet = false)}
+      on:touchstart={(e) => onSheetDragStart(e, closeAbout)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
       in:fly={{ y: 500, duration: 420, easing: quintOut }}
       out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
       <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:var(--c-drag-handle);"></div>
 
-      <!-- App identity -->
-      <div class="flex items-center gap-md mb-lg">
-        <img src="/favicon.svg" alt="" class="w-10 h-10 flex-shrink-0" style="border-radius:18%;" />
-        <div>
-          <p class="text-heading-md font-extra-bold" style="color:var(--c-on-surface);"><span style="font-style:italic;">bonk</span><span style="color:#f73b20;">proof!</span></p>
-          <p class="text-caption-sm" style="color:var(--c-on-surface-2);">v{VERSION}</p>
+      <!-- Navigation header -->
+      {#if aboutView === 'main'}
+        <!-- App identity -->
+        <div class="flex items-center gap-md mb-lg">
+          <img src="/favicon.svg" alt="" class="w-10 h-10 flex-shrink-0" style="border-radius:18%;" />
+          <div>
+            <p class="text-heading-md font-extra-bold" style="color:var(--c-on-surface);"><span style="font-style:italic;">bonk</span><span style="color:#f73b20;">proof!</span></p>
+            <p class="text-caption-sm" style="color:var(--c-on-surface-2);">v{VERSION}</p>
+          </div>
         </div>
-      </div>
-
-      <p class="text-body-md mb-lg" style="color:var(--c-on-surface-3);">{$t.aboutDesc}</p>
-
-      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:24px;">
-        <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-          <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.dataStorage}</span>
-          <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.dataStorageVal}</span>
+      {:else}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <button on:click={() => { aboutNavDir = -1; aboutView = 'main'; }}
+            style="display:flex;align-items:center;gap:4px;color:var(--c-on-surface-2);background:transparent;border:none;cursor:pointer;min-height:44px;padding:0;">
+            <ChevronLeft size={18} />
+            <span style="font-size:15px;">{$t.back}</span>
+          </button>
+          <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);">{aboutView === 'math' ? $t.howMathWorks : $t.impressum}</p>
+          <div style="width:60px;"></div>
         </div>
-        <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-          <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.serverRequests}</span>
-          <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.serverRequestsVal}</span>
-        </div>
-        <div class="flex items-center justify-between px-lg py-md">
-          <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.worksOffline}</span>
-          <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.worksOfflineVal}</span>
-        </div>
-      </div>
+      {/if}
 
-      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
-        <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { showAboutSheet = false; setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 60); }}>
-          <span style="color:var(--c-on-surface);font-size:15px;">{$t.tourReplay}</span>
-          <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
-        </button>
-        <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { showAboutSheet = false; setTimeout(() => showMathSheet = true, 60); }}>
-          <span style="color:var(--c-on-surface);font-size:15px;">{$t.howItWorks}</span>
-          <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
-        </button>
-        <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;" on:click={() => { showAboutSheet = false; setTimeout(() => showImpressumSheet = true, 60); }}>
-          <span style="color:var(--c-on-surface);font-size:15px;">{$t.legal}</span>
-          <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
-        </button>
-      </div>
+      <!-- Animated content area -->
+      <div style="overflow-x:hidden;">
+        {#if aboutView === 'main'}
+          <div in:fly={{ x: aboutNavDir * -300, duration: aboutNavDir === 0 ? 0 : 280, easing: quintOut }}>
 
-      <div class="flex gap-sm">
-        <button on:click={() => showAboutSheet = false}
-          class="flex-1 py-3 rounded-full text-button-md font-extra-bold"
-          style="background:var(--c-surface-soft);color:var(--c-on-surface);border:1px solid var(--c-border-input);">
-          {$t.close}
-        </button>
-        <a href="mailto:moindnl@proton.me"
-          class="flex-1 py-3 rounded-full text-button-md font-extra-bold text-center"
-          style="background:var(--c-seg-active);color:var(--c-seg-active-text);text-decoration:none;">
-          E-Mail <ExternalLink size={14} style="display:inline;vertical-align:middle;margin-left:4px;" />
-        </a>
+            <p class="text-body-md mb-lg" style="color:var(--c-on-surface-3);">{$t.aboutDesc}</p>
+
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:24px;">
+              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
+                <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.dataStorage}</span>
+                <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.dataStorageVal}</span>
+              </div>
+              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
+                <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.serverRequests}</span>
+                <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.serverRequestsVal}</span>
+              </div>
+              <div class="flex items-center justify-between px-lg py-md">
+                <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.worksOffline}</span>
+                <span style="color:var(--c-on-surface);font-weight:600;font-size:14px;">{$t.worksOfflineVal}</span>
+              </div>
+            </div>
+
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
+              <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { closeAbout(); setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 60); }}>
+                <span style="color:var(--c-on-surface);font-size:15px;">{$t.tourReplay}</span>
+                <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
+              </button>
+              <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { aboutNavDir = 1; aboutView = 'math'; }}>
+                <span style="color:var(--c-on-surface);font-size:15px;">{$t.howItWorks}</span>
+                <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
+              </button>
+              <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;" on:click={() => { aboutNavDir = 1; aboutView = 'impressum'; }}>
+                <span style="color:var(--c-on-surface);font-size:15px;">{$t.legal}</span>
+                <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
+              </button>
+            </div>
+
+            <div class="flex gap-sm">
+              <button on:click={closeAbout}
+                class="flex-1 py-3 rounded-full text-button-md font-extra-bold"
+                style="background:var(--c-surface-soft);color:var(--c-on-surface);border:1px solid var(--c-border-input);">
+                {$t.close}
+              </button>
+              <a href="mailto:moindnl@proton.me"
+                class="flex-1 py-3 rounded-full text-button-md font-extra-bold text-center"
+                style="background:var(--c-seg-active);color:var(--c-seg-active-text);text-decoration:none;">
+                E-Mail <ExternalLink size={14} style="display:inline;vertical-align:middle;margin-left:4px;" />
+              </a>
+            </div>
+          </div>
+
+        {:else if aboutView === 'math'}
+          <div in:fly={{ x: aboutNavDir * 300, duration: 280, easing: quintOut }}>
+            <div class="mb-lg" style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);">
+              <div class="grid text-caption-sm font-extra-bold uppercase" style="grid-template-columns:16px 1fr 68px 88px;background:var(--c-surface-soft);padding:8px 14px;gap:8px;color:var(--c-on-surface-2);letter-spacing:0.05em;">
+                <span></span><span>{$t.zoneCol}</span><span class="text-right">{$t.ftpCol}</span><span class="text-right">{$t.carbsCol}</span>
+              </div>
+              {#each $t.mathZones as row, i}
+                {@const dotColor = i === 0 ? '#a1a1aa' : i < 3 ? '#3f3f46' : '#f73b20'}
+                <div class="grid text-caption-sm items-center" style="grid-template-columns:16px 1fr 68px 88px;padding:10px 14px;gap:8px;border-top:1px solid var(--c-border);">
+                  <span style="width:8px;height:8px;border-radius:50%;background:{dotColor};display:block;flex-shrink:0;"></span>
+                  <span style="color:var(--c-on-surface);font-weight:500;">{row.zone}</span>
+                  <span class="text-right" style="color:var(--c-on-surface-2);">{row.ftp}</span>
+                  <span class="text-right" style="color:var(--c-on-surface-3);font-weight:600;">{row.carbs}</span>
+                </div>
+              {/each}
+            </div>
+
+            <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathFluidNote}</p>
+            <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathHeatNote}</p>
+            <p class="text-caption-sm mb-lg" style="color:var(--c-on-surface-2);">{$t.mathElectroNote}</p>
+          </div>
+
+        {:else}
+          <div in:fly={{ x: aboutNavDir * 300, duration: 280, easing: quintOut }}>
+            <p class="text-caption-sm mb-xs" style="color:var(--c-on-surface-2);">{$t.impressumSub}</p>
+            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
+              <div class="px-lg py-md" style="border-bottom:1px solid var(--c-border);">
+                <p style="color:var(--c-on-surface);font-size:14px;font-weight:600;">Daniel Muschinski</p>
+                <p style="color:var(--c-on-surface-2);font-size:13px;margin-top:2px;">Freudenbegrstraße 4, 28213 Bremen</p>
+              </div>
+              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
+                <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.impressumContact}</span>
+                <a href="mailto:moindnl@proton.me"
+                  style="color:var(--c-on-surface);font-size:14px;font-weight:600;text-decoration:none;">moindnl@proton.me</a>
+              </div>
+              <div class="px-lg py-md">
+                <p style="color:var(--c-on-surface-2);font-size:13px;line-height:1.5;">{$t.impressumNote}</p>
+              </div>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
   {/if}
@@ -1489,86 +1559,6 @@
     </div>
   {/if}
 
-  <!-- Impressum sheet -->
-  {#if showImpressumSheet}
-    <div class="fixed inset-0 z-[996] bg-black/55"
-      on:click={() => showImpressumSheet = false} role="presentation"
-      transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 max-w-lg mx-auto"
-      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
-      on:touchstart={(e) => onSheetDragStart(e, () => showImpressumSheet = false)}
-      on:touchmove|preventDefault={onSheetDragMove}
-      on:touchend={onSheetDragEnd}
-      in:fly={{ y: 500, duration: 420, easing: quintOut }}
-      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:var(--c-drag-handle);"></div>
-      <p class="text-heading-md font-extra-bold mb-lg" style="color:var(--c-on-surface);">{$t.impressum}</p>
-
-      <p class="text-caption-sm mb-xs" style="color:var(--c-on-surface-2);">{$t.impressumSub}</p>
-      <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
-        <div class="px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-          <p style="color:var(--c-on-surface);font-size:14px;font-weight:600;">Daniel Muschinski</p>
-          <p style="color:var(--c-on-surface-2);font-size:13px;margin-top:2px;">Freudenbegrstraße 4, 28213 Bremen</p>
-        </div>
-        <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-          <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.impressumContact}</span>
-          <a href="mailto:moindnl@proton.me"
-            style="color:var(--c-on-surface);font-size:14px;font-weight:600;text-decoration:none;">moindnl@proton.me</a>
-        </div>
-        <div class="px-lg py-md">
-          <p style="color:var(--c-on-surface-2);font-size:13px;line-height:1.5;">{$t.impressumNote}</p>
-        </div>
-      </div>
-
-      <button on:click={() => showImpressumSheet = false}
-        class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:var(--c-surface-soft);color:var(--c-on-surface);border:1px solid var(--c-border-input);">
-        {$t.close}
-      </button>
-    </div>
-  {/if}
-
-  <!-- Math sheet -->
-  {#if showMathSheet}
-    <div class="fixed inset-0 z-[996] bg-black/55"
-      on:click={() => showMathSheet = false} role="presentation"
-      transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] px-6 pt-5 max-w-lg mx-auto"
-      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
-      on:touchstart={(e) => onSheetDragStart(e, () => showMathSheet = false)}
-      on:touchmove|preventDefault={onSheetDragMove}
-      on:touchend={onSheetDragEnd}
-      in:fly={{ y: 500, duration: 420, easing: quintOut }}
-      out:fly={{ y: 500, duration: 240, easing: cubicIn }}>
-      <div class="w-10 h-1 rounded-full mx-auto mb-5" style="background:var(--c-drag-handle);"></div>
-      <p class="text-heading-md font-extra-bold mb-lg" style="color:var(--c-on-surface);">{$t.howMathWorks}</p>
-
-      <div class="mb-lg" style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);">
-        <div class="grid text-caption-sm font-extra-bold uppercase" style="grid-template-columns:16px 1fr 68px 88px;background:var(--c-surface-soft);padding:8px 14px;gap:8px;color:var(--c-on-surface-2);letter-spacing:0.05em;">
-          <span></span><span>{$t.zoneCol}</span><span class="text-right">{$t.ftpCol}</span><span class="text-right">{$t.carbsCol}</span>
-        </div>
-        {#each $t.mathZones as row, i}
-          {@const dotColor = i === 0 ? '#a1a1aa' : i < 3 ? '#3f3f46' : '#f73b20'}
-          <div class="grid text-caption-sm items-center" style="grid-template-columns:16px 1fr 68px 88px;padding:10px 14px;gap:8px;border-top:1px solid var(--c-border);">
-            <span style="width:8px;height:8px;border-radius:50%;background:{dotColor};display:block;flex-shrink:0;"></span>
-            <span style="color:var(--c-on-surface);font-weight:500;">{row.zone}</span>
-            <span class="text-right" style="color:var(--c-on-surface-2);">{row.ftp}</span>
-            <span class="text-right" style="color:var(--c-on-surface-3);font-weight:600;">{row.carbs}</span>
-          </div>
-        {/each}
-      </div>
-
-      <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathFluidNote}</p>
-      <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathHeatNote}</p>
-      <p class="text-caption-sm mb-lg" style="color:var(--c-on-surface-2);">{$t.mathElectroNote}</p>
-
-      <button on:click={() => showMathSheet = false}
-        class="w-full py-3 rounded-full text-button-md font-extra-bold"
-        style="background:var(--c-surface-soft);color:var(--c-on-surface);border:1px solid var(--c-border-input);">
-        {$t.close}
-      </button>
-    </div>
-  {/if}
 
   <!-- Onboarding wizard — fullscreen, first-launch only -->
   {#if onboardingStep >= 0}

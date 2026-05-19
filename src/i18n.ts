@@ -64,9 +64,9 @@ const translations = {
     powerSub: 'Ride intensity based on your FTP',
     powerEnterHint: 'Enter FTP and ride power to see zone',
 
-    tabTotals: 'Totals',
+    tabTotals: 'Overview',
     tabSchedule: 'Schedule',
-    tabPack: 'Pack',
+    tabPack: 'Checklist',
 
     carbsLabel: 'Carbs',
     kcal: 'kcal',
@@ -76,6 +76,7 @@ const translations = {
     rideTooShort: 'Ride too short for a fueling schedule.',
     drinkCoversAll: 'No solid food needed — drink covers all carbs.',
     firstFuel: 'First fuel at 20 min · every 20 min after',
+    scheduleEvery20min: 'Every 20 min',
 
     noBottles: 'No bottles needed at this intensity.',
     drinkType: 'Drink type',
@@ -109,6 +110,7 @@ const translations = {
     worksOfflineVal: 'Yes',
     aboutDesc: 'Precision carbohydrate and fluid targets for cyclists — calculated from your FTP and planned ride power.',
     close: 'Close',
+    back: 'Back',
     settings: 'Settings',
     appearance: 'Appearance',
     language: 'Language',
@@ -206,7 +208,7 @@ const translations = {
     totalNeeds: (dur: string) => `Total needs for ${dur}`,
     solidUnitsTotal: (n: number, label: string) => `${n} ${label}s total`,
     reducedByDrink: (g: number) => `↓ ${g}g/h less solid food (offset by drink)`,
-    drinkCoversCarbs: (g: number) => `Drink covers ${g}g/h — less solid food needed. See the Schedule tab.`,
+    drinkCoversCarbs: (g: number) => `Drink covers ${g}g/h — less solid food needed.`,
     packItemSolid: (n: number, label: string, g: number, suffix: string) => `${n} × ${label} (${g}g each${suffix})`,
     packItemCarbDrink: (label: string, n: number) => `${label} mix — ${n} serving${n > 1 ? 's' : ''}`,
     packItemBottle: (n: number, ml: number) => `${n} × bottle (${ml}ml)`,
@@ -272,9 +274,9 @@ const translations = {
     powerSub: 'Intensität relativ zu deinem FTP',
     powerEnterHint: 'Gib FTP und Leistung ein, um deine Zone zu sehen',
 
-    tabTotals: 'Gesamt',
+    tabTotals: 'Überblick',
     tabSchedule: 'Zeitplan',
-    tabPack: 'Packliste',
+    tabPack: 'Einpacken',
 
     carbsLabel: 'Kohlenhydrate',
     kcal: 'kcal',
@@ -284,6 +286,7 @@ const translations = {
     rideTooShort: 'Fahrt zu kurz für Ernährungsplan.',
     drinkCoversAll: 'Keine feste Nahrung nötig — Drink deckt alle Kohlenhydrate.',
     firstFuel: 'Erste Aufnahme bei 20 min · alle 20 min danach',
+    scheduleEvery20min: 'Alle 20 min',
 
     noBottles: 'Keine Flaschen bei dieser Intensität nötig.',
     drinkType: 'Getränk',
@@ -317,6 +320,7 @@ const translations = {
     worksOfflineVal: 'Ja',
     aboutDesc: 'Präzise Kohlenhydrat- und Flüssigkeitsziele für Radfahrer — berechnet aus deinem FTP und geplanter Fahrleistung.',
     close: 'Schließen',
+    back: 'Zurück',
     settings: 'Einstellungen',
     appearance: 'Erscheinungsbild',
     language: 'Sprache',
@@ -414,7 +418,7 @@ const translations = {
     totalNeeds: (dur: string) => `Gesamtbedarf für ${dur}`,
     solidUnitsTotal: (n: number, label: string) => `${n} ${label}s gesamt`,
     reducedByDrink: (g: number) => `↓ ${g}g/h weniger Festes (durch Drink ausgeglichen)`,
-    drinkCoversCarbs: (g: number) => `Drink deckt ${g}g/h — weniger feste Nahrung nötig. Sieh dir den Zeitplan an.`,
+    drinkCoversCarbs: (g: number) => `Drink deckt ${g}g/h — weniger feste Nahrung nötig.`,
     packItemSolid: (n: number, label: string, g: number, suffix: string) => `${n} × ${label} (${g}g${suffix})`,
     packItemCarbDrink: (label: string, n: number) => `${label} — ${n} Portion${n > 1 ? 'en' : ''}`,
     packItemBottle: (n: number, ml: number) => `${n} × Flasche (${ml}ml)`,
