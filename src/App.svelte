@@ -1163,12 +1163,14 @@
       {:else}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
           <button on:click={() => { settingsNavDir = -1; settingsView = 'main'; }}
-            style="display:flex;align-items:center;gap:4px;color:var(--c-on-surface-2);background:transparent;border:none;cursor:pointer;min-height:44px;padding:0;">
-            <ChevronLeft size={18} />
-            <span style="font-size:15px;">{$t.back}</span>
+            aria-label={$t.settings}
+            style="width:44px;height:44px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:-6px;">
+            <span style="width:32px;height:32px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;color:var(--c-on-surface-2);pointer-events:none;">
+              <ChevronLeft size={18} />
+            </span>
           </button>
           <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);">{$t.customProducts}</p>
-          <div style="width:60px;"></div>
+          <div style="width:32px;"></div>
         </div>
       {/if}
 
@@ -1378,12 +1380,14 @@
       {:else}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
           <button on:click={() => { aboutNavDir = -1; aboutView = 'main'; }}
-            style="display:flex;align-items:center;gap:4px;color:var(--c-on-surface-2);background:transparent;border:none;cursor:pointer;min-height:44px;padding:0;">
-            <ChevronLeft size={18} />
-            <span style="font-size:15px;">{$t.back}</span>
+            aria-label={$t.about}
+            style="width:44px;height:44px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:-6px;">
+            <span style="width:32px;height:32px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;color:var(--c-on-surface-2);pointer-events:none;">
+              <ChevronLeft size={18} />
+            </span>
           </button>
           <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);">{aboutView === 'math' ? $t.howMathWorks : $t.impressum}</p>
-          <div style="width:60px;"></div>
+          <div style="width:32px;"></div>
         </div>
       {/if}
 
