@@ -31,3 +31,10 @@ coverage/
 
 # Package lock (optional - if you want to commit it, remove this line)
 # package-lock.json
+
+# Capacitor / iOS build artifacts (Xcode-generated, not source)
+ios/App/Pods/
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/*.xcworkspace/xcuserdata/
+ios/App/DerivedData/
+*.xcuserstate
