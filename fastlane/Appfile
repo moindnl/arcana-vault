@@ -1,0 +1,4 @@
+app_identifier "de.moindnl.bonkproof"
+apple_id ENV["FASTLANE_APPLE_ID"]   # set in .env.local — never commit
+team_id "PRQM45B6GZ"
+itc_team_id "PRQM45B6GZ"

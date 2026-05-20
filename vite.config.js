@@ -21,12 +21,14 @@ function versionPlugin() {
   };
 }
 
+const isCapacitor = process.env.CAPACITOR_BUILD === '1';
+
 export default defineConfig({
   plugins: [
     versionPlugin(),
     tailwindcss(),
     svelte(),
-    VitePWA({
+    VitePWA(isCapacitor ? { disable: true } : ({
       registerType: 'prompt',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'icon-192x192.png', 'icon-512x512.png', 'og-image.png'],
       manifest: {
@@ -61,6 +63,6 @@ export default defineConfig({
           },
         ],
       },
-    }),
+    })),
   ],
 });

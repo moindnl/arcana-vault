@@ -48,3 +48,25 @@ Native iOS developer. Target: latest iOS (iOS 18+). All implementation decisions
 - WCAG 2.1 AA minimum
 - `aria-label` on all icon-only buttons
 - Dynamic Type support where feasible
+
+## Backlog
+
+### v2.0 — Native SwiftUI Rewrite
+- Replace Capacitor/WKWebView with pure SwiftUI
+- Eliminates Guideline 4.2 risk
+- Unlocks: Dynamic Type, native VoiceOver, Widgets, Live Activities, Watch App, HealthKit
+- Estimated effort: ~2 weeks solo
+- Trigger: when adding platform-native features (widgets, Watch, HealthKit) justifies rewrite cost
+
+### v2.0 — Shake to Reset
+- Gerät schütteln → Fahrtdaten zurücksetzen
+- Bestätigung via Alert required (verhindert ungewolltes Reset)
+- Capacitor: möglich via `capacitor-shake` + Permission-Prompt (hakelig)
+- SwiftUI: nativ via `motionEnded(_:with:)` auf UIResponder, kein Permission-Prompt
+- → Als SwiftUI v2.0 Feature umsetzen
+
+### v1.x — Barcode Scanner für Produkte
+- Native Kamera-Zugriff (Capacitor Camera Plugin oder SwiftUI DataScannerViewController)
+- Barcode-Scan von Gels/Riegeln → Nährwerte automatisch einlesen
+- Produktdatenbank Deutschland (Open Food Facts API oder eigene DB)
+- Ziel: Custom Products Flow ersetzen / ergänzen

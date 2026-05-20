@@ -1,0 +1,12 @@
+Schluss mit Raten. Richtig tanken.
+
+bonkproof berechnet deine genauen Kohlenhydrat- und Flüssigkeitsziele basierend auf deiner FTP und deinen Fahrtdaten — damit du am Ziel ankommst und nicht leer wirst.
+
+Gib einmalig dein Gewicht und deine FTP ein. Dann für jede Fahrt: geplante Leistung und Dauer. bonkproof zeigt dir:
+
+• Kohlenhydrate pro Stunde (g/h) — kalibriert auf deine Trainingszone
+• Flüssigkeitsbedarf pro Stunde — angepasst an Gewicht, Schweißrate und Temperatur
+• Einen Ernährungsplan — was du wann essen und trinken solltest
+• Eine Packliste — damit nichts vergessen wird
+
+Für Radfahrer, die Performance ernst nehmen. Kein Account, kein Abo, kein Lärm — nur die Zahlen, die zählen.

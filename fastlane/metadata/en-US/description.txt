@@ -1,0 +1,12 @@
+Stop guessing. Start fueling.
+
+bonkproof calculates your exact carbohydrate and fluid targets based on your FTP and ride data — so you arrive at the finish line strong, not empty.
+
+Enter your weight and FTP once. Then for each ride, add your planned power and duration. bonkproof gives you:
+
+• Carb targets per hour (g/h) — calibrated to your training zone
+• Fluid needs per hour — adjusted for weight, sweat rate, and heat
+• A fueling schedule — what to eat and drink, and when
+• A packing checklist — so nothing gets forgotten
+
+Built for cyclists who take performance seriously. No account needed, no subscription, no noise — just the numbers that matter.

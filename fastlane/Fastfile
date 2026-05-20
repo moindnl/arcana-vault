@@ -1,0 +1,34 @@
+default_platform :ios
+
+platform :ios do
+
+  # Push only metadata (no binary, no screenshots)
+  lane :push_metadata do
+    deliver(
+      skip_binary_upload:  true,
+      skip_screenshots:    true,
+      force:               true,   # skip HTML diff preview
+      run_precheck_before_submit: false
+    )
+  end
+
+  # Push screenshots only
+  lane :push_screenshots do
+    deliver(
+      skip_binary_upload:  true,
+      skip_metadata:       true,
+      force:               true,
+      run_precheck_before_submit: false
+    )
+  end
+
+  # Full submission (metadata + screenshots, no binary re-upload)
+  lane :push_all do
+    deliver(
+      skip_binary_upload:  true,
+      force:               true,
+      run_precheck_before_submit: false
+    )
+  end
+
+end

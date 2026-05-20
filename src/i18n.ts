@@ -100,7 +100,6 @@ const translations = {
 
     howItWorks: 'How it works',
     about: 'About',
-    legal: 'Legal',
 
     dataStorage: 'Data storage',
     dataStorageVal: 'Device only',
@@ -164,11 +163,6 @@ const translations = {
     customProducts: 'Custom Products',
     noCustomProducts: 'No custom products yet.',
     deleteProduct: 'Delete product',
-
-    impressum: 'Impressum',
-    impressumSub: 'Legal disclosure · § 5 TMG',
-    impressumContact: 'Contact',
-    impressumNote: 'Private, non-commercial project. No personal data is collected or shared with third parties.',
 
     howMathWorks: 'How the math works',
     zoneCol: 'Zone',
@@ -310,7 +304,6 @@ const translations = {
 
     howItWorks: 'Formel',
     about: 'Info',
-    legal: 'Impressum',
 
     dataStorage: 'Datenspeicherung',
     dataStorageVal: 'Nur auf dem Gerät',
@@ -374,11 +367,6 @@ const translations = {
     customProducts: 'Eigene Produkte',
     noCustomProducts: 'Noch keine eigenen Produkte.',
     deleteProduct: 'Produkt löschen',
-
-    impressum: 'Impressum',
-    impressumSub: 'Pflichtangaben · § 5 TMG',
-    impressumContact: 'Kontakt',
-    impressumNote: 'Privates, nicht-kommerzielles Projekt. Es werden keine personenbezogenen Daten erhoben oder an Dritte weitergegeben.',
 
     howMathWorks: 'So funktioniert die Berechnung',
     zoneCol: 'Zone',

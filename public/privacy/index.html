@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datenschutzerklärung — bonkproof!</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0f0f12;
+      --surface: #1c1c1f;
+      --on-bg:   #f4f4f5;
+      --on-2:    #a1a1aa;
+      --border:  #27272a;
+      --accent:  #f73b20;
+    }
+
+    body {
+      font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--on-bg);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--on-2);
+      text-decoration: none;
+      margin-bottom: 48px;
+      transition: color 0.15s;
+    }
+    .back:hover { color: var(--on-bg); }
+
+    .wordmark {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+    .wordmark .bonk { font-style: italic; }
+    .wordmark .proof { color: var(--accent); }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 32px;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+
+    .lang-btn {
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--on-2);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lang-btn.active {
+      background: var(--on-bg);
+      color: var(--bg);
+      border-color: var(--on-bg);
+    }
+
+    .content { display: none; }
+    .content.active { display: block; }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 32px 0 8px;
+    }
+    h2:first-child { margin-top: 0; }
+
+    p {
+      font-size: 15px;
+      color: var(--on-2);
+      margin-bottom: 12px;
+    }
+
+    a { color: var(--on-bg); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="/">← bonkproof!</a>
+
+    <h1>Datenschutzerklärung<br>Privacy Policy</h1>
+
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('de')">Deutsch</button>
+      <button class="lang-btn" onclick="setLang('en')">English</button>
+    </div>
+
+    <div id="de" class="content active">
+      <h2>Verantwortlicher</h2>
+      <p>Daniel Muschinski<br>Freudenbergstraße 4<br>28213 Bremen<br><a href="mailto:moindnl@proton.me">moindnl@proton.me</a></p>
+
+      <h2>Welche Daten wir verarbeiten</h2>
+      <p>Diese Website verarbeitet keine personenbezogenen Daten außer denen, die du freiwillig über das Kontaktformular (E-Mail-Adresse) angibst. Es werden keine Cookies gesetzt, keine Tracking-Skripte geladen und keine Nutzerdaten an Dritte weitergegeben.</p>
+
+      <h2>E-Mail-Benachrichtigung</h2>
+      <p>Wenn du dich für die Launch-Benachrichtigung einträgst, speichern wir deine E-Mail-Adresse ausschließlich zum Zweck der einmaligen Benachrichtigung über den App-Launch. Die Adresse wird nicht für Werbezwecke genutzt und nicht an Dritte weitergegeben. Du kannst die Löschung jederzeit per E-Mail an <a href="mailto:moindnl@proton.me">moindnl@proton.me</a> beantragen.</p>
+
+      <h2>Die App</h2>
+      <p>bonkproof! speichert alle eingegebenen Daten (FTP, Gewicht, Präferenzen) ausschließlich lokal auf deinem Gerät. Es findet keine Übertragung an Server statt.</p>
+
+      <h2>Deine Rechte</h2>
+      <p>Du hast das Recht auf Auskunft, Berichtigung und Löschung deiner Daten gemäß DSGVO. Anfragen bitte an <a href="mailto:moindnl@proton.me">moindnl@proton.me</a>.</p>
+    </div>
+
+    <div id="en" class="content">
+      <h2>Controller</h2>
+      <p>Daniel Muschinski<br>Freudenbergstraße 4<br>28213 Bremen<br><a href="mailto:moindnl@proton.me">moindnl@proton.me</a></p>
+
+      <h2>What data we process</h2>
+      <p>This website does not process any personal data except what you voluntarily provide via the notification form (email address). No cookies are set, no tracking scripts are loaded, and no user data is shared with third parties.</p>
+
+      <h2>Launch notification</h2>
+      <p>If you sign up for the launch notification, we store your email address solely for the purpose of sending a single notification when the app launches. Your address will not be used for marketing and will not be shared with third parties. You can request deletion at any time by emailing <a href="mailto:moindnl@proton.me">moindnl@proton.me</a>.</p>
+
+      <h2>The app</h2>
+      <p>bonkproof! stores all entered data (FTP, weight, preferences) exclusively on your device. No data is transmitted to any server.</p>
+
+      <h2>Your rights</h2>
+      <p>You have the right to access, correct, and delete your data under GDPR. Please contact <a href="mailto:moindnl@proton.me">moindnl@proton.me</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    function setLang(lang) {
+      document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(lang).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+</body>
+</html>
