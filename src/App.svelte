@@ -165,6 +165,8 @@
 
   // UI state
   let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
+  let disclaimerAccepted: boolean = !!localStorage.getItem('bp-disclaimer-accepted');
+  let _onboardingStartTour = false;
   // Ride card swipe-to-reset
   let rideSwipeX = 0;
   let _rideSwipeStartX = 0;
@@ -197,9 +199,16 @@
 
   function finishOnboarding() {
     localStorage.setItem('bp-onboarding-done', '1');
+    localStorage.setItem('bp-disclaimer-accepted', '1');
+    disclaimerAccepted = true;
     _guideSeen = true;
     localStorage.setItem('bp-guide-seen', '1');
     onboardingStep = -1;
+  }
+
+  function acceptDisclaimer() {
+    localStorage.setItem('bp-disclaimer-accepted', '1');
+    disclaimerAccepted = true;
   }
   let neuralizer = false;        // easter egg F: neuralyzer flash
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
@@ -1464,6 +1473,26 @@
             <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathFluidNote}</p>
             <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathHeatNote}</p>
             <p class="text-caption-sm mb-lg" style="color:var(--c-on-surface-2);">{$t.mathElectroNote}</p>
+
+            <!-- Scientific sources -->
+            <p class="text-caption-sm font-extra-bold uppercase mb-sm" style="color:var(--c-on-surface-2);letter-spacing:0.05em;">{$t.mathSourcesLabel}</p>
+            <div style="border-radius:12px;border:1px solid var(--c-border);overflow:hidden;">
+              <a href="https://doi.org/10.1007/s40279-014-0148-z" target="_blank" rel="noopener noreferrer"
+                style="display:flex;flex-direction:column;padding:12px 14px;border-bottom:1px solid var(--c-border);text-decoration:none;background:transparent;">
+                <span class="text-caption-sm font-extra-bold" style="color:var(--c-on-surface);margin-bottom:2px;">Jeukendrup (2014)</span>
+                <span class="text-caption-sm" style="color:var(--c-on-surface-3);">A Step Towards Personalized Sports Nutrition: Carbohydrate Intake During Exercise · Sports Medicine</span>
+              </a>
+              <a href="https://doi.org/10.1249/mss.0b013e31802ca597" target="_blank" rel="noopener noreferrer"
+                style="display:flex;flex-direction:column;padding:12px 14px;border-bottom:1px solid var(--c-border);text-decoration:none;background:transparent;">
+                <span class="text-caption-sm font-extra-bold" style="color:var(--c-on-surface);margin-bottom:2px;">Sawka et al. (2007)</span>
+                <span class="text-caption-sm" style="color:var(--c-on-surface-3);">ACSM Position Stand: Exercise and Fluid Replacement · Medicine & Science in Sports & Exercise</span>
+              </a>
+              <a href="https://doi.org/10.1016/j.jand.2015.12.006" target="_blank" rel="noopener noreferrer"
+                style="display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:transparent;">
+                <span class="text-caption-sm font-extra-bold" style="color:var(--c-on-surface);margin-bottom:2px;">Thomas et al. (2016)</span>
+                <span class="text-caption-sm" style="color:var(--c-on-surface-3);">Nutrition and Athletic Performance · Academy of Nutrition and Dietetics / ACSM</span>
+              </a>
+            </div>
           </div>
 
         {/if}
@@ -1754,18 +1783,44 @@
         </div>
         <div class="px-6" style="padding-bottom:8px;display:flex;flex-direction:column;gap:10px;">
           <button
-            on:click={() => { finishOnboarding(); setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 250); }}
+            on:click={() => { _onboardingStartTour = true; onboardingStep = 4; }}
             style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
             {$t.tourStartTour}
           </button>
           <button
-            on:click={finishOnboarding}
+            on:click={() => { _onboardingStartTour = false; onboardingStep = 4; }}
             style="width:100%;height:44px;border-radius:14px;background:transparent;color:var(--c-on-surface-2);font-size:15px;border:none;cursor:pointer;">
             {$t.tourSkipTour}
           </button>
         </div>
-        <!-- Progress dots (4) -->
+        <!-- Progress dots (5) -->
         <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+        </div>
+      {:else if onboardingStep === 4}
+        <div class="flex flex-col flex-1 px-8 pt-6"
+          in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
+          <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,180,0,0.15);color:#f59e0b;display:flex;align-items:center;justify-content:center;margin-bottom:20px;flex-shrink:0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h2 style="font-size:22px;font-weight:700;color:var(--c-on-surface);margin:0 0 16px;">{$t.onboardingDisclaimerTitle}</h2>
+          <p style="font-size:15px;color:var(--c-on-surface-2);line-height:1.6;margin:0 0 12px;white-space:pre-line;">{$t.onboardingDisclaimerBody}</p>
+          <p style="font-size:12px;color:var(--c-on-surface-3);margin:0;">{$t.onboardingDisclaimerSources}</p>
+        </div>
+        <div class="px-6" style="padding-bottom:8px;">
+          <button
+            on:click={() => { finishOnboarding(); if (_onboardingStartTour) setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 250); }}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
+            {$t.onboardingDisclaimerAccept}
+          </button>
+        </div>
+        <!-- Progress dots (5) -->
+        <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
@@ -1773,6 +1828,30 @@
         </div>
       {/if}
 
+    </div>
+  {/if}
+
+  <!-- ── Disclaimer modal for existing users (already onboarded, no disclaimer yet) ── -->
+  {#if onboardingStep < 0 && !disclaimerAccepted}
+    <div class="fixed inset-0 z-[999] flex flex-col items-center justify-end"
+      style="background:rgba(0,0,0,0.6);"
+      transition:fade={{ duration: 200 }}>
+      <div class="w-full max-w-lg rounded-t-[28px] px-6 pt-6"
+        style="background:var(--c-surface);color:var(--c-on-surface);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));"
+        in:fly={{ y: 400, duration: 380, easing: quintOut }}>
+        <div style="width:36px;height:4px;border-radius:2px;background:var(--c-border-input);margin:0 auto 24px;"></div>
+        <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,180,0,0.15);color:#f59e0b;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h2 style="font-size:22px;font-weight:700;margin:0 0 16px;">{$t.onboardingDisclaimerTitle}</h2>
+        <p style="font-size:15px;color:var(--c-on-surface-2);line-height:1.6;margin:0 0 8px;white-space:pre-line;">{$t.onboardingDisclaimerBody}</p>
+        <p style="font-size:12px;color:var(--c-on-surface-3);margin:0 0 24px;">{$t.onboardingDisclaimerSources}</p>
+        <button
+          on:click={acceptDisclaimer}
+          style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;">
+          {$t.onboardingDisclaimerAccept}
+        </button>
+      </div>
     </div>
   {/if}
 
