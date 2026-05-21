@@ -1,6 +1,6 @@
-Stop guessing. Start fueling.
+Stop guessing. Start fueling right.
 
-bonkproof calculates your exact carbohydrate and fluid targets based on your FTP and ride data — so you arrive at the finish line strong, not empty.
+bonkproof calculates science-based estimates for carbohydrate and fluid intake — using your FTP and ride data. Not perfect for everyone. But a lot better than guessing.
 
 Enter your weight and FTP once. Then for each ride, add your planned power and duration. bonkproof gives you:
 
@@ -10,3 +10,5 @@ Enter your weight and FTP once. Then for each ride, add your planned power and d
 • A packing checklist — so nothing gets forgotten
 
 Built for cyclists who take performance seriously. No account needed, no subscription, no noise — just the numbers that matter.
+
+Estimated values are based on sports science guidelines (Jeukendrup 2014, Sawka et al. 2007, Thomas et al. 2016) and are not medical advice. If you have any health conditions, please consult a physician before use.
