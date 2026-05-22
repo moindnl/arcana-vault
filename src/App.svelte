@@ -649,6 +649,11 @@
     setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 180);
   }
 
+  // Dismiss keyboard on Enter / Return key
+  function blurOnEnter(e: KeyboardEvent) {
+    if (e.key === 'Enter') (e.target as HTMLElement).blur();
+  }
+
 
   const HOW_TO_STEPS = [
     { n: '1', tTitle: 'step1Title', tBody: 'step1Body' },
@@ -659,7 +664,12 @@
 
 </script>
 
-<svelte:window on:click={() => { showSolidDropdown = false; }} />
+<svelte:window on:click={(e) => {
+  showSolidDropdown = false;
+  if (!(e.target as HTMLElement).closest('input, textarea')) {
+    (document.activeElement as HTMLElement)?.blur();
+  }
+}} />
 
 <main class="min-h-screen">
 
@@ -798,7 +808,7 @@
               <input id="distance" type="number" inputmode="numeric" bind:value={distance} min="1" max="500" step="1" placeholder="0"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'mi' : 'km'}</span>
             </div>
           </div>
@@ -814,7 +824,7 @@
                 placeholder="1:30"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">h</span>
             </div>
           </div>
@@ -829,7 +839,7 @@
               <input id="power" type="number" inputmode="numeric" bind:value={power} min="0" max="600" step="1" placeholder="200"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
           </div>
@@ -1226,7 +1236,7 @@
                   <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                     class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                     style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                    on:focus={focusInput} />
+                    on:focus={focusInput} on:keydown={blurOnEnter} />
                   <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
                 </div>
               </div>
@@ -1241,7 +1251,7 @@
                   <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                     class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                     style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                    on:focus={focusInput} />
+                    on:focus={focusInput} on:keydown={blurOnEnter} />
                   <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
                 </div>
               </div>
@@ -1315,7 +1325,7 @@
                 bind:value={_newProductName}
                 placeholder={$t.productNamePlaceholder}
                 style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <div style="display:flex;gap:8px;align-items:center;">
                 <input
                   type="number"
@@ -1324,7 +1334,7 @@
                   placeholder="25"
                   min="1" max="200"
                   style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
-                  on:focus={focusInput} />
+                  on:focus={focusInput} on:keydown={blurOnEnter} />
                 <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
                 <button
                   on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
@@ -1632,7 +1642,7 @@
               <input id="ob-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
             </div>
           </div>
@@ -1647,7 +1657,7 @@
               <input id="ob-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
           </div>
@@ -1712,7 +1722,7 @@
               bind:value={_obProductName}
               placeholder={$t.productNamePlaceholder}
               style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
-              on:focus={focusInput} />
+              on:focus={focusInput} on:keydown={blurOnEnter} />
             <div style="display:flex;gap:8px;align-items:center;">
               <input
                 type="number"
@@ -1721,7 +1731,7 @@
                 placeholder="25"
                 min="1" max="200"
                 style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
-                on:focus={focusInput} />
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
               <button
                 on:click={() => { addCustomProduct(_obProductName, _obProductCarbs ?? 0); _obProductName = ''; _obProductCarbs = undefined; }}
