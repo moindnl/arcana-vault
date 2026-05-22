@@ -6,6 +6,7 @@
   import { onMount, onDestroy, tick } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
   import { t, lang } from './i18n';
+  import { Keyboard } from '@capacitor/keyboard';
 
   const VERSION = '1.0';
 
@@ -317,6 +318,7 @@
   let deferredInstallPrompt: any = null;
   const onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); deferredInstallPrompt = e; };
   const onAppInstalled = () => { installPlatform = null; };
+  let keyboardHeight = 0; // px — set by Capacitor keyboardWillShow, drives sheet padding
   let sheetDragStartY = 0;
   let sheetDragOffsetY = 0;
   let sheetIsDragging = false;
@@ -370,6 +372,16 @@
     window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.addEventListener('appinstalled', onAppInstalled);
     _profileReady = true;
+
+    // Keyboard: enable accessory bar (prev/next/done), track height for sheet offset
+    Keyboard.setAccessoryBarVisible({ isVisible: true }).catch(() => {});
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      keyboardHeight = info.keyboardHeight;
+      setTimeout(() => {
+        (document.activeElement as HTMLElement)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 80);
+    });
+    Keyboard.addListener('keyboardWillHide', () => { keyboardHeight = 0; });
   });
 
   onDestroy(() => {
@@ -379,6 +391,7 @@
     if (holdTimer) clearTimeout(holdTimer);
     window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.removeEventListener('appinstalled', onAppInstalled);
+    Keyboard.removeAllListeners().catch(() => {});
   });
 
   function dismissInstallSheet() {
@@ -651,7 +664,18 @@
 
   // Dismiss keyboard on Enter / Return key
   function blurOnEnter(e: KeyboardEvent) {
-    if (e.key === 'Enter') (e.target as HTMLElement).blur();
+    if (e.key === 'Enter') {
+      (e.target as HTMLElement).blur();
+      Keyboard.hide().catch(() => {});
+    }
+  }
+
+  // Dismiss keyboard on tap outside any input
+  function onWindowTouchStart(e: TouchEvent) {
+    if (!(e.target as HTMLElement).closest('input, textarea')) {
+      (document.activeElement as HTMLElement)?.blur();
+      Keyboard.hide().catch(() => {});
+    }
   }
 
 
@@ -664,12 +688,10 @@
 
 </script>
 
-<svelte:window on:click={(e) => {
-  showSolidDropdown = false;
-  if (!(e.target as HTMLElement).closest('input, textarea')) {
-    (document.activeElement as HTMLElement)?.blur();
-  }
-}} />
+<svelte:window
+  on:click={() => { showSolidDropdown = false; }}
+  on:touchstart={onWindowTouchStart}
+/>
 
 <main class="min-h-screen">
 
@@ -808,6 +830,7 @@
               <input id="distance" type="number" inputmode="numeric" bind:value={distance} min="1" max="500" step="1" placeholder="0"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                enterkeyhint="next"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'mi' : 'km'}</span>
             </div>
@@ -824,6 +847,7 @@
                 placeholder="1:30"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                enterkeyhint="next"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">h</span>
             </div>
@@ -839,6 +863,7 @@
               <input id="power" type="number" inputmode="numeric" bind:value={power} min="0" max="600" step="1" placeholder="200"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                enterkeyhint="done"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
@@ -1173,8 +1198,8 @@
     <div class="fixed inset-0 z-[996] bg-black/55"
       on:click={closeSettings} role="presentation"
       transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[20px] px-6 pt-5 max-w-lg mx-auto"
-      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[20px] px-6 pt-5 max-w-lg mx-auto overflow-y-auto"
+      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:{keyboardHeight > 0 ? keyboardHeight + 16 + 'px' : 'max(32px,calc(env(safe-area-inset-bottom,0px) + 16px))'};max-height:90vh;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, closeSettings)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
@@ -1236,6 +1261,7 @@
                   <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                     class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                     style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                    enterkeyhint="next"
                     on:focus={focusInput} on:keydown={blurOnEnter} />
                   <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
                 </div>
@@ -1251,6 +1277,7 @@
                   <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                     class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                     style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                    enterkeyhint="done"
                     on:focus={focusInput} on:keydown={blurOnEnter} />
                   <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
                 </div>
@@ -1642,6 +1669,7 @@
               <input id="ob-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                enterkeyhint="next"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
             </div>
@@ -1657,6 +1685,7 @@
               <input id="ob-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
+                enterkeyhint="done"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
