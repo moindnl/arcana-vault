@@ -1,12 +1,14 @@
 {
-  "name": "nutrition-tool",
+  "name": "bonkproof",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cap:sync": "CAPACITOR_BUILD=1 vite build && npx cap sync",
+    "cap:ios": "CAPACITOR_BUILD=1 vite build && npx cap sync && npx cap open ios"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
@@ -15,11 +17,18 @@
     "postcss": "^8.5.14",
     "svelte": "^5.55.5",
     "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
     "vite": "^8.0.12",
     "vite-plugin-pwa": "^1.3.0",
     "workbox-window": "^7.4.1"
   },
   "dependencies": {
+    "@capacitor/cli": "^8.3.4",
+    "@capacitor/core": "^8.3.4",
+    "@capacitor/ios": "^8.3.4",
+    "@capacitor/keyboard": "^8.0.3",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
     "@tailwindcss/vite": "^4.3.0",
     "lucide-svelte": "^1.0.1"
   }

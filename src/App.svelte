@@ -6,41 +6,45 @@
   import { onMount, onDestroy, tick } from 'svelte';
   import { registerSW } from 'virtual:pwa-register';
   import { t, lang } from './i18n';
+  import { Keyboard } from '@capacitor/keyboard';
 
   const VERSION = '1.0';
 
   let updateAvailable = false;
   let updateDismissed = false;
-  let doUpdateSW: () => Promise<void>;
+  let doUpdateSW: () => Promise<void> = async () => {};
 
   // Injected at build time by vite.config.js versionPlugin
   const BUILD_HASH = __BUILD_HASH__;
 
-  const swUpdate = registerSW({
-    async onNeedRefresh() {
-      try {
-        const res = await fetch(`/version.json?_=${Date.now()}`);
-        if (!res.ok) { updateAvailable = true; return; } // can't check — show prompt
-        const data = await res.json();
-        if (data.hash !== BUILD_HASH) {
+  // Skip SW registration in Capacitor (native app, no service worker)
+  if (!(window as any).Capacitor) {
+    const swUpdate = registerSW({
+      async onNeedRefresh() {
+        try {
+          const res = await fetch(`/version.json?_=${Date.now()}`);
+          if (!res.ok) { updateAvailable = true; return; }
+          const data = await res.json();
+          if (data.hash !== BUILD_HASH) {
+            updateAvailable = true;
+          } else {
+            swUpdate(false);
+          }
+        } catch {
           updateAvailable = true;
-        } else {
-          swUpdate(false); // same build — apply silently
         }
-      } catch {
-        updateAvailable = true; // network error — show prompt anyway
-      }
-    },
-    onOfflineReady() {},
-  });
-  doUpdateSW = swUpdate;
+      },
+      onOfflineReady() {},
+    });
+    doUpdateSW = swUpdate;
+  }
 
   let showAboutSheet = false;
   let showSettingsSheet = false;
   let showHowToSheet = false;
   let settingsView: 'main' | 'products' = 'main';
   let settingsNavDir = 0;
-  let aboutView: 'main' | 'math' | 'impressum' = 'main';
+  let aboutView: 'main' | 'math' = 'main';
   let aboutNavDir = 0;
   let howToSlide = 0;
   let _tourDir = 1; // 1 = forward, -1 = backward
@@ -162,6 +166,8 @@
 
   // UI state
   let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
+  let disclaimerAccepted: boolean = !!localStorage.getItem('bp-disclaimer-accepted');
+  let _onboardingStartTour = false;
   // Ride card swipe-to-reset
   let rideSwipeX = 0;
   let _rideSwipeStartX = 0;
@@ -194,9 +200,16 @@
 
   function finishOnboarding() {
     localStorage.setItem('bp-onboarding-done', '1');
+    localStorage.setItem('bp-disclaimer-accepted', '1');
+    disclaimerAccepted = true;
     _guideSeen = true;
     localStorage.setItem('bp-guide-seen', '1');
     onboardingStep = -1;
+  }
+
+  function acceptDisclaimer() {
+    localStorage.setItem('bp-disclaimer-accepted', '1');
+    disclaimerAccepted = true;
   }
   let neuralizer = false;        // easter egg F: neuralyzer flash
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
@@ -305,6 +318,7 @@
   let deferredInstallPrompt: any = null;
   const onBeforeInstallPrompt = (e: Event) => { e.preventDefault(); deferredInstallPrompt = e; };
   const onAppInstalled = () => { installPlatform = null; };
+  let keyboardHeight = 0; // px — set by Capacitor keyboardWillShow, drives sheet padding
   let sheetDragStartY = 0;
   let sheetDragOffsetY = 0;
   let sheetIsDragging = false;
@@ -350,13 +364,24 @@
       || (navigator as any).standalone === true;
     const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isAndroid = /android/i.test(navigator.userAgent);
-    if (isMobile && !standalone && (isIos || isAndroid) && !localStorage.getItem('bp-install-dismissed')) {
+    const isCapacitor = !!(window as any).Capacitor;
+    if (isMobile && !standalone && !isCapacitor && (isIos || isAndroid) && !localStorage.getItem('bp-install-dismissed')) {
       _installOS = isIos ? 'ios' : 'android'; // reactive block fires when profile complete
     }
 
     window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.addEventListener('appinstalled', onAppInstalled);
     _profileReady = true;
+
+    // Keyboard: only in Capacitor context
+    if (isCapacitor) {
+      Keyboard.setAccessoryBarVisible({ isVisible: true }).catch(() => {});
+      Keyboard.addListener('keyboardWillShow', (info) => {
+        keyboardHeight = info.keyboardHeight;
+        // focusInput already scrolls into view — no duplicate scroll here
+      }).catch(() => {});
+      Keyboard.addListener('keyboardWillHide', () => { keyboardHeight = 0; }).catch(() => {});
+    }
   });
 
   onDestroy(() => {
@@ -366,6 +391,7 @@
     if (holdTimer) clearTimeout(holdTimer);
     window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.removeEventListener('appinstalled', onAppInstalled);
+    if ((window as any).Capacitor) Keyboard.removeAllListeners().catch(() => {});
   });
 
   function dismissInstallSheet() {
@@ -636,6 +662,22 @@
     setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 180);
   }
 
+  // Dismiss keyboard on Enter / Return key
+  function blurOnEnter(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      (e.target as HTMLElement).blur();
+      Keyboard.hide().catch(() => {});
+    }
+  }
+
+  // Dismiss keyboard on tap outside any input
+  function onWindowTouchStart(e: TouchEvent) {
+    if (!(e.target as HTMLElement).closest('input, textarea')) {
+      (document.activeElement as HTMLElement)?.blur();
+      Keyboard.hide().catch(() => {});
+    }
+  }
+
 
   const HOW_TO_STEPS = [
     { n: '1', tTitle: 'step1Title', tBody: 'step1Body' },
@@ -646,7 +688,10 @@
 
 </script>
 
-<svelte:window on:click={() => { showSolidDropdown = false; }} />
+<svelte:window
+  on:click={() => { showSolidDropdown = false; }}
+  on:touchstart={onWindowTouchStart}
+/>
 
 <main class="min-h-screen">
 
@@ -766,9 +811,9 @@
               on:touchstart|preventDefault={startHold} on:touchend={cancelHold} on:touchcancel={cancelHold}
               on:contextmenu|preventDefault
               class="flex items-center justify-center flex-shrink-0"
-              style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);touch-action:manipulation;user-select:none;-webkit-user-select:none;"
+              style="width:44px;height:44px;border-radius:50%;background:transparent;border:none;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none;"
               aria-label="Reset ride inputs">
-              <X class="w-3.5 h-3.5 text-[--c-on-surface]" />
+              <span style="width:28px;height:28px;border-radius:50%;background:var(--c-surface-soft);display:flex;align-items:center;justify-content:center;pointer-events:none;"><X class="w-3.5 h-3.5 text-[--c-on-surface]" /></span>
             </button>
           {/if}
         </div>
@@ -785,7 +830,8 @@
               <input id="distance" type="number" inputmode="numeric" bind:value={distance} min="1" max="500" step="1" placeholder="0"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                enterkeyhint="next"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'mi' : 'km'}</span>
             </div>
           </div>
@@ -801,7 +847,8 @@
                 placeholder="1:30"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                enterkeyhint="next"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">h</span>
             </div>
           </div>
@@ -816,7 +863,8 @@
               <input id="power" type="number" inputmode="numeric" bind:value={power} min="0" max="600" step="1" placeholder="200"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                enterkeyhint="done"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
           </div>
@@ -876,7 +924,7 @@
           </div>
         </div>
         <div class="mb-sm">
-          <div class="flex items-baseline gap-sm">
+          <div class="flex items-baseline gap-sm" aria-live="polite" aria-atomic="true">
             {#key carbsPerHour}
               <span class="text-7xl md:text-8xl font-extra-bold {carbsPerHour > 0 ? 'num-flash' : ''}" style="color:{carbsPerHour > 0 ? 'var(--color-ink)' : 'var(--c-num-empty)'};transition:color 0.3s ease;">{Math.round($animatedCarbs)}</span>
             {/key}
@@ -907,7 +955,7 @@
           </div>
         </div>
         <div class="mb-sm">
-          <div class="flex items-baseline gap-sm">
+          <div class="flex items-baseline gap-sm" aria-live="polite" aria-atomic="true">
             {#key fluidPerHour}
               <span class="text-7xl md:text-8xl font-extra-bold {fluidPerHour > 0 ? 'num-flash' : ''}" style="color:{fluidPerHour > 0 ? 'var(--color-ink)' : 'var(--c-num-empty)'};transition:color 0.3s ease;">{$animatedFluid.toFixed(1)}</span>
             {/key}
@@ -1019,7 +1067,7 @@
               {#if showSolidDropdown}
                 <div
                   on:click|stopPropagation
-                  style="position:absolute;right:0;top:calc(100% + 6px);background:#1c1c22;border:1px solid rgba(255,255,255,0.15);border-radius:14px;overflow:hidden;min-width:170px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                  style="position:absolute;right:0;bottom:calc(100% + 6px);background:#1c1c22;border:1px solid rgba(255,255,255,0.15);border-radius:14px;overflow:hidden;min-width:170px;z-index:9999;box-shadow:0 -4px 24px rgba(0,0,0,0.5);">
                   {#each allSolidProducts as p, idx}
                     <button
                       on:click|stopPropagation={() => { solidProduct = p.id; showSolidDropdown = false; }}
@@ -1085,16 +1133,16 @@
               <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex:1;min-width:160px;">
                 <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:8px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({drinkIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
                 {#each DRINK_PRODUCTS as p}
-                  <button style="position:relative;padding:5px 6px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                  <button style="position:relative;padding:5px 6px;min-height:44px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
                     aria-pressed={drinkProduct === p.id} on:click={() => (drinkProduct = p.id)}>{p.label}</button>
                 {/each}
               </div>
               <!-- Bottle size -->
               <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex-shrink:0;">
                 <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:8px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({bottleSizeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-                <button style="position:relative;padding:5px 10px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 500 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 500} on:click={() => (bottleSize = 500)}>500ml</button>
-                <button style="position:relative;padding:5px 10px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 750 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 750} on:click={() => (bottleSize = 750)}>750ml</button>
-                <button style="position:relative;padding:5px 10px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 1000 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 1000} on:click={() => (bottleSize = 1000)}>1L</button>
+                <button style="position:relative;padding:5px 10px;min-height:44px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 500 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 500} on:click={() => (bottleSize = 500)}>500ml</button>
+                <button style="position:relative;padding:5px 10px;min-height:44px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 750 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 750} on:click={() => (bottleSize = 750)}>750ml</button>
+                <button style="position:relative;padding:5px 10px;min-height:44px;font-size:12px;font-weight:500;text-align:center;color:{bottleSize === 1000 ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s;background:transparent;border:none;" aria-pressed={bottleSize === 1000} on:click={() => (bottleSize = 1000)}>1L</button>
               </div>
             </div>
 
@@ -1106,6 +1154,8 @@
                   <button
                     class="flex items-center gap-md text-left"
                     style="min-height:44px;padding:2px 0;"
+                    aria-pressed={checked}
+                    aria-label="{item.label}"
                     on:click={() => togglePack(item.id)}>
                     <div style="width:22px;height:22px;border-radius:6px;border:1.5px solid {checked ? '#ffffff' : 'rgba(255,255,255,0.25)'};background:{checked ? '#ffffff' : 'transparent'};flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
                       {#if checked}
@@ -1148,8 +1198,8 @@
     <div class="fixed inset-0 z-[996] bg-black/55"
       on:click={closeSettings} role="presentation"
       transition:fade={{ duration: 300 }}></div>
-    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[20px] px-6 pt-5 max-w-lg mx-auto"
-      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
+    <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[20px] px-6 pt-5 max-w-lg mx-auto overflow-y-auto"
+      style="background:var(--c-surface);color:var(--c-on-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:{keyboardHeight > 0 ? keyboardHeight + 16 + 'px' : 'max(32px,calc(env(safe-area-inset-bottom,0px) + 16px))'};max-height:90vh;transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       on:touchstart={(e) => onSheetDragStart(e, closeSettings)}
       on:touchmove|preventDefault={onSheetDragMove}
       on:touchend={onSheetDragEnd}
@@ -1183,11 +1233,11 @@
             <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:16px;">
               <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
                 <span style="color:var(--c-on-surface);font-size:15px;">{$t.appearance}</span>
-                <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+                <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:14px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;min-height:50px;">
                   <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:10px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX(calc({themeIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
-                  <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'light' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-4 h-4" /></button>
-                  <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}><Smartphone class="w-4 h-4" /></button>
-                  <button style="position:relative;display:flex;align-items:center;justify-content:center;padding:6px 12px;background:transparent;border:none;color:{theme === 'dark' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-4 h-4" /></button>
+                  <button style="position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;background:transparent;border:none;color:{theme === 'light' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Light theme" aria-pressed={theme === 'light'} on:click={() => { theme = 'light'; applyTheme('light'); }}><Sun class="w-4 h-4" /></button>
+                  <button style="position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;background:transparent;border:none;color:{theme === 'system' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="System theme" aria-pressed={theme === 'system'} on:click={() => { theme = 'system'; applyTheme('system'); }}><Smartphone class="w-4 h-4" /></button>
+                  <button style="position:relative;display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;background:transparent;border:none;color:{theme === 'dark' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);" aria-label="Dark theme" aria-pressed={theme === 'dark'} on:click={() => { theme = 'dark'; applyTheme('dark'); }}><Moon class="w-4 h-4" /></button>
                 </div>
               </div>
               <div class="flex items-center justify-between px-lg py-md">
@@ -1211,7 +1261,8 @@
                   <input id="settings-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                     class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                     style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                    on:focus={focusInput} />
+                    enterkeyhint="next"
+                    on:focus={focusInput} on:keydown={blurOnEnter} />
                   <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
                 </div>
               </div>
@@ -1226,7 +1277,8 @@
                   <input id="settings-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                     class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                     style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                    on:focus={focusInput} />
+                    enterkeyhint="done"
+                    on:focus={focusInput} on:keydown={blurOnEnter} />
                   <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
                 </div>
               </div>
@@ -1258,7 +1310,7 @@
                   {#each SWEAT_LEVELS as { value, drops }}
                     <button
                       class="flex items-center justify-center gap-[2px]"
-                      style="position:relative;padding:6px 12px;color:{sweatRate === value ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                      style="position:relative;padding:6px 12px;min-height:44px;color:{sweatRate === value ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
                       aria-label="{value === 'light' ? $t.sweatLightAria : value === 'moderate' ? $t.sweatModerateAria : $t.sweatHeavyAria}"
                       aria-pressed={sweatRate === value}
                       on:click={() => (sweatRate = value)}>
@@ -1285,8 +1337,8 @@
             </div>
 
             <button on:click={closeSettings}
-              class="w-full py-3 rounded-full text-button-md font-extra-bold"
-              style="background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
+              class="w-full rounded-full text-button-md font-extra-bold"
+              style="min-height:44px;background:var(--c-surface-soft);color:var(--c-on-surface);border:none;cursor:pointer;">
               {$t.close}
             </button>
           </div>
@@ -1300,7 +1352,8 @@
                 bind:value={_newProductName}
                 placeholder={$t.productNamePlaceholder}
                 style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
-                on:focus={focusInput} />
+                enterkeyhint="next"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <div style="display:flex;gap:8px;align-items:center;">
                 <input
                   type="number"
@@ -1309,7 +1362,8 @@
                   placeholder="25"
                   min="1" max="200"
                   style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
-                  on:focus={focusInput} />
+                  enterkeyhint="done"
+                  on:focus={focusInput} on:keydown={blurOnEnter} />
                 <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
                 <button
                   on:click={() => { addCustomProduct(_newProductName, _newProductCarbs ?? 0); _newProductName = ''; _newProductCarbs = undefined; }}
@@ -1386,7 +1440,7 @@
               <ChevronLeft size={18} />
             </span>
           </button>
-          <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);">{aboutView === 'math' ? $t.howMathWorks : $t.impressum}</p>
+          <p style="font-size:17px;font-weight:700;color:var(--c-on-surface);">{$t.howMathWorks}</p>
           <div style="width:32px;"></div>
         </div>
       {/if}
@@ -1418,25 +1472,21 @@
                 <span style="color:var(--c-on-surface);font-size:15px;">{$t.tourReplay}</span>
                 <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
               </button>
-              <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;border-bottom:1px solid var(--c-border);" on:click={() => { aboutNavDir = 1; aboutView = 'math'; }}>
+              <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;" on:click={() => { aboutNavDir = 1; aboutView = 'math'; }}>
                 <span style="color:var(--c-on-surface);font-size:15px;">{$t.howItWorks}</span>
-                <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
-              </button>
-              <button class="flex items-center justify-between w-full px-lg py-md" style="background:transparent;border:none;" on:click={() => { aboutNavDir = 1; aboutView = 'impressum'; }}>
-                <span style="color:var(--c-on-surface);font-size:15px;">{$t.legal}</span>
                 <ChevronRight size={16} style="color:var(--c-on-surface-2);flex-shrink:0;" />
               </button>
             </div>
 
             <div class="flex gap-sm">
               <button on:click={closeAbout}
-                class="flex-1 py-3 rounded-full text-button-md font-extra-bold"
-                style="background:var(--c-surface-soft);color:var(--c-on-surface);border:1px solid var(--c-border-input);">
+                class="flex-1 rounded-full text-button-md font-extra-bold"
+                style="min-height:44px;background:var(--c-surface-soft);color:var(--c-on-surface);border:1px solid var(--c-border-input);">
                 {$t.close}
               </button>
               <a href="mailto:moindnl@proton.me"
-                class="flex-1 py-3 rounded-full text-button-md font-extra-bold text-center"
-                style="background:var(--c-seg-active);color:var(--c-seg-active-text);text-decoration:none;">
+                class="flex-1 rounded-full text-button-md font-extra-bold text-center"
+                style="min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--c-seg-active);color:var(--c-seg-active-text);text-decoration:none;">
                 E-Mail <ExternalLink size={14} style="display:inline;vertical-align:middle;margin-left:4px;" />
               </a>
             </div>
@@ -1462,26 +1512,28 @@
             <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathFluidNote}</p>
             <p class="text-caption-sm mb-sm" style="color:var(--c-on-surface-2);">{$t.mathHeatNote}</p>
             <p class="text-caption-sm mb-lg" style="color:var(--c-on-surface-2);">{$t.mathElectroNote}</p>
-          </div>
 
-        {:else}
-          <div in:fly={{ x: aboutNavDir * 300, duration: 280, easing: quintOut }}>
-            <p class="text-caption-sm mb-xs" style="color:var(--c-on-surface-2);">{$t.impressumSub}</p>
-            <div style="border-radius:14px;overflow:hidden;border:1px solid var(--c-border);margin-bottom:20px;">
-              <div class="px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-                <p style="color:var(--c-on-surface);font-size:14px;font-weight:600;">Daniel Muschinski</p>
-                <p style="color:var(--c-on-surface-2);font-size:13px;margin-top:2px;">Freudenbegrstraße 4, 28213 Bremen</p>
-              </div>
-              <div class="flex items-center justify-between px-lg py-md" style="border-bottom:1px solid var(--c-border);">
-                <span style="color:var(--c-on-surface-2);font-size:14px;">{$t.impressumContact}</span>
-                <a href="mailto:moindnl@proton.me"
-                  style="color:var(--c-on-surface);font-size:14px;font-weight:600;text-decoration:none;">moindnl@proton.me</a>
-              </div>
-              <div class="px-lg py-md">
-                <p style="color:var(--c-on-surface-2);font-size:13px;line-height:1.5;">{$t.impressumNote}</p>
-              </div>
+            <!-- Scientific sources -->
+            <p class="text-caption-sm font-extra-bold uppercase mb-sm" style="color:var(--c-on-surface-2);letter-spacing:0.05em;">{$t.mathSourcesLabel}</p>
+            <div style="border-radius:12px;border:1px solid var(--c-border);overflow:hidden;">
+              <a href="https://doi.org/10.1007/s40279-014-0148-z" target="_blank" rel="noopener noreferrer"
+                style="display:flex;flex-direction:column;padding:12px 14px;border-bottom:1px solid var(--c-border);text-decoration:none;background:transparent;">
+                <span class="text-caption-sm font-extra-bold" style="color:var(--c-on-surface);margin-bottom:2px;">Jeukendrup (2014)</span>
+                <span class="text-caption-sm" style="color:var(--c-on-surface-3);">A Step Towards Personalized Sports Nutrition: Carbohydrate Intake During Exercise · Sports Medicine</span>
+              </a>
+              <a href="https://doi.org/10.1249/mss.0b013e31802ca597" target="_blank" rel="noopener noreferrer"
+                style="display:flex;flex-direction:column;padding:12px 14px;border-bottom:1px solid var(--c-border);text-decoration:none;background:transparent;">
+                <span class="text-caption-sm font-extra-bold" style="color:var(--c-on-surface);margin-bottom:2px;">Sawka et al. (2007)</span>
+                <span class="text-caption-sm" style="color:var(--c-on-surface-3);">ACSM Position Stand: Exercise and Fluid Replacement · Medicine & Science in Sports & Exercise</span>
+              </a>
+              <a href="https://doi.org/10.1016/j.jand.2015.12.006" target="_blank" rel="noopener noreferrer"
+                style="display:flex;flex-direction:column;padding:12px 14px;text-decoration:none;background:transparent;">
+                <span class="text-caption-sm font-extra-bold" style="color:var(--c-on-surface);margin-bottom:2px;">Thomas et al. (2016)</span>
+                <span class="text-caption-sm" style="color:var(--c-on-surface-3);">Nutrition and Athletic Performance · Academy of Nutrition and Dietetics / ACSM</span>
+              </a>
             </div>
           </div>
+
         {/if}
       </div>
     </div>
@@ -1619,7 +1671,8 @@
               <input id="ob-weight" type="number" inputmode="decimal" bind:value={weight} min="1" max="400" step="1" placeholder="75"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                enterkeyhint="next"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">{imperial ? 'lbs' : 'kg'}</span>
             </div>
           </div>
@@ -1634,7 +1687,8 @@
               <input id="ob-ftp" type="number" inputmode="numeric" bind:value={ftp} min="0" max="600" step="1" placeholder="280"
                 class="w-24 text-right text-body-strong text-[--c-on-surface] focus:outline-none"
                 style="height:44px;border-radius:14px;padding:0 14px;background:var(--c-surface-input);"
-                on:focus={focusInput} />
+                enterkeyhint="done"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span class="text-caption-sm text-[--c-on-surface-2] w-5">W</span>
             </div>
           </div>
@@ -1699,7 +1753,8 @@
               bind:value={_obProductName}
               placeholder={$t.productNamePlaceholder}
               style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
-              on:focus={focusInput} />
+              enterkeyhint="next"
+              on:focus={focusInput} on:keydown={blurOnEnter} />
             <div style="display:flex;gap:8px;align-items:center;">
               <input
                 type="number"
@@ -1708,7 +1763,8 @@
                 placeholder="25"
                 min="1" max="200"
                 style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
-                on:focus={focusInput} />
+                enterkeyhint="done"
+                on:focus={focusInput} on:keydown={blurOnEnter} />
               <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
               <button
                 on:click={() => { addCustomProduct(_obProductName, _obProductCarbs ?? 0); _obProductName = ''; _obProductCarbs = undefined; }}
@@ -1770,18 +1826,44 @@
         </div>
         <div class="px-6" style="padding-bottom:8px;display:flex;flex-direction:column;gap:10px;">
           <button
-            on:click={() => { finishOnboarding(); setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 250); }}
+            on:click={() => { _onboardingStartTour = true; onboardingStep = 4; }}
             style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
             {$t.tourStartTour}
           </button>
           <button
-            on:click={finishOnboarding}
+            on:click={() => { _onboardingStartTour = false; onboardingStep = 4; }}
             style="width:100%;height:44px;border-radius:14px;background:transparent;color:var(--c-on-surface-2);font-size:15px;border:none;cursor:pointer;">
             {$t.tourSkipTour}
           </button>
         </div>
-        <!-- Progress dots (4) -->
+        <!-- Progress dots (5) -->
         <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-seg-active);display:block;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
+        </div>
+      {:else if onboardingStep === 4}
+        <div class="flex flex-col flex-1 px-8 pt-6"
+          in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
+          <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,180,0,0.15);color:#f59e0b;display:flex;align-items:center;justify-content:center;margin-bottom:20px;flex-shrink:0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h2 style="font-size:22px;font-weight:700;color:var(--c-on-surface);margin:0 0 16px;">{$t.onboardingDisclaimerTitle}</h2>
+          <p style="font-size:15px;color:var(--c-on-surface-2);line-height:1.6;margin:0 0 12px;white-space:pre-line;">{$t.onboardingDisclaimerBody}</p>
+          <p style="font-size:12px;color:var(--c-on-surface-3);margin:0;">{$t.onboardingDisclaimerSources}</p>
+        </div>
+        <div class="px-6" style="padding-bottom:8px;">
+          <button
+            on:click={() => { finishOnboarding(); if (_onboardingStartTour) setTimeout(() => { howToSlide = 0; showHowToSheet = true; }, 250); }}
+            style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;transition:opacity 0.15s;">
+            {$t.onboardingDisclaimerAccept}
+          </button>
+        </div>
+        <!-- Progress dots (5) -->
+        <div class="flex items-center justify-center gap-2 pt-4">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
           <span style="width:8px;height:8px;border-radius:50%;background:var(--c-border-input);display:block;"></span>
@@ -1789,6 +1871,30 @@
         </div>
       {/if}
 
+    </div>
+  {/if}
+
+  <!-- ── Disclaimer modal for existing users (already onboarded, no disclaimer yet) ── -->
+  {#if onboardingStep < 0 && !disclaimerAccepted}
+    <div class="fixed inset-0 z-[999] flex flex-col items-center justify-end"
+      style="background:rgba(0,0,0,0.6);"
+      transition:fade={{ duration: 200 }}>
+      <div class="w-full max-w-lg rounded-t-[28px] px-6 pt-6"
+        style="background:var(--c-surface);color:var(--c-on-surface);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));"
+        in:fly={{ y: 400, duration: 380, easing: quintOut }}>
+        <div style="width:36px;height:4px;border-radius:2px;background:var(--c-border-input);margin:0 auto 24px;"></div>
+        <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,180,0,0.15);color:#f59e0b;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h2 style="font-size:22px;font-weight:700;margin:0 0 16px;">{$t.onboardingDisclaimerTitle}</h2>
+        <p style="font-size:15px;color:var(--c-on-surface-2);line-height:1.6;margin:0 0 8px;white-space:pre-line;">{$t.onboardingDisclaimerBody}</p>
+        <p style="font-size:12px;color:var(--c-on-surface-3);margin:0 0 24px;">{$t.onboardingDisclaimerSources}</p>
+        <button
+          on:click={acceptDisclaimer}
+          style="width:100%;height:52px;border-radius:14px;background:var(--c-seg-active);color:var(--c-seg-active-text);font-size:17px;font-weight:600;border:none;cursor:pointer;">
+          {$t.onboardingDisclaimerAccept}
+        </button>
+      </div>
     </div>
   {/if}
 

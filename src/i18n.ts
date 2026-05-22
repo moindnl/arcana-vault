@@ -54,7 +54,7 @@ const translations = {
     zoneTadej: 'ARE YOU OKAY?!',
 
     carbohydrates: 'Carbohydrates',
-    carbsSub: 'Per hour for optimal performance',
+    carbsSub: 'Per hour — estimated target',
     carbsEstimated: 'Estimated from your intensity level',
     carbsMultiNote: 'Requires a glucose+fructose blend (2:1). Single-source carbs top out at ~60 g/h.',
     fluids: 'Fluids',
@@ -100,7 +100,6 @@ const translations = {
 
     howItWorks: 'How it works',
     about: 'About',
-    legal: 'Legal',
 
     dataStorage: 'Data storage',
     dataStorageVal: 'Device only',
@@ -143,6 +142,10 @@ const translations = {
     onboardingProductsTitle: 'Your Products',
     onboardingProductsSub: 'Do you use specific gels or bars? Add them once — bonkproof! will calculate with your actual numbers.',
     onboardingSkip: 'Skip',
+    onboardingDisclaimerTitle: 'Before you ride',
+    onboardingDisclaimerBody: 'bonkproof calculates estimated carbohydrate and fluid targets for endurance athletes based on sports science guidelines (Jeukendrup, Sports Medicine 2014; Sawka et al., ACSM 2007; Thomas et al., AND 2016).\n\nThese values are not medical advice and do not replace consultation with a doctor, dietitian, or sports scientist. Use at your own risk.\n\nIf you have any health conditions — such as diabetes — consult a physician before use.',
+    onboardingDisclaimerSources: 'Scientific sources: About → Formula',
+    onboardingDisclaimerAccept: 'I understand',
     tourStartTour: 'Take the tour',
     tourSkipTour: 'Skip',
     tourNext: 'Next',
@@ -165,11 +168,6 @@ const translations = {
     noCustomProducts: 'No custom products yet.',
     deleteProduct: 'Delete product',
 
-    impressum: 'Impressum',
-    impressumSub: 'Legal disclosure · § 5 TMG',
-    impressumContact: 'Contact',
-    impressumNote: 'Private, non-commercial project. No personal data is collected or shared with third parties.',
-
     howMathWorks: 'How the math works',
     zoneCol: 'Zone',
     ftpCol: '% FTP',
@@ -177,6 +175,7 @@ const translations = {
     mathFluidNote: 'Fluid targets scale with body weight — sweat rate adjusts them by ±20–30%.',
     mathHeatNote: 'Heat adds +0.3 L/h per 5°C above 20°C to your fluid target.',
     mathElectroNote: 'Rides >2h: add electrolytes — plain water alone can dilute your sodium levels on long efforts.',
+    mathSourcesLabel: 'Sources',
 
     neuralyzerText: "Hm? There was no ride. You've been watching Netflix. Have a nice day.",
 
@@ -264,7 +263,7 @@ const translations = {
     zoneTadej: 'GEHT ES DIR GUT?!',
 
     carbohydrates: 'Kohlenhydrate',
-    carbsSub: 'Pro Stunde für optimale Leistung',
+    carbsSub: 'Pro Stunde — Richtwert',
     carbsEstimated: 'Schätzung auf Basis deiner Intensität',
     carbsMultiNote: 'Glukose+Fruktose-Mix (2:1) erforderlich. Einzelne Zuckerquellen schaffen max. ~60 g/h.',
     fluids: 'Flüssigkeit',
@@ -310,7 +309,6 @@ const translations = {
 
     howItWorks: 'Formel',
     about: 'Info',
-    legal: 'Impressum',
 
     dataStorage: 'Datenspeicherung',
     dataStorageVal: 'Nur auf dem Gerät',
@@ -353,6 +351,10 @@ const translations = {
     onboardingProductsTitle: 'Deine Produkte',
     onboardingProductsSub: 'Nutzt du spezifische Gels oder Riegel? Trag sie einmal ein — bonkproof! rechnet mit deinen genauen Werten.',
     onboardingSkip: 'Überspringen',
+    onboardingDisclaimerTitle: 'Bevor du losfährst',
+    onboardingDisclaimerBody: 'bonkproof berechnet geschätzte Kohlenhydrat- und Flüssigkeitsziele für Ausdauersportler nach sportwissenschaftlichen Richtwerten (Jeukendrup, Sports Medicine 2014; Sawka et al., ACSM 2007; Thomas et al., AND 2016).\n\nDiese Werte sind keine medizinische Empfehlung und ersetzen keine individuelle Beratung durch Arzt, Ernährungsberater oder Sportwissenschaftler. Die Nutzung erfolgt auf eigenes Risiko.\n\nBei gesundheitlichen Einschränkungen — z. B. Diabetes — konsultiere vor der Anwendung einen Facharzt.',
+    onboardingDisclaimerSources: 'Wissenschaftliche Quellen: Info → Formel',
+    onboardingDisclaimerAccept: 'Ich habe verstanden',
     tourStartTour: 'App-Tour starten',
     tourSkipTour: 'Überspringen',
     tourNext: 'Weiter',
@@ -375,11 +377,6 @@ const translations = {
     noCustomProducts: 'Noch keine eigenen Produkte.',
     deleteProduct: 'Produkt löschen',
 
-    impressum: 'Impressum',
-    impressumSub: 'Pflichtangaben · § 5 TMG',
-    impressumContact: 'Kontakt',
-    impressumNote: 'Privates, nicht-kommerzielles Projekt. Es werden keine personenbezogenen Daten erhoben oder an Dritte weitergegeben.',
-
     howMathWorks: 'So funktioniert die Berechnung',
     zoneCol: 'Zone',
     ftpCol: '% FTP',
@@ -387,6 +384,7 @@ const translations = {
     mathFluidNote: 'Flüssigkeitsbedarf richtet sich nach Körpergewicht — die Schwitztyp passt ihn um ±20–30% an.',
     mathHeatNote: 'Bei Hitze kommen +0,3 L/h pro 5°C über 20°C zum Flüssigkeitsziel hinzu.',
     mathElectroNote: 'Fahrten >2h: Elektrolyte nicht vergessen — reines Wasser kann bei langen Ausfahrten den Natriumspiegel zu stark absenken.',
+    mathSourcesLabel: 'Quellen',
 
     neuralyzerText: 'Hm? Es gab keine Fahrt. Du hast Netflix geschaut. Schönen Tag noch.',
 

@@ -1,0 +1,14 @@
+Schluss mit Raten. Richtig tanken.
+
+bonkproof berechnet sportwissenschaftliche Richtwerte für Kohlenhydrate und Flüssigkeit — auf Basis deiner FTP und Fahrtdaten. Nicht perfekt für jeden. Aber deutlich besser als schätzen.
+
+Gib einmalig dein Gewicht und deine FTP ein. Dann für jede Fahrt: geplante Leistung und Dauer. bonkproof zeigt dir:
+
+• Kohlenhydrate pro Stunde (g/h) — Richtwert für deine Trainingszone
+• Flüssigkeitsbedarf pro Stunde — angepasst an Gewicht, Schweißrate und Temperatur
+• Einen Ernährungsplan — was du wann essen und trinken solltest
+• Eine Packliste — damit nichts vergessen wird
+
+Für Radfahrer, die Performance ernst nehmen. Kein Account, kein Abo, kein Lärm — nur die Zahlen, die zählen.
+
+Die berechneten Werte basieren auf sportwissenschaftlichen Richtwerten (Jeukendrup 2014, Sawka et al. 2007, Thomas et al. 2016) und sind keine medizinische Empfehlung. Bei gesundheitlichen Einschränkungen bitte vor der Nutzung einen Arzt konsultieren.
