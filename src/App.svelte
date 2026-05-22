@@ -373,15 +373,15 @@
     window.addEventListener('appinstalled', onAppInstalled);
     _profileReady = true;
 
-    // Keyboard: enable accessory bar (prev/next/done), track height for sheet offset
-    Keyboard.setAccessoryBarVisible({ isVisible: true }).catch(() => {});
-    Keyboard.addListener('keyboardWillShow', (info) => {
-      keyboardHeight = info.keyboardHeight;
-      setTimeout(() => {
-        (document.activeElement as HTMLElement)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 80);
-    });
-    Keyboard.addListener('keyboardWillHide', () => { keyboardHeight = 0; });
+    // Keyboard: only in Capacitor context
+    if (isCapacitor) {
+      Keyboard.setAccessoryBarVisible({ isVisible: true }).catch(() => {});
+      Keyboard.addListener('keyboardWillShow', (info) => {
+        keyboardHeight = info.keyboardHeight;
+        // focusInput already scrolls into view — no duplicate scroll here
+      }).catch(() => {});
+      Keyboard.addListener('keyboardWillHide', () => { keyboardHeight = 0; }).catch(() => {});
+    }
   });
 
   onDestroy(() => {
@@ -391,7 +391,7 @@
     if (holdTimer) clearTimeout(holdTimer);
     window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.removeEventListener('appinstalled', onAppInstalled);
-    Keyboard.removeAllListeners().catch(() => {});
+    if ((window as any).Capacitor) Keyboard.removeAllListeners().catch(() => {});
   });
 
   function dismissInstallSheet() {
@@ -1352,6 +1352,7 @@
                 bind:value={_newProductName}
                 placeholder={$t.productNamePlaceholder}
                 style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
+                enterkeyhint="next"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <div style="display:flex;gap:8px;align-items:center;">
                 <input
@@ -1361,6 +1362,7 @@
                   placeholder="25"
                   min="1" max="200"
                   style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
+                  enterkeyhint="done"
                   on:focus={focusInput} on:keydown={blurOnEnter} />
                 <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
                 <button
@@ -1751,6 +1753,7 @@
               bind:value={_obProductName}
               placeholder={$t.productNamePlaceholder}
               style="width:100%;height:44px;border-radius:12px;padding:0 14px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);box-sizing:border-box;"
+              enterkeyhint="next"
               on:focus={focusInput} on:keydown={blurOnEnter} />
             <div style="display:flex;gap:8px;align-items:center;">
               <input
@@ -1760,6 +1763,7 @@
                 placeholder="25"
                 min="1" max="200"
                 style="width:72px;height:44px;border-radius:12px;padding:0 12px;background:var(--c-surface-input);border:none;font-size:15px;color:var(--c-on-surface);text-align:center;flex-shrink:0;"
+                enterkeyhint="done"
                 on:focus={focusInput} on:keydown={blurOnEnter} />
               <span style="font-size:13px;color:var(--c-on-surface-2);white-space:nowrap;flex-shrink:0;">{$t.productCarbsUnit}</span>
               <button
