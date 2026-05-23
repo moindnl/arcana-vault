@@ -1,5 +1,4 @@
 Language switcher in onboarding: switch between English and German directly on the welcome screen — before you start setup.
 Reset button in ride screen now works reliably on iOS.
-Shake your device to clear ride inputs.
 Double-tap to zoom disabled — the app now feels fully native.
 "Water only" label in the drink picker no longer gets clipped.
