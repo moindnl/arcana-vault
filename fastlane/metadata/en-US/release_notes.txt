@@ -1,0 +1,1 @@
+Language switcher in onboarding: switch between English and German directly on the welcome screen — before you start setup.
