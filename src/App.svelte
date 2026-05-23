@@ -1176,7 +1176,7 @@
               <div style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);padding:3px;flex:1;min-width:160px;">
                 <div style="position:absolute;left:3px;top:3px;bottom:3px;width:calc((100% - 6px) / 3);border-radius:8px;background:rgba(255,255,255,0.92);box-shadow:0 1px 3px rgba(0,0,0,0.3);transform:translateX(calc({drinkIdx} * 100%));transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;will-change:transform;"></div>
                 {#each DRINK_PRODUCTS as p}
-                  <button style="position:relative;padding:5px 6px;min-height:44px;font-size:12px;font-weight:500;text-align:center;white-space:nowrap;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;"
+                  <button style="position:relative;padding:5px 6px;min-height:44px;font-size:12px;font-weight:500;text-align:center;color:{drinkProduct === p.id ? 'var(--c-dark-pill-active-text)' : 'rgba(255,255,255,0.55)'};transition:color 0.22s cubic-bezier(0.35,0,0.25,1);background:transparent;border:none;line-height:1.3;"
                     aria-pressed={drinkProduct === p.id} on:click={() => (drinkProduct = p.id)}>{p.label}</button>
                 {/each}
               </div>
