@@ -1627,6 +1627,14 @@
 
       <!-- Step 0: Welcome -->
       {#if onboardingStep === 0}
+        <!-- Language toggle top-right -->
+        <div style="display:flex;justify-content:flex-end;padding:0 20px 0;">
+          <div style="position:relative;display:flex;border-radius:12px;border:1px solid var(--c-border-input);background:var(--c-surface-seg);padding:3px;">
+            <div style="position:absolute;top:3px;bottom:3px;width:calc(50% - 3px);border-radius:8px;background:var(--c-seg-active);box-shadow:0 1px 3px rgba(0,0,0,0.15);transform:translateX({$lang === 'de' ? 'calc(100% + 3px)' : '0'});transition:transform 0.22s cubic-bezier(0.35,0,0.25,1);pointer-events:none;"></div>
+            <button on:click={() => lang.update(() => 'en')} style="position:relative;padding:5px 14px;font-size:13px;font-weight:600;color:{$lang === 'en' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s;background:transparent;border:none;min-height:36px;">EN</button>
+            <button on:click={() => lang.update(() => 'de')} style="position:relative;padding:5px 14px;font-size:13px;font-weight:600;color:{$lang === 'de' ? 'var(--c-seg-active-text)' : 'var(--c-on-surface-2)'};transition:color 0.22s;background:transparent;border:none;min-height:36px;">DE</button>
+          </div>
+        </div>
         <div class="flex flex-col flex-1 items-center justify-center px-8"
           in:fly={{ x: 40, duration: 280, easing: cubicOut }}>
           <img src="/favicon.svg" alt="bonkproof!" style="width:72px;height:72px;border-radius:18%;margin-bottom:24px;display:block;" />
