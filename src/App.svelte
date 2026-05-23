@@ -164,6 +164,8 @@
   let imperial: boolean = typeof _savedProfile.imperial === 'boolean' ? _savedProfile.imperial : false;
   let sweatRate: 'light' | 'moderate' | 'heavy' = _savedProfile.sweatRate || 'moderate';
 
+  const isCapacitor = !!(window as any).Capacitor;
+
   // UI state
   let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
   let disclaimerAccepted: boolean = !!localStorage.getItem('bp-disclaimer-accepted');
@@ -364,7 +366,6 @@
       || (navigator as any).standalone === true;
     const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isAndroid = /android/i.test(navigator.userAgent);
-    const isCapacitor = !!(window as any).Capacitor;
     if (isMobile && !standalone && !isCapacitor && (isIos || isAndroid) && !localStorage.getItem('bp-install-dismissed')) {
       _installOS = isIos ? 'ios' : 'android'; // reactive block fires when profile complete
     }
@@ -391,7 +392,8 @@
     if (holdTimer) clearTimeout(holdTimer);
     window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
     window.removeEventListener('appinstalled', onAppInstalled);
-    if ((window as any).Capacitor) Keyboard.removeAllListeners().catch(() => {});
+    if (isCapacitor) Keyboard.removeAllListeners().catch(() => {});
+    if (_shakeMotionSetup) window.removeEventListener('devicemotion', _onDeviceMotion);
   });
 
   function dismissInstallSheet() {
@@ -438,6 +440,44 @@
   }
   function cancelHold() {
     if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+  }
+
+  // Shake-to-reset
+  let _shakeMotionSetup = false;
+  let _motionRequested = false;
+  let _shakeLast = { t: 0, x: 0, y: 0, z: 0 };
+
+  function _onDeviceMotion(e: DeviceMotionEvent) {
+    const acc = e.accelerationIncludingGravity;
+    if (!acc) return;
+    const now = Date.now();
+    if (now - _shakeLast.t < 100) return;
+    const dx = Math.abs((acc.x ?? 0) - _shakeLast.x);
+    const dy = Math.abs((acc.y ?? 0) - _shakeLast.y);
+    const dz = Math.abs((acc.z ?? 0) - _shakeLast.z);
+    _shakeLast = { t: now, x: acc.x ?? 0, y: acc.y ?? 0, z: acc.z ?? 0 };
+    if (dx + dy + dz > 28 && (distance !== undefined || durationRaw !== '' || power !== undefined)) {
+      resetInputs();
+    }
+  }
+
+  function _setupShake() {
+    if (_shakeMotionSetup) return;
+    _shakeMotionSetup = true;
+    window.addEventListener('devicemotion', _onDeviceMotion);
+  }
+
+  async function _requestMotionPermission() {
+    if (_motionRequested) return;
+    _motionRequested = true;
+    if (typeof (DeviceMotionEvent as any).requestPermission === 'function') {
+      try {
+        const perm = await (DeviceMotionEvent as any).requestPermission();
+        if (perm === 'granted') _setupShake();
+      } catch { /* denied or not available */ }
+    } else {
+      _setupShake(); // Android / non-gated
+    }
   }
 
   // Imperial ↔ metric: convert displayed values on toggle
@@ -670,12 +710,13 @@
     }
   }
 
-  // Dismiss keyboard on tap outside any input
+  // Dismiss keyboard on tap outside any input; request motion permission on first touch
   function onWindowTouchStart(e: TouchEvent) {
     if (!(e.target as HTMLElement).closest('input, textarea')) {
       (document.activeElement as HTMLElement)?.blur();
       Keyboard.hide().catch(() => {});
     }
+    if (isCapacitor && !_motionRequested) _requestMotionPermission();
   }
 
 
@@ -808,7 +849,9 @@
             <button
               on:click|stopPropagation={resetInputs}
               on:mousedown={startHold} on:mouseup={cancelHold} on:mouseleave={cancelHold}
-              on:touchstart|preventDefault={startHold} on:touchend={cancelHold} on:touchcancel={cancelHold}
+              on:touchstart|preventDefault={startHold}
+              on:touchend|stopPropagation={(e) => { if (holdTimer) { cancelHold(); resetInputs(); } else { cancelHold(); } }}
+              on:touchcancel={cancelHold}
               on:contextmenu|preventDefault
               class="flex items-center justify-center flex-shrink-0"
               style="width:44px;height:44px;border-radius:50%;background:transparent;border:none;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none;"
