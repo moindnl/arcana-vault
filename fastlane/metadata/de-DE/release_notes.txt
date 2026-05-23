@@ -2,3 +2,4 @@ Sprachumschaltung im Onboarding: Direkt auf dem Startbildschirm kannst du jetzt 
 Zurücksetzen-Button im Fahrt-Screen funktioniert jetzt zuverlässig auf iOS.
 Schütteln des Geräts setzt die Fahrt-Eingaben zurück.
 Doppel-Tippen zum Zoomen deaktiviert — die App verhält sich jetzt wie eine native App.
+„Water only" in der Getränkeauswahl wird nicht mehr abgeschnitten.
