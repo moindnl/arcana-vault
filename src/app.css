@@ -273,6 +273,11 @@
     font-family: var(--font-sans);
   }
 
+  /* Disable double-tap zoom on entire app */
+  html, body {
+    touch-action: manipulation;
+  }
+
   /* iOS: remove tap highlight, kill 300ms delay on all interactive elements */
   button, a, [role="button"] {
     touch-action: manipulation;
