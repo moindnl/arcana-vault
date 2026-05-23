@@ -164,7 +164,7 @@
   let imperial: boolean = typeof _savedProfile.imperial === 'boolean' ? _savedProfile.imperial : false;
   let sweatRate: 'light' | 'moderate' | 'heavy' = _savedProfile.sweatRate || 'moderate';
 
-  const isCapacitor = !!(window as any).Capacitor;
+  const isCapacitor = !!(window as any).Capacitor?.isNativePlatform?.();
 
   // UI state
   let onboardingStep: number = localStorage.getItem('bp-onboarding-done') ? -1 : 0;
