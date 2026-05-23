@@ -2,3 +2,5 @@ Language switcher in onboarding: switch between English and German directly on t
 Reset button in ride screen now works reliably on iOS.
 Double-tap to zoom disabled — the app now feels fully native.
 "Water only" label in the drink picker no longer gets clipped.
+Keyboard toolbar with previous, next, and done buttons above the keyboard.
+Input fields now scroll into view automatically when the keyboard appears.
