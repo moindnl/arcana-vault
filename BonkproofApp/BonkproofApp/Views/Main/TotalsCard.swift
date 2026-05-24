@@ -35,7 +35,7 @@ struct TotalsCard: View {
         DarkSegmentedPicker(
             options: Tab.allCases,
             selection: $activeTab,
-            label: { tab in String(localized: String.LocalizationValue(tab.rawValue)) }
+            label: { tab in LocalizedStringKey(tab.rawValue) }
         )
     }
 
@@ -210,7 +210,7 @@ struct TotalsCard: View {
                     get: { s.activeDrink },
                     set: { s.drinkProductId = $0.id }
                 ),
-                label: { $0.name }
+                label: { LocalizedStringKey($0.name) }
             )
         }
     }
@@ -227,7 +227,7 @@ struct TotalsCard: View {
                 options: [500, 750, 1000],
                 selection: $s.bottleSize,
                 label: { size in
-                    size == 1000 ? "1L" : "\(size)ml"
+                    size == 1000 ? LocalizedStringKey("1L") : LocalizedStringKey("\(size)ml")
                 }
             )
 

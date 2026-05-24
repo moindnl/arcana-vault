@@ -41,7 +41,7 @@ struct HowToSheet: View {
                         dismiss()
                     }
                 } label: {
-                    Text(currentSlide < 3 ? "Next" : "Done")
+                    Text(currentSlide < 3 ? LocalizedStringKey("onboardingNext") : LocalizedStringKey("done"))
                         .font(.body.weight(.semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
@@ -51,11 +51,11 @@ struct HowToSheet: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 24)
             }
-            .navigationTitle("How it works")
+            .navigationTitle("howItWorks")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
+                    Button("close") { dismiss() }
                 }
             }
         }
@@ -67,8 +67,8 @@ struct HowToSheet: View {
 
     private var slide0: some View {
         SlideContainer(
-            title: String(localized: "tourSlide0Title"),
-            subtitle: "Enter just a duration and power — bonkproof handles the rest."
+            title: "tourSlide0Title",
+            subtitle: "tourSlide0Body"
         ) {
             Slide0Illustration(triggered: triggered[0] ?? false)
                 .onAppear {
@@ -85,8 +85,8 @@ struct HowToSheet: View {
 
     private var slide1: some View {
         SlideContainer(
-            title: String(localized: "tourSlide1Title"),
-            subtitle: "Carb needs scale with intensity — from easy spins to all-out efforts."
+            title: "tourSlide1Title",
+            subtitle: "tourSlide1Body"
         ) {
             Slide1ZoneChart(triggered: triggered[1] ?? false)
                 .onAppear {
@@ -103,8 +103,8 @@ struct HowToSheet: View {
 
     private var slide2: some View {
         SlideContainer(
-            title: String(localized: "tourSlide2Title"),
-            subtitle: "bonkproof generates a 20-minute interval fueling timeline."
+            title: "tourSlide2Title",
+            subtitle: "tourSlide2Body"
         ) {
             Slide2Schedule(triggered: triggered[2] ?? false)
                 .onAppear {
@@ -121,8 +121,8 @@ struct HowToSheet: View {
 
     private var slide3: some View {
         SlideContainer(
-            title: String(localized: "tourSlide3Title"),
-            subtitle: "Add your own gels and bars — bonkproof counts units, not grams."
+            title: "tourSlide3Title",
+            subtitle: "tourSlide3Body"
         ) {
             Slide3Products(triggered: triggered[3] ?? false)
                 .onAppear {
@@ -139,8 +139,8 @@ struct HowToSheet: View {
 // MARK: - Slide container
 
 private struct SlideContainer<Content: View>: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     @ViewBuilder let content: () -> Content
 
     var body: some View {

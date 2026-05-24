@@ -5,7 +5,7 @@ import SwiftUI
 struct SegmentedPicker<T: Hashable>: View {
     let options: [T]
     @Binding var selection: T
-    let label: (T) -> String
+    let label: (T) -> LocalizedStringKey
     var pillColor: Color = Color(UIColor.systemBackground)
     var textColorSelected: Color = .label
     var textColorUnselected: Color = .secondaryLabel
@@ -48,7 +48,7 @@ struct SegmentedPicker<T: Hashable>: View {
 struct DarkSegmentedPicker<T: Hashable>: View {
     let options: [T]
     @Binding var selection: T
-    let label: (T) -> String
+    let label: (T) -> LocalizedStringKey
 
     var body: some View {
         SegmentedPicker(

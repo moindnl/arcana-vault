@@ -39,19 +39,19 @@ struct AboutSheet: View {
                 }
 
                 // Privacy / data
-                Section("Data & privacy") {
-                    infoRow(icon: "iphone", iconColor: Color(hex: "#3b82f6"), title: "Device only", subtitle: "All data stays on your iPhone")
-                    infoRow(icon: "network.slash", iconColor: Color(hex: "#22c55e"), title: "No server requests", subtitle: "No tracking, no analytics")
-                    infoRow(icon: "wifi.slash", iconColor: Color(hex: "#f59e0b"), title: "Works offline", subtitle: "No internet required")
+                Section("dataPrivacy") {
+                    infoRow(icon: "iphone", iconColor: Color(hex: "#3b82f6"), title: "dataStorageVal", subtitle: "allDataOnDevice")
+                    infoRow(icon: "network.slash", iconColor: Color(hex: "#22c55e"), title: "noServerRequests", subtitle: "noTracking")
+                    infoRow(icon: "wifi.slash", iconColor: Color(hex: "#f59e0b"), title: "worksOffline", subtitle: "noInternet")
                 }
 
                 // Math
-                Section("Calculations") {
+                Section("calculations") {
                     Button {
                         showFormula = true
                     } label: {
                         HStack {
-                            Label(String(localized: "howMathWorks"), systemImage: "function")
+                            Label("howMathWorks", systemImage: "function")
                                 .foregroundStyle(Color.label)
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -69,17 +69,17 @@ struct AboutSheet: View {
                             state.showHowTo = true
                         }
                     } label: {
-                        Label("Replay app tour", systemImage: "play.circle")
+                        Label("replayTour", systemImage: "play.circle")
                             .foregroundStyle(Color.bpAccent)
                     }
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle(String(localized: "about"))
+            .navigationTitle("about")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("done") { dismiss() }
                 }
             }
             .navigationDestination(isPresented: $showFormula) {
@@ -90,7 +90,7 @@ struct AboutSheet: View {
         .presentationDragIndicator(.visible)
     }
 
-    private func infoRow(icon: String, iconColor: Color, title: String, subtitle: String) -> some View {
+    private func infoRow(icon: String, iconColor: Color, title: LocalizedStringKey, subtitle: LocalizedStringKey) -> some View {
         HStack(spacing: 12) {
             ZStack {
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -135,7 +135,7 @@ struct FormulaView: View {
 
     var body: some View {
         List {
-            Section("Zone carb targets") {
+            Section("zoneTargets") {
                 ForEach(zones, id: \.zone) { row in
                     HStack(spacing: 12) {
                         Circle()
@@ -156,7 +156,7 @@ struct FormulaView: View {
                 }
             }
 
-            Section("Fluid formula") {
+            Section("fluidFormula") {
                 VStack(alignment: .leading, spacing: 8) {
                     formulaLine("Base fluid", "Zone midpoint (L/h)")
                     formulaLine("Weight adj.", "× (weight / 70 kg)")
@@ -166,7 +166,7 @@ struct FormulaView: View {
                 .padding(.vertical, 4)
             }
 
-            Section("Sources") {
+            Section("sources") {
                 ForEach(sources, id: \.url) { source in
                     Button {
                         if let url = URL(string: source.url) {
@@ -188,7 +188,7 @@ struct FormulaView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle(String(localized: "howMathWorks"))
+        .navigationTitle("howMathWorks")
         .navigationBarTitleDisplayMode(.inline)
     }
 

@@ -11,7 +11,7 @@ struct ResultCardsRow: View {
                 iconColor: Color(hex: "#f59e0b"),
                 value: state.carbsPerHour,
                 unit: "g/h",
-                subtitle: String(localized: "carbsSub")
+                subtitle: "carbsSub"
             )
 
             // Fluids card
@@ -20,7 +20,7 @@ struct ResultCardsRow: View {
                 iconColor: Color(hex: "#3b82f6"),
                 value: Double(Int(state.fluidPerHour * 10)) / 10,
                 unit: "L/h",
-                subtitle: String(localized: "fluidsSub"),
+                subtitle: "fluidsSub",
                 isDouble: true
             )
         }
@@ -32,7 +32,7 @@ struct ResultCardsRow: View {
         iconColor: Color,
         value: Any,
         unit: String,
-        subtitle: String,
+        subtitle: LocalizedStringKey,
         isDouble: Bool = false
     ) -> some View {
         BPCard {

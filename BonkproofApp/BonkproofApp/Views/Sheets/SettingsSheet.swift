@@ -15,11 +15,11 @@ struct SettingsSheet: View {
                 aboutRow
             }
             .listStyle(.insetGrouped)
-            .navigationTitle(String(localized: "settings"))
+            .navigationTitle("settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("done") { dismiss() }
                 }
             }
             .navigationDestination(isPresented: $showCustomProducts) {
@@ -38,7 +38,7 @@ struct SettingsSheet: View {
             // Weight
             HStack {
                 Label(
-                    s.imperial ? "Weight (lbs)" : "Weight (kg)",
+                    s.imperial ? "bodyWeightLbs" : "bodyWeightKg",
                     systemImage: "scalemass.fill"
                 )
                 Spacer()
@@ -64,16 +64,16 @@ struct SettingsSheet: View {
                 label: Label("Sweat rate", systemImage: "humidity")
             ) {
                 ForEach(SweatRate.allCases, id: \.self) { rate in
-                    Text(rate.rawValue).tag(rate)
+                    Text(LocalizedStringKey(rate.localizedKey)).tag(rate)
                 }
             }
 
             // Units toggle
             Toggle(isOn: $s.imperial) {
-                Label("Imperial (mi/lbs)", systemImage: "arrow.left.and.right")
+                Label("imperialToggle", systemImage: "arrow.left.and.right")
             }
         } header: {
-            Text("Profile")
+            Text("profile")
         }
     }
 
@@ -85,7 +85,7 @@ struct SettingsSheet: View {
             // Active solid
             Picker(
                 selection: $s.solidProductId,
-                label: Label("Solid food", systemImage: "fork.knife")
+                label: Label("solidFood", systemImage: "fork.knife")
             ) {
                 ForEach(state.allSolidProducts) { product in
                     Text(product.name).tag(product.id)
@@ -95,7 +95,7 @@ struct SettingsSheet: View {
             // Active drink
             Picker(
                 selection: $s.drinkProductId,
-                label: Label("Drink type", systemImage: "drop.fill")
+                label: Label("drinkType", systemImage: "drop.fill")
             ) {
                 ForEach(DrinkProduct.defaults) { drink in
                     Text(drink.name).tag(drink.id)
@@ -105,7 +105,7 @@ struct SettingsSheet: View {
             // Bottle size
             Picker(
                 selection: $s.bottleSize,
-                label: Label("Bottle size", systemImage: "waterbottle")
+                label: Label("bottleSize", systemImage: "waterbottle")
             ) {
                 Text("500 ml").tag(500)
                 Text("750 ml").tag(750)
@@ -117,7 +117,7 @@ struct SettingsSheet: View {
                 showCustomProducts = true
             } label: {
                 HStack {
-                    Label("Custom products", systemImage: "plus.circle")
+                    Label("customProducts", systemImage: "plus.circle")
                     Spacer()
                     Text("\(state.customProducts.count)")
                         .foregroundStyle(Color.secondaryLabel)
@@ -139,7 +139,7 @@ struct SettingsSheet: View {
         return Section {
             Picker(
                 selection: $s.theme,
-                label: Label("Theme", systemImage: "circle.lefthalf.filled")
+                label: Label("theme", systemImage: "circle.lefthalf.filled")
             ) {
                 ForEach(AppTheme.allCases, id: \.self) { t in
                     Text(t.rawValue).tag(t)
@@ -147,7 +147,7 @@ struct SettingsSheet: View {
             }
             .pickerStyle(.segmented)
         } header: {
-            Text("Appearance")
+            Text("appearance")
         }
     }
 
@@ -158,7 +158,7 @@ struct SettingsSheet: View {
         return Section {
             Picker(
                 selection: $s.language,
-                label: Label("Language", systemImage: "globe")
+                label: Label("language", systemImage: "globe")
             ) {
                 ForEach(AppLanguage.allCases, id: \.self) { lang in
                     Text(lang.rawValue).tag(lang)
@@ -166,7 +166,7 @@ struct SettingsSheet: View {
             }
             .pickerStyle(.segmented)
         } header: {
-            Text("Language")
+            Text("language")
         }
     }
 
@@ -180,7 +180,7 @@ struct SettingsSheet: View {
                     state.showAbout = true
                 }
             } label: {
-                Label("About bonkproof", systemImage: "info.circle")
+                Label("about", systemImage: "info.circle")
                     .foregroundStyle(Color.label)
             }
         }
@@ -197,11 +197,11 @@ struct CustomProductsView: View {
 
     var body: some View {
         List {
-            Section("Add product") {
+            Section("addProductSection") {
                 HStack(spacing: 10) {
-                    TextField("Name", text: $newName)
+                    TextField("productName", text: $newName)
                     Divider()
-                    TextField("g carbs", text: $newCarbs)
+                    TextField("productCarbsUnit", text: $newCarbs)
                         .keyboardType(.numberPad)
                         .frame(width: 70)
                     Button {
@@ -221,7 +221,7 @@ struct CustomProductsView: View {
             }
 
             if !state.customProducts.isEmpty {
-                Section("Your products") {
+                Section("yourProducts") {
                     ForEach(state.customProducts) { product in
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
@@ -240,7 +240,7 @@ struct CustomProductsView: View {
                 }
             }
 
-            Section("Default products") {
+            Section("defaultProducts") {
                 ForEach(NutritionProduct.defaults) { product in
                     HStack {
                         Text(product.name)
@@ -252,13 +252,13 @@ struct CustomProductsView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("Custom products")
+        .navigationTitle("customProducts")
         .navigationBarTitleDisplayMode(.inline)
     }
 
     private func addProduct() {
         guard let carbs = Int(newCarbs), carbs > 0 else {
-            errorMsg = "Enter a valid carb value"
+            errorMsg = String(localized: "enterValidCarb")
             return
         }
         errorMsg = nil

@@ -34,9 +34,9 @@ struct RideInputCard: View {
         .fullScreenCover(isPresented: $showNeuralizer) {
             NeuralizerFlashView()
         }
-        .alert("Reset ride?", isPresented: $showResetConfirm) {
-            Button("Reset", role: .destructive) { performReset() }
-            Button("Cancel", role: .cancel) {}
+        .alert("resetRide", isPresented: $showResetConfirm) {
+            Button("reset", role: .destructive) { performReset() }
+            Button("cancel", role: .cancel) {}
         } message: {
             Text("All ride inputs will be cleared.")
         }
@@ -60,7 +60,7 @@ struct RideInputCard: View {
             // Distance (optional)
             inputRow(
                 icon: "arrow.right",
-                label: String(localized: "distance") + " " + String(localized: "distanceOptional"),
+                label: "distanceFull",
                 placeholder: state.imperial ? "mi" : "km",
                 text: Binding(get: { state.distanceText }, set: { state.distanceText = $0 }),
                 keyboardType: .decimalPad,
@@ -72,8 +72,8 @@ struct RideInputCard: View {
             // Duration
             inputRow(
                 icon: "clock",
-                label: String(localized: "durationLabel"),
-                placeholder: String(localized: "durationHint"),
+                label: "durationLabel",
+                placeholder: "durationHint",
                 text: Binding(get: { state.durationText }, set: { state.durationText = $0 }),
                 keyboardType: .default,
                 field: .duration
@@ -84,7 +84,7 @@ struct RideInputCard: View {
             // Power
             inputRow(
                 icon: "bolt.fill",
-                label: String(localized: "ridePower"),
+                label: "ridePower",
                 placeholder: "W",
                 text: Binding(get: { state.powerText }, set: { state.powerText = $0 }),
                 keyboardType: .numberPad,
@@ -106,7 +106,7 @@ struct RideInputCard: View {
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                Button("Done") { focusedField = nil }
+                Button("done") { focusedField = nil }
             }
         }
     }
@@ -115,8 +115,8 @@ struct RideInputCard: View {
 
     private func inputRow(
         icon: String,
-        label: String,
-        placeholder: String,
+        label: LocalizedStringKey,
+        placeholder: LocalizedStringKey,
         text: Binding<String>,
         keyboardType: UIKeyboardType,
         field: Field
@@ -157,7 +157,7 @@ struct RideInputCard: View {
                 Button {
                     state.showSettings = true
                 } label: {
-                    Label(String(localized: "setFtpFirst"), systemImage: "slider.horizontal.3")
+                    Label("setFtpFirst", systemImage: "slider.horizontal.3")
                         .font(.caption.weight(.medium))
                         .foregroundStyle(Color.bpAccent)
                         .padding(.horizontal, 10)
@@ -277,7 +277,7 @@ struct RideInputCard: View {
             VStack(spacing: 6) {
                 Image(systemName: "arrow.counterclockwise")
                     .font(.title3.weight(.semibold))
-                Text("Reset")
+                Text("reset")
                     .font(.caption.weight(.semibold))
             }
             .foregroundStyle(.white)

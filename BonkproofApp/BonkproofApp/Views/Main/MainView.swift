@@ -55,11 +55,11 @@ struct MainView: View {
         .onShake {
             showResetShake = true
         }
-        .alert("Reset ride?", isPresented: $showResetShake) {
-            Button("Reset", role: .destructive) {
+        .alert("resetRide", isPresented: $showResetShake) {
+            Button("reset", role: .destructive) {
                 withAnimation { state.resetRide() }
             }
-            Button("Cancel", role: .cancel) {}
+            Button("cancel", role: .cancel) {}
         } message: {
             Text("Shake detected — reset all ride inputs?")
         }
