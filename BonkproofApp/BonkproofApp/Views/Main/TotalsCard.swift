@@ -177,7 +177,10 @@ struct TotalsCard: View {
                             .frame(width: 42, alignment: .leading)
 
                         if event.units > 0 {
-                            (Text(verbatim: "\(event.units)× ") + Text(LocalizedStringKey(state.activeSolid.localizedNameKey)))
+                            Text(verbatim: "\(event.units)× ")
+                                .font(.caption)
+                                .foregroundStyle(.primary)
+                            Text(LocalizedStringKey(state.activeSolid.localizedNameKey))
                                 .font(.caption)
                                 .foregroundStyle(.primary)
                             Text(verbatim: "(\(event.actualCarbs)g)")
@@ -322,7 +325,7 @@ struct TotalsCard: View {
         case .bottles(let count, let ml):
             return Text("\(count)× \(ml)ml per bottle")
         case .solidFood(let units, let name):
-            return Text(verbatim: "\(units)× ") + Text(LocalizedStringKey(name))
+            return Text("\(units)× \(Text(LocalizedStringKey(name)))")
         case .key(let k):
             return Text(LocalizedStringKey(k))
         }

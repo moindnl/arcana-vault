@@ -95,8 +95,7 @@ struct OnboardingView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                         .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
 
-                    (Text("bonk").italic().fontWeight(.bold) +
-                     Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
+                    Text("\(Text("bonk").italic().bold())\(Text("proof!").foregroundStyle(Color.bpAccent).bold())")
                         .font(.largeTitle)
                 }
 

@@ -68,8 +68,7 @@ struct MainView: View {
     // MARK: - Logo
 
     private var logoView: some View {
-        (Text("bonk").italic().fontWeight(.bold) +
-         Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
+        Text("\(Text("bonk").italic().bold())\(Text("proof!").foregroundStyle(Color.bpAccent).bold())")
             .font(.title3)
     }
 

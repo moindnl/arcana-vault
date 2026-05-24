@@ -331,7 +331,7 @@
 					"@loader_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BonkproofApp.app/BonkproofApp";
 			};
 			name = Release;
@@ -414,7 +414,7 @@
 					"@loader_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BonkproofApp.app/BonkproofApp";
 			};
 			name = Debug;
@@ -484,6 +484,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = PRQM45B6GZ;
 				INFOPLIST_FILE = BonkproofApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "bonkproof!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
@@ -493,7 +494,7 @@
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 			};
 			name = Debug;
 		};
@@ -502,6 +503,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = PRQM45B6GZ;
 				INFOPLIST_FILE = BonkproofApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "bonkproof!";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
@@ -511,7 +513,7 @@
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1";
 			};
 			name = Release;
 		};

@@ -21,8 +21,7 @@ struct AboutView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
                     VStack(alignment: .leading, spacing: 4) {
-                        (Text("bonk").italic().fontWeight(.bold) +
-                         Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
+                        Text("\(Text("bonk").italic().bold())\(Text("proof!").foregroundStyle(Color.bpAccent).bold())")
                             .font(.title3)
                         Text(verbatim: "Version \(appVersion)")
                             .font(.subheadline)
