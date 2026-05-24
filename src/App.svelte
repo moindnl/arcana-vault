@@ -550,14 +550,24 @@
     intensityFactor < 1.05 ? $t.zoneThreshold :
     $t.zoneVO2;
 
+  // Zone colors: standard cycling palette (TrainingPeaks / Garmin convention)
+  const ZONE_COLORS = [
+    { bg: '#9ca3af', text: '#ffffff' }, // Z1 Recovery
+    { bg: '#3b82f6', text: '#ffffff' }, // Z2 Endurance
+    { bg: '#22c55e', text: '#ffffff' }, // Z3 Tempo
+    { bg: '#f97316', text: '#ffffff' }, // Z4 Threshold
+    { bg: '#ef4444', text: '#ffffff' }, // Z5 VO2Max
+  ] as const;
+
+  $: _zoneColor = tadejMode ? { bg: '#f0c000', text: '#111111' } :
+    intensityFactor < 0.55 ? ZONE_COLORS[0] :
+    intensityFactor < 0.75 ? ZONE_COLORS[1] :
+    intensityFactor < 0.90 ? ZONE_COLORS[2] :
+    intensityFactor < 1.05 ? ZONE_COLORS[3] :
+    ZONE_COLORS[4];
+
   $: zoneBadgeStyle = intensityFactor === 0 ? '' :
-    tadejMode
-      ? 'background:#f0c000;color:#111111;transition:background 0.35s ease,color 0.35s ease'
-      : intensityFactor < 0.55
-        ? 'background:var(--c-surface-soft);color:var(--c-on-surface-2);transition:background 0.35s ease,color 0.35s ease'
-        : intensityFactor < 0.90
-          ? 'background:var(--c-on-surface);color:var(--c-bg);transition:background 0.35s ease,color 0.35s ease'
-          : 'background:#f73b20;color:var(--color-on-primary);transition:background 0.35s ease,color 0.35s ease';
+    `background:${_zoneColor.bg};color:${_zoneColor.text};transition:background 0.35s ease,color 0.35s ease`;
 
 
   $: intensity = (intensityFactor === 0 ? 'moderate' :
@@ -1542,7 +1552,7 @@
                 <span></span><span>{$t.zoneCol}</span><span class="text-right">{$t.ftpCol}</span><span class="text-right">{$t.carbsCol}</span>
               </div>
               {#each $t.mathZones as row, i}
-                {@const dotColor = i === 0 ? '#a1a1aa' : i < 3 ? '#3f3f46' : '#f73b20'}
+                {@const dotColor = i === 0 ? '#9ca3af' : i === 1 ? '#3b82f6' : i === 2 ? '#22c55e' : i === 3 ? '#f97316' : '#ef4444'}
                 <div class="grid text-caption-sm items-center" style="grid-template-columns:16px 1fr 68px 88px;padding:10px 14px;gap:8px;border-top:1px solid var(--c-border);">
                   <span style="width:8px;height:8px;border-radius:50%;background:{dotColor};display:block;flex-shrink:0;"></span>
                   <span style="color:var(--c-on-surface);font-weight:500;">{row.zone}</span>
@@ -2000,19 +2010,19 @@
                 <!-- Slide 1: Zone bars -->
                 <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
                   <div style="display:flex;gap:3px;height:64px;width:288px;border-radius:12px;overflow:hidden;">
-                    <div style="flex:1;background:#94a3b8;display:flex;align-items:flex-end;padding:0 0 6px 6px;animation:tour-zone-rise 0.3s both 0.08s;">
+                    <div style="flex:1;background:#9ca3af;display:flex;align-items:flex-end;padding:0 0 6px 6px;animation:tour-zone-rise 0.3s both 0.08s;">
                       <span style="font-size:9px;font-weight:600;color:#fff;">R</span>
                     </div>
-                    <div style="flex:1;background:#477ee9;display:flex;align-items:flex-end;padding:0 0 6px 5px;animation:tour-zone-rise 0.3s both 0.18s;">
+                    <div style="flex:1;background:#3b82f6;display:flex;align-items:flex-end;padding:0 0 6px 5px;animation:tour-zone-rise 0.3s both 0.18s;">
                       <span style="font-size:9px;font-weight:600;color:#fff;">E</span>
                     </div>
-                    <div style="flex:1;background:#f59e0b;display:flex;align-items:flex-end;padding:0 0 6px 5px;animation:tour-zone-rise 0.3s both 0.28s;">
+                    <div style="flex:1;background:#22c55e;display:flex;align-items:flex-end;padding:0 0 6px 5px;animation:tour-zone-rise 0.3s both 0.28s;">
                       <span style="font-size:9px;font-weight:600;color:#fff;">T</span>
                     </div>
-                    <div style="flex:1.3;background:#f73b20;border-radius:0;display:flex;align-items:flex-end;padding:0 0 6px 6px;animation:tour-zone-rise 0.35s both 0.38s,tour-zone-pulse 1.4s ease-in-out 0.8s 3;">
+                    <div style="flex:1.3;background:#f97316;border-radius:0;display:flex;align-items:flex-end;padding:0 0 6px 6px;animation:tour-zone-rise 0.35s both 0.38s,tour-zone-pulse 1.4s ease-in-out 0.8s 3;">
                       <span style="font-size:10px;font-weight:700;color:#fff;">S</span>
                     </div>
-                    <div style="flex:1;background:#be185d;display:flex;align-items:flex-end;padding:0 0 6px 4px;animation:tour-zone-rise 0.3s both 0.48s;">
+                    <div style="flex:1;background:#ef4444;display:flex;align-items:flex-end;padding:0 0 6px 4px;animation:tour-zone-rise 0.3s both 0.48s;">
                       <span style="font-size:9px;font-weight:600;color:#fff;">V</span>
                     </div>
                   </div>
