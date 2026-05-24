@@ -7,6 +7,17 @@ struct SettingsSheet: View {
     @State private var showAbout = false
 
     var body: some View {
+        // .preferredColorScheme(nil) doesn't reliably clear a previously set value
+        // in SwiftUI sheets — omit the modifier entirely for .system instead.
+        switch state.theme {
+        case .light:  sheetContent.preferredColorScheme(.light)
+        case .dark:   sheetContent.preferredColorScheme(.dark)
+        case .system: sheetContent
+        }
+    }
+
+    @ViewBuilder
+    private var sheetContent: some View {
         NavigationStack {
             List {
                 profileSection
@@ -32,15 +43,6 @@ struct SettingsSheet: View {
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
-        .preferredColorScheme(preferredColorScheme)
-    }
-
-    private var preferredColorScheme: ColorScheme? {
-        switch state.theme {
-        case .light:  return .light
-        case .dark:   return .dark
-        case .system: return nil
-        }
     }
 
     // MARK: - Profile
