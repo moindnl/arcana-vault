@@ -32,6 +32,15 @@ struct SettingsSheet: View {
         }
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
+        .preferredColorScheme(preferredColorScheme)
+    }
+
+    private var preferredColorScheme: ColorScheme? {
+        switch state.theme {
+        case .light:  return .light
+        case .dark:   return .dark
+        case .system: return nil
+        }
     }
 
     // MARK: - Profile

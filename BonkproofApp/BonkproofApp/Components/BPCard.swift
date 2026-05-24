@@ -3,14 +3,12 @@ import SwiftUI
 struct BPCard<Content: View>: View {
     var cornerRadius: CGFloat = 16
     var padding: CGFloat = 16
-    var background: Color = .systemBackground
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         content()
             .padding(padding)
-            .background(background)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .glassEffect(in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
     }
 }
 

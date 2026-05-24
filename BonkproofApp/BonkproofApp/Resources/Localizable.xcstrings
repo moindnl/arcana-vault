@@ -809,22 +809,6 @@
         }
       }
     },
-    "cyclingNutritionCalculator" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radsport-Ernährungsrechner"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cycling nutrition calculator"
-          }
-        }
-      }
-    },
     "chew" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -887,11 +871,28 @@
       }
     },
     "Cycling nutrition calculator" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Radsport-Ernährungsrechner"
+          }
+        }
+      }
+    },
+    "cyclingNutritionCalculator" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radsport-Ernährungsrechner"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cycling nutrition calculator"
           }
         }
       }
@@ -2290,7 +2291,6 @@
       }
     },
     "products" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2307,6 +2307,7 @@
       }
     },
     "Products" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3156,6 +3157,7 @@
       }
     },
     "Version %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

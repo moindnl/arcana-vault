@@ -114,7 +114,9 @@ struct OnboardingView: View {
                 HStack(spacing: 12) {
                     ForEach(AppLanguage.allCases, id: \.self) { lang in
                         Button {
-                            s.language = lang
+                            withAnimation(anim(.spring(response: 0.3, dampingFraction: 0.75))) {
+                                s.language = lang
+                            }
                         } label: {
                             Text(verbatim: lang.displayName)
                                 .font(.subheadline.weight(.semibold))
@@ -131,6 +133,7 @@ struct OnboardingView: View {
                                         : Color.secondarySystemBackground,
                                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 )
+                                .animation(anim(.spring(response: 0.3, dampingFraction: 0.75)), value: s.language)
                                 .accessibilityAddTraits(s.language == lang ? .isSelected : [])
                         }
                     }

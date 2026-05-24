@@ -105,7 +105,7 @@ struct RideInputCard: View {
             temperatureRow
         }
         .padding(16)
-        .background(Color.systemBackground)
+        .glassEffect(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()

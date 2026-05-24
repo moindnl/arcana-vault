@@ -39,7 +39,7 @@ struct AboutView: View {
             Section("dataPrivacy") {
                 infoRow(icon: "iphone",       iconColor: Color(hex: "#3b82f6"), title: "dataStorageVal",   subtitle: "allDataOnDevice")
                 infoRow(icon: "network.slash", iconColor: Color(hex: "#22c55e"), title: "noServerRequests", subtitle: "noTracking")
-                infoRow(icon: "wifi.slash",    iconColor: Color(hex: "#f59e0b"), title: "worksOffline",     subtitle: "noInternet")
+                infoRow(icon: "airplane",      iconColor: Color(hex: "#22c55e"), title: "worksOffline",     subtitle: "noInternet")
             }
 
             // Math
