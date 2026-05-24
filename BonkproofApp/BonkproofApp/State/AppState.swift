@@ -65,7 +65,7 @@ final class AppState {
     var howToSlide:   Int  = 0
 
     // Pack checklist checked state (transient per ride)
-    var checkedPackItems: Set<UUID> = []
+    var checkedPackItems: Set<String> = []
 
     // MARK: - Init (load from UserDefaults)
     init() {

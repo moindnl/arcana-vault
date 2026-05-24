@@ -44,7 +44,7 @@ struct TotalsCard: View {
     private var overviewTab: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Header
-            Text("Total needs")
+            Text("totalNeeds")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(Color.white.opacity(0.55))
 
@@ -105,7 +105,7 @@ struct TotalsCard: View {
                         HStack {
                             Text(product.name)
                             Spacer()
-                            Text("\(product.carbs)g")
+                            Text("\(String(product.carbs))g")
                                 .foregroundStyle(Color.secondaryLabel)
                         }
                     }
@@ -116,7 +116,7 @@ struct TotalsCard: View {
                         Text(state.activeSolid.name)
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(.white)
-                        Text("\(state.activeSolid.carbs)g carbs per unit · \(state.totalSolidUnits) needed")
+                        Text("\(String(state.activeSolid.carbs))g carbs per unit · \(String(state.totalSolidUnits)) needed")
                             .font(.caption)
                             .foregroundStyle(Color.white.opacity(0.6))
                     }
@@ -135,7 +135,7 @@ struct TotalsCard: View {
 
     private var fuelingScheduleSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Fueling schedule")
+            Text("fuelingSchedule")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(Color.white.opacity(0.55))
 
@@ -148,14 +148,14 @@ struct TotalsCard: View {
                             .frame(width: 42, alignment: .leading)
 
                         if event.units > 0 {
-                            Text("\(event.units)× \(state.activeSolid.name)")
+                            Text(verbatim: "\(event.units)× \(state.activeSolid.name)")
                                 .font(.caption)
                                 .foregroundStyle(.white)
-                            Text("(\(event.actualCarbs)g)")
+                            Text(verbatim: "(\(event.actualCarbs)g)")
                                 .font(.caption)
                                 .foregroundStyle(Color.white.opacity(0.5))
                         } else {
-                            Text("No solid needed")
+                            Text("noSolidNeeded")
                                 .font(.caption)
                                 .foregroundStyle(Color.white.opacity(0.35))
                         }
@@ -210,7 +210,7 @@ struct TotalsCard: View {
                     get: { s.activeDrink },
                     set: { s.drinkProductId = $0.id }
                 ),
-                label: { LocalizedStringKey($0.name) }
+                label: { LocalizedStringKey($0.id) }
             )
         }
     }
@@ -227,7 +227,11 @@ struct TotalsCard: View {
                 options: [500, 750, 1000],
                 selection: $s.bottleSize,
                 label: { size in
-                    size == 1000 ? LocalizedStringKey("1L") : LocalizedStringKey("\(size)ml")
+                    switch size {
+                    case 1000: return "1 L"
+                    case 750:  return "750 ml"
+                    default:   return "500 ml"
+                    }
                 }
             )
 
@@ -241,7 +245,7 @@ struct TotalsCard: View {
 
     private var packListSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Pack list")
+            Text("packList")
                 .font(.caption.weight(.medium))
                 .foregroundStyle(Color.white.opacity(0.55))
 
@@ -268,7 +272,7 @@ struct TotalsCard: View {
                 Image(systemName: isChecked ? "checkmark.square.fill" : "square")
                     .foregroundStyle(isChecked ? Color.bpAccent : Color.white.opacity(0.5))
                     .font(.subheadline)
-                Text(item.label)
+                packItemLabel(item)
                     .font(.subheadline)
                     .foregroundStyle(isChecked ? Color.white.opacity(0.4) : .white)
                     .strikethrough(isChecked, color: Color.white.opacity(0.3))
@@ -280,6 +284,17 @@ struct TotalsCard: View {
                         in: RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(.plain)
+    }
+
+    private func packItemLabel(_ item: PackItem) -> Text {
+        switch item.content {
+        case .bottles(let count, let ml):
+            return Text("\(count)× \(ml)ml per bottle")
+        case .solidFood(let units, let name):
+            return Text(verbatim: "\(units)× \(name)")
+        case .key(let k):
+            return Text(LocalizedStringKey(k))
+        }
     }
 }
 

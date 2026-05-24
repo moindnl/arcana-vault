@@ -103,9 +103,25 @@ struct FuelingEvent: Identifiable {
 // MARK: - PackItem
 
 struct PackItem: Identifiable {
-    let id = UUID()
-    let label: String
-    var checked: Bool = false
+    enum Content {
+        /// Dynamic: bottle count + size
+        case bottles(count: Int, sizeMl: Int)
+        /// Dynamic: solid food units + product name (verbatim, user-defined)
+        case solidFood(units: Int, name: String)
+        /// Fixed: xcstrings localization key
+        case key(String)
+
+        var stableId: String {
+            switch self {
+            case .bottles(let n, let ml): return "bottles_\(n)_\(ml)"
+            case .solidFood(let n, let name): return "solid_\(n)_\(name)"
+            case .key(let k): return "key_\(k)"
+            }
+        }
+    }
+
+    var id: String { content.stableId }
+    let content: Content
 }
 
 // MARK: - NutritionEngine
@@ -301,16 +317,16 @@ enum NutritionEngine {
     ) -> [PackItem] {
         var items: [PackItem] = []
         if bottleCount > 0 {
-            items.append(PackItem(label: "\(bottleCount)× \(bottleSizeMl)ml bottle\(bottleCount > 1 ? "s" : "")"))
+            items.append(PackItem(content: .bottles(count: bottleCount, sizeMl: bottleSizeMl)))
         }
         if totalSolidUnits > 0 {
-            items.append(PackItem(label: "\(totalSolidUnits)× \(solidProductName)"))
+            items.append(PackItem(content: .solidFood(units: totalSolidUnits, name: solidProductName)))
         }
-        items.append(PackItem(label: "Electrolytes / salt tabs"))
-        items.append(PackItem(label: "Emergency snack"))
-        items.append(PackItem(label: "Pump & tyre levers"))
-        items.append(PackItem(label: "Spare inner tube"))
-        items.append(PackItem(label: "Phone charged"))
+        items.append(PackItem(content: .key("packElectrolytes")))
+        items.append(PackItem(content: .key("packSnack")))
+        items.append(PackItem(content: .key("packPump")))
+        items.append(PackItem(content: .key("packTube")))
+        items.append(PackItem(content: .key("packPhone")))
         return items
     }
 }

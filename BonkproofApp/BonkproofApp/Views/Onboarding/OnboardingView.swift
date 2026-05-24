@@ -291,7 +291,7 @@ struct OnboardingView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(product.name)
                                             .font(.subheadline.weight(.medium))
-                                        Text("\(product.carbs)g carbs")
+                                        Text("\(String(product.carbs))g carbs")
                                             .font(.caption)
                                             .foregroundStyle(Color.secondaryLabel)
                                     }

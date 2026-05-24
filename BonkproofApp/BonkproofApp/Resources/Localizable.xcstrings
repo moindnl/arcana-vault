@@ -211,6 +211,54 @@
         }
       }
     },
+    "water": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Wasser"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Water only"
+          }
+        }
+      }
+    },
+    "carbmix": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kohlehydratmix"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carb mix"
+          }
+        }
+      }
+    },
+    "isotonic": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isotonisch"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isotonic"
+          }
+        }
+      }
+    },
     "about": {
       "extractionState": "stale",
       "localizations": {
@@ -1780,6 +1828,150 @@
           "stringUnit": {
             "state": "translated",
             "value": "Packliste"
+          }
+        }
+      }
+    },
+    "packElectrolytes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Electrolytes / salt tabs"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elektrolyte / Salztabs"
+          }
+        }
+      }
+    },
+    "packSnack": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emergency snack"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notfallsnack"
+          }
+        }
+      }
+    },
+    "packPump": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump & tyre levers"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe & Reifenheber"
+          }
+        }
+      }
+    },
+    "packTube": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spare inner tube"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ersatzschlauch"
+          }
+        }
+      }
+    },
+    "packPhone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phone charged"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Handy aufgeladen"
+          }
+        }
+      }
+    },
+    "totalNeeds": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total needs"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamtbedarf"
+          }
+        }
+      }
+    },
+    "fuelingSchedule": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fueling schedule"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ernährungsplan"
+          }
+        }
+      }
+    },
+    "noSolidNeeded": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No solid needed"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine feste Nahrung nötig"
+          }
+        }
+      }
+    },
+    "%lld× %lldml per bottle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld× %lldml per bottle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld× %2$lldml pro Flasche"
           }
         }
       }

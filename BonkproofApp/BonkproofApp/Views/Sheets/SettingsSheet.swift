@@ -98,7 +98,7 @@ struct SettingsSheet: View {
                 label: Label("drinkType", systemImage: "drop.fill")
             ) {
                 ForEach(DrinkProduct.defaults) { drink in
-                    Text(drink.name).tag(drink.id)
+                    Text(LocalizedStringKey(drink.id)).tag(drink.id)
                 }
             }
 
@@ -227,7 +227,7 @@ struct CustomProductsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(product.name)
                                     .font(.body)
-                                Text("\(product.carbs)g carbs per unit")
+                                Text("\(String(product.carbs))g carbs per unit")
                                     .font(.caption)
                                     .foregroundStyle(Color.secondaryLabel)
                             }
@@ -245,7 +245,7 @@ struct CustomProductsView: View {
                     HStack {
                         Text(product.name)
                         Spacer()
-                        Text("\(product.carbs)g")
+                        Text("\(String(product.carbs))g")
                             .foregroundStyle(Color.secondaryLabel)
                     }
                 }
