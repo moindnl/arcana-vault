@@ -4,6 +4,7 @@ struct SettingsSheet: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
     @State private var showCustomProducts = false
+    @State private var showAbout = false
 
     var body: some View {
         NavigationStack {
@@ -24,6 +25,9 @@ struct SettingsSheet: View {
             }
             .navigationDestination(isPresented: $showCustomProducts) {
                 CustomProductsView()
+            }
+            .navigationDestination(isPresented: $showAbout) {
+                AboutView()
             }
         }
         .presentationDetents([.medium, .large])
@@ -130,7 +134,7 @@ struct SettingsSheet: View {
             }
             .foregroundStyle(Color.label)
         } header: {
-            Text("Products")
+            Text("products")
         }
     }
 
@@ -177,13 +181,16 @@ struct SettingsSheet: View {
     private var aboutRow: some View {
         Section {
             Button {
-                dismiss()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    state.showAbout = true
-                }
+                showAbout = true
             } label: {
-                Label("about", systemImage: "info.circle")
-                    .foregroundStyle(Color.label)
+                HStack {
+                    Label("about", systemImage: "info.circle")
+                        .foregroundStyle(Color.label)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Color.tertiaryLabel)
+                }
             }
         }
     }

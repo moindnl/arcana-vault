@@ -60,7 +60,6 @@ final class AppState {
 
     // MARK: - UI state (transient)
     var showSettings: Bool = false
-    var showAbout:    Bool = false
     var showHowTo:    Bool = false
     var howToSlide:   Int  = 0
 
@@ -217,8 +216,7 @@ final class AppState {
     }
 
     var totalSolidUnits: Int {
-        guard activeSolid.carbs > 0, duration > 0 else { return 0 }
-        return Int(ceil(Double(solidCarbsPerHour) * duration / Double(activeSolid.carbs)))
+        fuelingEvents.reduce(0) { $0 + $1.units }
     }
 
     var fuelingEvents: [FuelingEvent] {

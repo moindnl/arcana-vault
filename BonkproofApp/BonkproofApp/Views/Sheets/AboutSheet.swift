@@ -1,8 +1,9 @@
 import SwiftUI
 
-struct AboutSheet: View {
+// MARK: - About view (no NavigationStack — lives inside Settings' stack)
+
+struct AboutView: View {
     @Environment(AppState.self) private var state
-    @Environment(\.dismiss) private var dismiss
     @State private var showFormula = false
 
     private var appVersion: String {
@@ -10,81 +11,72 @@ struct AboutSheet: View {
     }
 
     var body: some View {
-        NavigationStack {
-            List {
-                // App header
-                Section {
-                    HStack(spacing: 16) {
-                        Image("AppLogo")
-                            .resizable()
-                            .frame(width: 60, height: 60)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
-                        VStack(alignment: .leading, spacing: 4) {
-                            (Text("bonk").italic().fontWeight(.bold) +
-                             Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
-                                .font(.title3)
-                            Text("Version \(appVersion)")
-                                .font(.subheadline)
-                                .foregroundStyle(Color.secondaryLabel)
-                            Text("Cycling nutrition calculator")
-                                .font(.caption)
-                                .foregroundStyle(Color.tertiaryLabel)
-                        }
-                    }
-                    .padding(.vertical, 4)
-                }
-
-                // Privacy / data
-                Section("dataPrivacy") {
-                    infoRow(icon: "iphone", iconColor: Color(hex: "#3b82f6"), title: "dataStorageVal", subtitle: "allDataOnDevice")
-                    infoRow(icon: "network.slash", iconColor: Color(hex: "#22c55e"), title: "noServerRequests", subtitle: "noTracking")
-                    infoRow(icon: "wifi.slash", iconColor: Color(hex: "#f59e0b"), title: "worksOffline", subtitle: "noInternet")
-                }
-
-                // Math
-                Section("calculations") {
-                    Button {
-                        showFormula = true
-                    } label: {
-                        HStack {
-                            Label("howMathWorks", systemImage: "function")
-                                .foregroundStyle(Color.label)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.caption.weight(.semibold))
-                                .foregroundStyle(Color.tertiaryLabel)
-                        }
+        List {
+            // App header
+            Section {
+                HStack(spacing: 16) {
+                    Image("AppLogo")
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
+                    VStack(alignment: .leading, spacing: 4) {
+                        (Text("bonk").italic().fontWeight(.bold) +
+                         Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
+                            .font(.title3)
+                        Text(verbatim: "Version \(appVersion)")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondaryLabel)
+                        Text("cyclingNutritionCalculator")
+                            .font(.caption)
+                            .foregroundStyle(Color.tertiaryLabel)
                     }
                 }
+                .padding(.vertical, 4)
+            }
 
-                // Tour
-                Section {
-                    Button {
-                        dismiss()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            state.showHowTo = true
-                        }
-                    } label: {
-                        Label("replayTour", systemImage: "play.circle")
-                            .foregroundStyle(Color.bpAccent)
+            // Privacy / data
+            Section("dataPrivacy") {
+                infoRow(icon: "iphone",       iconColor: Color(hex: "#3b82f6"), title: "dataStorageVal",   subtitle: "allDataOnDevice")
+                infoRow(icon: "network.slash", iconColor: Color(hex: "#22c55e"), title: "noServerRequests", subtitle: "noTracking")
+                infoRow(icon: "wifi.slash",    iconColor: Color(hex: "#f59e0b"), title: "worksOffline",     subtitle: "noInternet")
+            }
+
+            // Math
+            Section("calculations") {
+                Button {
+                    showFormula = true
+                } label: {
+                    HStack {
+                        Label("howMathWorks", systemImage: "function")
+                            .foregroundStyle(Color.label)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Color.tertiaryLabel)
                     }
                 }
             }
-            .listStyle(.insetGrouped)
-            .navigationTitle("about")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("done") { dismiss() }
+
+            // Tour
+            Section {
+                Button {
+                    state.showSettings = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        state.showHowTo = true
+                    }
+                } label: {
+                    Label("replayTour", systemImage: "play.circle")
+                        .foregroundStyle(Color.bpAccent)
                 }
-            }
-            .navigationDestination(isPresented: $showFormula) {
-                FormulaView()
             }
         }
-        .presentationDetents([.medium, .large])
-        .presentationDragIndicator(.visible)
+        .listStyle(.insetGrouped)
+        .navigationTitle("about")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $showFormula) {
+            FormulaView()
+        }
     }
 
     private func infoRow(icon: String, iconColor: Color, title: LocalizedStringKey, subtitle: LocalizedStringKey) -> some View {
@@ -204,6 +196,8 @@ struct FormulaView: View {
 }
 
 #Preview {
-    AboutSheet()
-        .environment(AppState())
+    NavigationStack {
+        AboutView()
+    }
+    .environment(AppState())
 }

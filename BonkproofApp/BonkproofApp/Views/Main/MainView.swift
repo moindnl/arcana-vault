@@ -48,9 +48,6 @@ struct MainView: View {
             .sheet(isPresented: Binding(get: { state.showSettings }, set: { state.showSettings = $0 })) {
                 SettingsSheet()
             }
-            .sheet(isPresented: Binding(get: { state.showAbout }, set: { state.showAbout = $0 })) {
-                AboutSheet()
-            }
             .sheet(isPresented: Binding(get: { state.showHowTo }, set: { state.showHowTo = $0 })) {
                 HowToSheet()
             }
