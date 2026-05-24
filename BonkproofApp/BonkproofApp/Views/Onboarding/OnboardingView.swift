@@ -116,7 +116,7 @@ struct OnboardingView: View {
                         Button {
                             s.language = lang
                         } label: {
-                            Text(lang.displayName)
+                            Text(verbatim: lang.displayName)
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(
                                     s.language == lang
@@ -300,7 +300,7 @@ struct OnboardingView: View {
                             ForEach(s.customProducts) { product in
                                 HStack {
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text(product.name)
+                                        Text(verbatim: product.name)
                                             .font(.subheadline.weight(.medium))
                                         Text("\(String(product.carbs))g carbs")
                                             .font(.caption)

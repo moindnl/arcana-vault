@@ -8,6 +8,10 @@ struct NutritionProduct: Identifiable, Codable, Equatable {
     var carbs: Int          // carbs per unit (g)
     var isCustom: Bool
 
+    /// For default products: the `id` is the xcstrings key.
+    /// For custom products: `name` is returned — SwiftUI falls back to the key itself, showing the name verbatim.
+    var localizedNameKey: String { isCustom ? name : id }
+
     static let defaults: [NutritionProduct] = [
         NutritionProduct(id: "gel",      name: "Energy Gel",    carbs: 22, isCustom: false),
         NutritionProduct(id: "bar",      name: "Energy Bar",    carbs: 40, isCustom: false),

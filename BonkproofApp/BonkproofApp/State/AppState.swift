@@ -233,7 +233,7 @@ final class AppState {
         NutritionEngine.packItems(
             bottleCount: bottleCount,
             totalSolidUnits: totalSolidUnits,
-            solidProductName: activeSolid.name,
+            solidProductName: activeSolid.localizedNameKey,
             bottleSizeMl: bottleSize
         )
     }

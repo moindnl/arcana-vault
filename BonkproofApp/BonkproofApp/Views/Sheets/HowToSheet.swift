@@ -225,11 +225,11 @@ private struct Slide0Illustration: View {
             Image(systemName: icon)
                 .foregroundStyle(Color.secondaryLabel)
                 .frame(width: 22)
-            Text(label)
+            Text(verbatim: label)
                 .font(.subheadline)
                 .foregroundStyle(Color.secondaryLabel)
             Spacer()
-            Text(value)
+            Text(verbatim: value)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.label)
         }
@@ -259,7 +259,7 @@ private struct Slide1ZoneChart: View {
         HStack(alignment: .bottom, spacing: 12) {
             ForEach(Array(bars.enumerated()), id: \.offset) { idx, bar in
                 VStack(spacing: 4) {
-                    Text(bar.carbs)
+                    Text(verbatim: bar.carbs)
                         .font(.caption2.weight(.medium))
                         .foregroundStyle(idx == 3 ? Color.bpAccent : Color.secondaryLabel)
                         .fixedSize()
@@ -273,7 +273,7 @@ private struct Slide1ZoneChart: View {
                             value: triggered
                         )
 
-                    Text(bar.label)
+                    Text(verbatim: bar.label)
                         .font(.caption2.weight(.bold))
                         .foregroundStyle(bar.zone.color)
                 }
@@ -313,7 +313,7 @@ private struct Slide2Schedule: View {
                             .opacity(triggered ? 1 : 0)
                             .animation(reduceMotion ? nil : .easeOut(duration: 0.2).delay(Double(idx) * 0.12), value: triggered)
 
-                        Text(formatMins(mins))
+                        Text(verbatim: formatMins(mins))
                             .font(.caption2.monospacedDigit())
                             .foregroundStyle(Color.secondaryLabel)
                     }
@@ -362,7 +362,7 @@ private struct Slide3Products: View {
                         .foregroundStyle(product.highlight ? Color.bpAccent : Color.secondaryLabel)
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(product.name)
+                        Text(verbatim: product.name)
                             .font(.subheadline.weight(.semibold))
                         Text("\(product.carbs) carbs per unit")
                             .font(.caption)

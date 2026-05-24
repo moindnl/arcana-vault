@@ -56,6 +56,9 @@ struct PowerCard: View {
 
     private var speedRow: some View {
         let animal = NutritionEngine.speedAnimal(speedKmh: state.speedKmh)
+        let useDe = state.language == .de
+        let slug = useDe ? animal.deSlug : animal.enSlug
+        let domain = useDe ? "de.wikipedia.org" : "en.wikipedia.org"
         return HStack(spacing: 8) {
             Image(systemName: "gauge.with.needle")
                 .foregroundStyle(Color.secondaryLabel)
@@ -66,7 +69,7 @@ struct PowerCard: View {
                     .font(.system(.headline, design: .rounded))
                     .foregroundStyle(Color.label)
                     .contentTransition(.numericText())
-                Text(state.speedUnit)
+                Text(verbatim: state.speedUnit)
                     .font(.caption.weight(.medium))
                     .foregroundStyle(Color.secondaryLabel)
             }
@@ -74,15 +77,15 @@ struct PowerCard: View {
             Spacer()
 
             Button {
-                if let slug = animal.wikipediaSlug,
-                   let url = URL(string: "https://en.wikipedia.org/wiki/\(slug)") {
+                if let s = slug,
+                   let url = URL(string: "https://\(domain)/wiki/\(s)") {
                     openURL(url)
                 }
             } label: {
                 HStack(spacing: 4) {
-                    Text(animal.emoji)
+                    Text(verbatim: animal.emoji)
                         .font(.subheadline)
-                    Text(animal.label)
+                    Text(LocalizedStringKey(animal.labelKey))
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(Color.label)
                 }
@@ -91,7 +94,7 @@ struct PowerCard: View {
                 .background(Color.secondarySystemBackground, in: Capsule())
             }
             .buttonStyle(.plain)
-            .disabled(animal.wikipediaSlug == nil)
+            .disabled(slug == nil)
         }
     }
 }

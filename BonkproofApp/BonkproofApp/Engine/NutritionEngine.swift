@@ -275,18 +275,18 @@ enum NutritionEngine {
     }
 
     // MARK: Speed animal
-    static func speedAnimal(speedKmh: Double) -> (label: String, emoji: String, wikipediaSlug: String?) {
+    static func speedAnimal(speedKmh: Double) -> (labelKey: String, emoji: String, enSlug: String?, deSlug: String?) {
         switch speedKmh {
-        case ..<10:   return ("Turtle",     "🐢", "Turtle")
-        case ..<15:   return ("Penguin",    "🐧", "Penguin")
-        case ..<20:   return ("Gazelle",    "🦌", "Gazelle")
-        case ..<25:   return ("Cheetah",    "🐆", "Cheetah")
-        case ..<30:   return ("Falcon",     "🦅", "Falcon")
-        case ..<40:   return ("Peregrine",  "🦅", "Peregrine_falcon")
-        case ..<55:   return ("Greyhound",  "🐕", "Greyhound")
-        case ..<75:   return ("Downhill",   "🚵", nil)
-        case ..<100:  return ("Motorcycle", "🏍️", "Motorcycle")
-        default:      return ("Ambulance",  "🚑", "Ambulance")
+        case ..<10:   return ("animalTurtle",     "🐢", "Turtle",           "Schildkröte")
+        case ..<15:   return ("animalPenguin",    "🐧", "Penguin",          "Pinguin")
+        case ..<20:   return ("animalGazelle",    "🦌", "Gazelle",          "Gazellen")
+        case ..<25:   return ("animalCheetah",    "🐆", "Cheetah",          "Gepard")
+        case ..<30:   return ("animalFalcon",     "🦅", "Falcon",           "Falke")
+        case ..<40:   return ("animalPeregrine",  "🦅", "Peregrine_falcon", "Wanderfalke")
+        case ..<55:   return ("animalGreyhound",  "🐕", "Greyhound",        "Greyhound")
+        case ..<75:   return ("animalDownhill",   "🚵", nil,                nil)
+        case ..<100:  return ("animalMotorcycle", "🏍️", "Motorcycle",       "Motorrad")
+        default:      return ("animalAmbulance",  "🚑", "Ambulance",        "Krankenwagen")
         }
     }
 
@@ -320,7 +320,9 @@ enum NutritionEngine {
         let totalMins = Int((duration * 60).rounded())
         var events: [FuelingEvent] = []
         var t = 20
-        while t <= totalMins {
+        // Only show an event if at least 15 minutes of riding remain after it —
+        // eating with <15 min to go provides no meaningful benefit.
+        while t <= totalMins - 15 {
             let carbsPerSlot = Int((Double(solidCarbsPerHour) / 3).rounded())
             let units = max(0, Int((Double(carbsPerSlot) / Double(solidCarbsPerUnit)).rounded()))
             let actual = units * solidCarbsPerUnit

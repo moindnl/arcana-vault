@@ -71,14 +71,14 @@ struct TotalsCard: View {
         }
     }
 
-    private func totalCell(value: String, unit: String, label: String) -> some View {
+    private func totalCell(value: String, unit: String, label: LocalizedStringKey) -> some View {
         VStack(spacing: 3) {
             HStack(alignment: .firstTextBaseline, spacing: 2) {
-                Text(value)
+                Text(verbatim: value)
                     .font(.system(.title2, design: .rounded, weight: .bold))
                     .foregroundStyle(.white)
                     .contentTransition(.numericText())
-                Text(unit)
+                Text(verbatim: unit)
                     .font(.caption.weight(.medium))
                     .foregroundStyle(Color.white.opacity(0.6))
             }
@@ -106,7 +106,7 @@ struct TotalsCard: View {
                         s.solidProductId = product.id
                     } label: {
                         HStack {
-                            Text(product.name)
+                            Text(LocalizedStringKey(product.localizedNameKey))
                             Spacer()
                             Text("\(String(product.carbs))g")
                                 .foregroundStyle(Color.secondaryLabel)
@@ -116,7 +116,7 @@ struct TotalsCard: View {
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(state.activeSolid.name)
+                        Text(LocalizedStringKey(state.activeSolid.localizedNameKey))
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(.white)
                         Text("\(String(state.activeSolid.carbs))g carbs per unit · \(String(state.totalSolidUnits)) needed")
@@ -145,13 +145,13 @@ struct TotalsCard: View {
             LazyVStack(spacing: 4) {
                 ForEach(state.fuelingEvents) { event in
                     HStack {
-                        Text(formatMinutes(event.minuteMark))
+                        Text(verbatim: formatMinutes(event.minuteMark))
                             .font(.caption.monospacedDigit().weight(.medium))
                             .foregroundStyle(Color.white.opacity(0.7))
                             .frame(width: 42, alignment: .leading)
 
                         if event.units > 0 {
-                            Text(verbatim: "\(event.units)× \(state.activeSolid.name)")
+                            (Text(verbatim: "\(event.units)× ") + Text(LocalizedStringKey(state.activeSolid.localizedNameKey)))
                                 .font(.caption)
                                 .foregroundStyle(.white)
                             Text(verbatim: "(\(event.actualCarbs)g)")
@@ -294,7 +294,7 @@ struct TotalsCard: View {
         case .bottles(let count, let ml):
             return Text("\(count)× \(ml)ml per bottle")
         case .solidFood(let units, let name):
-            return Text(verbatim: "\(units)× \(name)")
+            return Text(verbatim: "\(units)× ") + Text(LocalizedStringKey(name))
         case .key(let k):
             return Text(LocalizedStringKey(k))
         }

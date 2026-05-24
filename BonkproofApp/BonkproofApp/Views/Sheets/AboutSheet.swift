@@ -15,14 +15,11 @@ struct AboutSheet: View {
                 // App header
                 Section {
                     HStack(spacing: 16) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(Color.bpAccent)
-                                .frame(width: 60, height: 60)
-                            Image(systemName: "bolt.fill")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.white)
-                        }
+                        Image("AppLogo")
+                            .resizable()
+                            .frame(width: 60, height: 60)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
                         VStack(alignment: .leading, spacing: 4) {
                             (Text("bonk").italic().fontWeight(.bold) +
                              Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
@@ -141,15 +138,15 @@ struct FormulaView: View {
                         Circle()
                             .fill(row.zone.color)
                             .frame(width: 10, height: 10)
-                        Text(row.zone.rawValue)
+                        Text(LocalizedStringKey(row.zone.localizedKey))
                             .font(.subheadline.weight(.medium))
                             .frame(width: 80, alignment: .leading)
-                        Text(row.ftpRange)
+                        Text(verbatim: row.ftpRange)
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(Color.secondaryLabel)
                             .frame(width: 70, alignment: .leading)
                         Spacer()
-                        Text(row.carbRange)
+                        Text(verbatim: row.carbRange)
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(row.zone.color)
                     }
@@ -158,10 +155,10 @@ struct FormulaView: View {
 
             Section("fluidFormula") {
                 VStack(alignment: .leading, spacing: 8) {
-                    formulaLine("Base fluid", "Zone midpoint (L/h)")
-                    formulaLine("Weight adj.", "× (weight / 70 kg)")
-                    formulaLine("Sweat rate", "× 0.8 / 1.0 / 1.3")
-                    formulaLine("Heat bonus", "+0.3 L/h per 5°C above 20°C")
+                    formulaLine("formulaBaseFluid", "formulaBaseFluidVal")
+                    formulaLine("formulaWeightAdj", "formulaWeightAdjVal")
+                    formulaLine("formulaSweatRate", "formulaSweatRateVal")
+                    formulaLine("formulaHeatBonus", "formulaHeatBonusVal")
                 }
                 .padding(.vertical, 4)
             }
@@ -174,7 +171,7 @@ struct FormulaView: View {
                         }
                     } label: {
                         HStack {
-                            Text(source.title)
+                            Text(verbatim: source.title)
                                 .font(.caption)
                                 .foregroundStyle(Color.label)
                                 .multilineTextAlignment(.leading)
@@ -192,7 +189,7 @@ struct FormulaView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func formulaLine(_ key: String, _ value: String) -> some View {
+    private func formulaLine(_ key: LocalizedStringKey, _ value: LocalizedStringKey) -> some View {
         HStack(alignment: .top) {
             Text(key)
                 .font(.caption.weight(.semibold))

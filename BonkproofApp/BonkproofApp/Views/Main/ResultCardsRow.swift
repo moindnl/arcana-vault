@@ -60,7 +60,7 @@ struct ResultCardsRow: View {
                             .contentTransition(.numericText())
                             .animation(.spring(response: 0.4), value: i)
                     }
-                    Text(unit)
+                    Text(verbatim: unit)
                         .font(.callout.weight(.medium))
                         .foregroundStyle(Color.secondaryLabel)
                 }

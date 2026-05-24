@@ -9,7 +9,7 @@ struct ZoneBadge: View {
             Circle()
                 .fill(zone.color)
                 .frame(width: 8, height: 8)
-            Text(zone.rawValue)
+            Text(LocalizedStringKey(zone.localizedKey))
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(zone.color)
             if let pct = ifPct {

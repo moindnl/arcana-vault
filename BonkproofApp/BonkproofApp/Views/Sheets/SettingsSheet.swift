@@ -90,7 +90,7 @@ struct SettingsSheet: View {
                 label: Label("solidFood", systemImage: "fork.knife")
             ) {
                 ForEach(state.allSolidProducts) { product in
-                    Text(product.name).tag(product.id)
+                    Text(LocalizedStringKey(product.localizedNameKey)).tag(product.id)
                 }
             }
 
@@ -144,7 +144,7 @@ struct SettingsSheet: View {
                 label: Label("theme", systemImage: "circle.lefthalf.filled")
             ) {
                 ForEach(AppTheme.allCases, id: \.self) { t in
-                    Text(t.rawValue).tag(t)
+                    Text(LocalizedStringKey(t.rawValue)).tag(t)
                 }
             }
             .pickerStyle(.segmented)
@@ -163,7 +163,7 @@ struct SettingsSheet: View {
                 label: Label("language", systemImage: "globe")
             ) {
                 ForEach(AppLanguage.allCases, id: \.self) { lang in
-                    Text(lang.rawValue).tag(lang)
+                    Text(verbatim: lang.rawValue).tag(lang)
                 }
             }
             .pickerStyle(.segmented)
@@ -230,7 +230,7 @@ struct CustomProductsView: View {
                     ForEach(state.customProducts) { product in
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(product.name)
+                                Text(verbatim: product.name)
                                     .font(.body)
                                 Text("\(String(product.carbs))g carbs per unit")
                                     .font(.caption)
@@ -248,7 +248,7 @@ struct CustomProductsView: View {
             Section("defaultProducts") {
                 ForEach(NutritionProduct.defaults) { product in
                     HStack {
-                        Text(product.name)
+                        Text(LocalizedStringKey(product.localizedNameKey))
                         Spacer()
                         Text("\(String(product.carbs))g")
                             .foregroundStyle(Color.secondaryLabel)
