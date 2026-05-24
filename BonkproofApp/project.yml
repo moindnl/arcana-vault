@@ -36,6 +36,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: BonkproofApp/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
   BonkproofAppTests:
     type: bundle.unit-test
