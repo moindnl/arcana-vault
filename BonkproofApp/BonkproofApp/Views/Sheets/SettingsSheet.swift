@@ -193,7 +193,7 @@ struct CustomProductsView: View {
     @Environment(AppState.self) private var state
     @State private var newName:  String = ""
     @State private var newCarbs: String = ""
-    @State private var errorMsg: String? = nil
+    @State private var errorMsg: LocalizedStringKey? = nil
 
     var body: some View {
         List {
@@ -258,7 +258,7 @@ struct CustomProductsView: View {
 
     private func addProduct() {
         guard let carbs = Int(newCarbs), carbs > 0 else {
-            errorMsg = String(localized: "enterValidCarb")
+            errorMsg = "enterValidCarb"
             return
         }
         errorMsg = nil

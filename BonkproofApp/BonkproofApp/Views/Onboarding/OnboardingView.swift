@@ -14,7 +14,7 @@ struct OnboardingView: View {
     // Step 2 local state
     @State private var newProductName: String = ""
     @State private var newProductCarbs: String = ""
-    @State private var addProductError: String? = nil
+    @State private var addProductError: LocalizedStringKey? = nil
 
     var body: some View {
         ZStack {
@@ -326,7 +326,7 @@ struct OnboardingView: View {
 
     private func addProduct() {
         guard let carbs = Int(newProductCarbs), carbs > 0 else {
-            addProductError = String(localized: "productCarbsHint")
+            addProductError = "productCarbsHint"
             return
         }
         addProductError = nil
