@@ -23,6 +23,22 @@ struct RideInputCard: View {
         !state.distanceText.isEmpty || !state.durationText.isEmpty || !state.powerText.isEmpty
     }
 
+    private func focusPrevious() {
+        switch focusedField {
+        case .duration: focusedField = .distance
+        case .power:    focusedField = .duration
+        default: break
+        }
+    }
+
+    private func focusNext() {
+        switch focusedField {
+        case .distance: focusedField = .duration
+        case .duration: focusedField = .power
+        default: break
+        }
+    }
+
     var body: some View {
         ZStack(alignment: .trailing) {
             // Red reset zone (revealed on swipe)
@@ -108,6 +124,14 @@ struct RideInputCard: View {
         .glassEffect(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
+                Button(action: focusPrevious) {
+                    Image(systemName: "chevron.up")
+                }
+                .disabled(focusedField == .distance)
+                Button(action: focusNext) {
+                    Image(systemName: "chevron.down")
+                }
+                .disabled(focusedField == .power)
                 Spacer()
                 Button("done") { focusedField = nil }
             }
