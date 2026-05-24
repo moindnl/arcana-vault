@@ -1956,12 +1956,16 @@
       transition:fade={{ duration: 220 }}></div>
 
     <div class="fixed bottom-0 left-0 right-0 z-[998] rounded-t-[28px] max-w-lg mx-auto"
-      style="background:var(--c-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));"
+      style="background:var(--c-surface);box-shadow:var(--c-shadow-sheet);padding-bottom:max(32px,calc(env(safe-area-inset-bottom,0px) + 16px));transform:translateY({sheetDragOffsetY}px);transition:{sheetIsDragging ? 'none' : 'transform 0.4s cubic-bezier(0.22,1,0.36,1)'};"
       in:fly={{ y: 480, duration: 420, easing: quintOut }}
-      out:fly={{ y: 480, duration: 240, easing: cubicIn }}>
+      out:fly={{ y: 480, duration: 240, easing: cubicIn }}
+      on:touchmove={onSheetDragMove}
+      on:touchend={onSheetDragEnd}
+      on:touchcancel={onSheetDragEnd}>
 
       <!-- Drag handle -->
-      <div class="w-10 h-1 rounded-full mx-auto mt-3 mb-1" style="background:var(--c-drag-handle);"></div>
+      <div class="w-10 h-1 rounded-full mx-auto mt-3 mb-1" style="background:var(--c-drag-handle);touch-action:none;"
+        on:touchstart={(e) => onSheetDragStart(e, () => { showHowToSheet = false; howToSlide = 0; })}></div>
 
       <!-- Slide area — fixed height, overflow hidden for key-transition -->
       <div style="position:relative;overflow:hidden;height:248px;margin:8px 24px 0;"
