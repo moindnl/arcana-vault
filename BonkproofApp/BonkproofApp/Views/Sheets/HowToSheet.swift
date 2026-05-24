@@ -63,7 +63,7 @@ struct HowToSheet: View {
                 }
             }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents([.fraction(0.78)])
         .presentationDragIndicator(.visible)
     }
 
@@ -150,8 +150,8 @@ private struct SlideContainer<Content: View>: View {
     var body: some View {
         VStack(spacing: 20) {
             content()
-                .frame(height: 200)
-                .padding(.top, 24)
+                .frame(height: 180)
+                .padding(.top, 16)
 
             VStack(spacing: 8) {
                 Text(title)
@@ -161,11 +161,12 @@ private struct SlideContainer<Content: View>: View {
                     .font(.subheadline)
                     .foregroundStyle(Color.secondaryLabel)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 24)
             }
-
-            Spacer()
         }
+        .frame(maxWidth: .infinity)
+        .padding(.bottom, 8)
     }
 }
 
