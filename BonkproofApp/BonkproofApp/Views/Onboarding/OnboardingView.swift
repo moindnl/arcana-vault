@@ -111,33 +111,12 @@ struct OnboardingView: View {
 
             VStack(spacing: 16) {
                 // Language picker
-                HStack(spacing: 12) {
-                    ForEach(AppLanguage.allCases, id: \.self) { lang in
-                        Button {
-                            withAnimation(anim(.spring(response: 0.3, dampingFraction: 0.75))) {
-                                s.language = lang
-                            }
-                        } label: {
-                            Text(verbatim: lang.displayName)
-                                .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(
-                                    s.language == lang
-                                        ? Color(UIColor.systemBackground)
-                                        : Color.label
-                                )
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
-                                .background(
-                                    s.language == lang
-                                        ? Color.label
-                                        : Color.secondarySystemBackground,
-                                    in: RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                )
-                                .animation(anim(.spring(response: 0.3, dampingFraction: 0.75)), value: s.language)
-                                .accessibilityAddTraits(s.language == lang ? .isSelected : [])
-                        }
-                    }
-                }
+                SegmentedPicker(
+                    options: AppLanguage.allCases,
+                    selection: $s.language,
+                    label: { LocalizedStringKey($0.displayName) },
+                    backgroundColor: Color.primary.opacity(0.1)
+                )
                 .padding(.horizontal, 32)
 
                 primaryButton(
@@ -505,10 +484,7 @@ struct OnboardingView: View {
                 .foregroundStyle(Color.secondaryLabel)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(
-                    Color.secondarySystemBackground,
-                    in: RoundedRectangle(cornerRadius: 14)
-                )
+                .glassEffect(in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             }
 
             // Next / Skip button
