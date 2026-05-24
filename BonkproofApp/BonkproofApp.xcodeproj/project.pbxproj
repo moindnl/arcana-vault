@@ -1,0 +1,545 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0862DF3C24E833EEC185A42B /* ResultCardsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89BD1F9AA18DEADA95E27B93 /* ResultCardsRow.swift */; };
+		276C2EA02F470DC5FC6CBE69 /* AboutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CA88FDBCAB72CF79ECCE17 /* AboutSheet.swift */; };
+		2C9CFED15307E6E1F1449A9A /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65A01DCE718E089DF7F1C18 /* Profile.swift */; };
+		380B06A263C58CFF1444D762 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5A5CAAEC31BF2B512EF2974B /* Localizable.xcstrings */; };
+		4DB3B6375B51088A35CEF312 /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8D640A4FB87D39469ED51 /* SegmentedPicker.swift */; };
+		5F376FA495B9536060BFA009 /* HowToSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67EB19EB9747AD28378EF661 /* HowToSheet.swift */; };
+		61DDD81D2C85E026DD36E9F5 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BB6D46CAEFC2EE950A6390 /* AppState.swift */; };
+		672B53B145FD8336F1556B8B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5149B4C0B575A1FBA8F9E0 /* MainView.swift */; };
+		68C41B2B11927F8A016AC7C0 /* ZoneBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEC2BC93A5512C6F0A8EDBD /* ZoneBadge.swift */; };
+		6CE10D2F2A08665075D635B3 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D096220F80E83B1A46342E /* OnboardingView.swift */; };
+		79834654B73782B2151C15EF /* PowerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28D7AD0C943420B4C8B1F17 /* PowerCard.swift */; };
+		7DCB96A14B2DAE49CA8F18ED /* NutritionProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */; };
+		863265C51A79878EAF6FE3CD /* BPCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50DD42C2A5C6271FA2E554 /* BPCard.swift */; };
+		8BBE9D3BD6D0BD4E4C176F83 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739252FD3F5CBD8D5050783C /* SettingsSheet.swift */; };
+		98D859A94B2F92CF481679A2 /* TotalsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39DFFBC247BFFF57D9808B4 /* TotalsCard.swift */; };
+		99F0EBA5686CD1FCE14BF056 /* RideInputCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF49A2B4DA861FD2CC3916 /* RideInputCard.swift */; };
+		9BC52547AA89977746B8E438 /* NutritionEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3CB318EBF84906CAEBF7CC /* NutritionEngineTests.swift */; };
+		A9BA4271F1784293069A9BAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7535DD62F0B6D86AE4397755 /* ContentView.swift */; };
+		ABF06AF7BCA8F2E1DE4A9901 /* NutritionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A7F6CAF39E190792B846F8 /* NutritionEngine.swift */; };
+		D9FEA61A2FAC206B97C2ECC7 /* BonkproofApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44EF3095974B3614C4076FC2 /* BonkproofApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C18A0E6F4B74EC5DCCAA26F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB4114CD9BDEB9BDD47BE19B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1B17B8ED3FCEF511052FDF46;
+			remoteInfo = BonkproofApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		014C124C1C689A9E21B1335D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0AEC2BC93A5512C6F0A8EDBD /* ZoneBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoneBadge.swift; sourceTree = "<group>"; };
+		0F5149B4C0B575A1FBA8F9E0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		15BB6D46CAEFC2EE950A6390 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		1E3CB318EBF84906CAEBF7CC /* NutritionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionEngineTests.swift; sourceTree = "<group>"; };
+		20CA88FDBCAB72CF79ECCE17 /* AboutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSheet.swift; sourceTree = "<group>"; };
+		44EF3095974B3614C4076FC2 /* BonkproofApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonkproofApp.swift; sourceTree = "<group>"; };
+		5A5CAAEC31BF2B512EF2974B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		5E2B7C1A1EF6A55CC937BB2F /* BonkproofAppTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BonkproofAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		67EB19EB9747AD28378EF661 /* HowToSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToSheet.swift; sourceTree = "<group>"; };
+		6BF8D640A4FB87D39469ED51 /* SegmentedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPicker.swift; sourceTree = "<group>"; };
+		739252FD3F5CBD8D5050783C /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
+		7535DD62F0B6D86AE4397755 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		89BD1F9AA18DEADA95E27B93 /* ResultCardsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCardsRow.swift; sourceTree = "<group>"; };
+		8C70D7682C099877BCABB8C7 /* BonkproofApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BonkproofApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F50DD42C2A5C6271FA2E554 /* BPCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPCard.swift; sourceTree = "<group>"; };
+		A1CF49A2B4DA861FD2CC3916 /* RideInputCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideInputCard.swift; sourceTree = "<group>"; };
+		A2A7F6CAF39E190792B846F8 /* NutritionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionEngine.swift; sourceTree = "<group>"; };
+		A65A01DCE718E089DF7F1C18 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		B9D096220F80E83B1A46342E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionProduct.swift; sourceTree = "<group>"; };
+		D39DFFBC247BFFF57D9808B4 /* TotalsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalsCard.swift; sourceTree = "<group>"; };
+		F28D7AD0C943420B4C8B1F17 /* PowerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerCard.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		031E92DEB5D820EEF59D1ED5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FA5C817678D3888B20726225 /* Main */,
+				3DE0C98BB379436C4D1EA924 /* Onboarding */,
+				1F9B8E5D43402F0A67AACB0F /* Sheets */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1F9B8E5D43402F0A67AACB0F /* Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				20CA88FDBCAB72CF79ECCE17 /* AboutSheet.swift */,
+				67EB19EB9747AD28378EF661 /* HowToSheet.swift */,
+				739252FD3F5CBD8D5050783C /* SettingsSheet.swift */,
+			);
+			path = Sheets;
+			sourceTree = "<group>";
+		};
+		2A3E268A9BB634C00BEDE976 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5A5CAAEC31BF2B512EF2974B /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		313962EDEEC56F43D394926A /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A2A7F6CAF39E190792B846F8 /* NutritionEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		3DE0C98BB379436C4D1EA924 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B9D096220F80E83B1A46342E /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		584FF8367701E570264E8368 /* BonkproofApp */ = {
+			isa = PBXGroup;
+			children = (
+				44EF3095974B3614C4076FC2 /* BonkproofApp.swift */,
+				7535DD62F0B6D86AE4397755 /* ContentView.swift */,
+				014C124C1C689A9E21B1335D /* Info.plist */,
+				5D5B709D82E8619BDC6B3186 /* Components */,
+				313962EDEEC56F43D394926A /* Engine */,
+				EFCE6DE613D804F7A564C47B /* Models */,
+				2A3E268A9BB634C00BEDE976 /* Resources */,
+				A8F6029A8A9A43664EDD1C52 /* State */,
+				031E92DEB5D820EEF59D1ED5 /* Views */,
+			);
+			path = BonkproofApp;
+			sourceTree = "<group>";
+		};
+		5D5B709D82E8619BDC6B3186 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				9F50DD42C2A5C6271FA2E554 /* BPCard.swift */,
+				6BF8D640A4FB87D39469ED51 /* SegmentedPicker.swift */,
+				0AEC2BC93A5512C6F0A8EDBD /* ZoneBadge.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6F061F7CAA33BC7D4B79F96B /* BonkproofAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				1E3CB318EBF84906CAEBF7CC /* NutritionEngineTests.swift */,
+			);
+			path = BonkproofAppTests;
+			sourceTree = "<group>";
+		};
+		A8F6029A8A9A43664EDD1C52 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				15BB6D46CAEFC2EE950A6390 /* AppState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		EA442E715C1AE31E6E43D869 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C70D7682C099877BCABB8C7 /* BonkproofApp.app */,
+				5E2B7C1A1EF6A55CC937BB2F /* BonkproofAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EF99D4CD50AE18F77A5732DC = {
+			isa = PBXGroup;
+			children = (
+				584FF8367701E570264E8368 /* BonkproofApp */,
+				6F061F7CAA33BC7D4B79F96B /* BonkproofAppTests */,
+				EA442E715C1AE31E6E43D869 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EFCE6DE613D804F7A564C47B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */,
+				A65A01DCE718E089DF7F1C18 /* Profile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FA5C817678D3888B20726225 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				0F5149B4C0B575A1FBA8F9E0 /* MainView.swift */,
+				F28D7AD0C943420B4C8B1F17 /* PowerCard.swift */,
+				89BD1F9AA18DEADA95E27B93 /* ResultCardsRow.swift */,
+				A1CF49A2B4DA861FD2CC3916 /* RideInputCard.swift */,
+				D39DFFBC247BFFF57D9808B4 /* TotalsCard.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1B17B8ED3FCEF511052FDF46 /* BonkproofApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2856801651E2ACE55D74CCEA /* Build configuration list for PBXNativeTarget "BonkproofApp" */;
+			buildPhases = (
+				D97B1ECB22F6878727DB90CD /* Sources */,
+				521A46F97C6D1FE5AEA31BA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BonkproofApp;
+			packageProductDependencies = (
+			);
+			productName = BonkproofApp;
+			productReference = 8C70D7682C099877BCABB8C7 /* BonkproofApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		94489B918EB7741341D7DD95 /* BonkproofAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EF9125CAB96538F107F96A5 /* Build configuration list for PBXNativeTarget "BonkproofAppTests" */;
+			buildPhases = (
+				BC351BAF2A57A663596A802D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9B32686AF8820B2748E53AA2 /* PBXTargetDependency */,
+			);
+			name = BonkproofAppTests;
+			packageProductDependencies = (
+			);
+			productName = BonkproofAppTests;
+			productReference = 5E2B7C1A1EF6A55CC937BB2F /* BonkproofAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FB4114CD9BDEB9BDD47BE19B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = D7D92751736A987545D7C0EE /* Build configuration list for PBXProject "BonkproofApp" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				de,
+				en,
+			);
+			mainGroup = EF99D4CD50AE18F77A5732DC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EA442E715C1AE31E6E43D869 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1B17B8ED3FCEF511052FDF46 /* BonkproofApp */,
+				94489B918EB7741341D7DD95 /* BonkproofAppTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		521A46F97C6D1FE5AEA31BA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				380B06A263C58CFF1444D762 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BC351BAF2A57A663596A802D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BC52547AA89977746B8E438 /* NutritionEngineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D97B1ECB22F6878727DB90CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				276C2EA02F470DC5FC6CBE69 /* AboutSheet.swift in Sources */,
+				61DDD81D2C85E026DD36E9F5 /* AppState.swift in Sources */,
+				863265C51A79878EAF6FE3CD /* BPCard.swift in Sources */,
+				D9FEA61A2FAC206B97C2ECC7 /* BonkproofApp.swift in Sources */,
+				A9BA4271F1784293069A9BAA /* ContentView.swift in Sources */,
+				5F376FA495B9536060BFA009 /* HowToSheet.swift in Sources */,
+				672B53B145FD8336F1556B8B /* MainView.swift in Sources */,
+				ABF06AF7BCA8F2E1DE4A9901 /* NutritionEngine.swift in Sources */,
+				7DCB96A14B2DAE49CA8F18ED /* NutritionProduct.swift in Sources */,
+				6CE10D2F2A08665075D635B3 /* OnboardingView.swift in Sources */,
+				79834654B73782B2151C15EF /* PowerCard.swift in Sources */,
+				2C9CFED15307E6E1F1449A9A /* Profile.swift in Sources */,
+				0862DF3C24E833EEC185A42B /* ResultCardsRow.swift in Sources */,
+				99F0EBA5686CD1FCE14BF056 /* RideInputCard.swift in Sources */,
+				4DB3B6375B51088A35CEF312 /* SegmentedPicker.swift in Sources */,
+				8BBE9D3BD6D0BD4E4C176F83 /* SettingsSheet.swift in Sources */,
+				98D859A94B2F92CF481679A2 /* TotalsCard.swift in Sources */,
+				68C41B2B11927F8A016AC7C0 /* ZoneBadge.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9B32686AF8820B2748E53AA2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1B17B8ED3FCEF511052FDF46 /* BonkproofApp */;
+			targetProxy = C18A0E6F4B74EC5DCCAA26F7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		10DABCE9465E4C026EE7F5ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BonkproofApp.app/BonkproofApp";
+			};
+			name = Release;
+		};
+		3A907D366529EC9D4B769BA4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 2.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = de.moindnl.bonkproof;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		7F233130C6D9BB8257BC4EE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BonkproofApp.app/BonkproofApp";
+			};
+			name = Debug;
+		};
+		88CC09A6952B2F3C4C35FE61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 2.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = de.moindnl.bonkproof;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+		CDA1F1468DD82344A42398A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = BonkproofApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E7D27D35BED5186E1CB51C80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = BonkproofApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2856801651E2ACE55D74CCEA /* Build configuration list for PBXNativeTarget "BonkproofApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDA1F1468DD82344A42398A4 /* Debug */,
+				E7D27D35BED5186E1CB51C80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7EF9125CAB96538F107F96A5 /* Build configuration list for PBXNativeTarget "BonkproofAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F233130C6D9BB8257BC4EE2 /* Debug */,
+				10DABCE9465E4C026EE7F5ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D7D92751736A987545D7C0EE /* Build configuration list for PBXProject "BonkproofApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A907D366529EC9D4B769BA4 /* Debug */,
+				88CC09A6952B2F3C4C35FE61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FB4114CD9BDEB9BDD47BE19B /* Project object */;
+}

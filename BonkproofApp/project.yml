@@ -1,0 +1,49 @@
+name: BonkproofApp
+options:
+  bundleIdPrefix: de.moindnl
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "16"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    MARKETING_VERSION: "2.0"
+    CURRENT_PROJECT_VERSION: "1"
+    PRODUCT_BUNDLE_IDENTIFIER: de.moindnl.bonkproof
+    SWIFT_VERSION: "5.10"
+    ENABLE_PREVIEWS: YES
+
+targets:
+  BonkproofApp:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: BonkproofApp
+    info:
+      path: BonkproofApp/Info.plist
+      properties:
+        CFBundleName: bonkproof
+        CFBundleDisplayName: bonkproof
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        ITSAppUsesNonExemptEncryption: false
+        UILaunchStoryboardName: ""
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIUserInterfaceStyle: Automatic
+    settings:
+      base:
+        INFOPLIST_FILE: BonkproofApp/Info.plist
+
+  BonkproofAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BonkproofAppTests
+    dependencies:
+      - target: BonkproofApp
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES

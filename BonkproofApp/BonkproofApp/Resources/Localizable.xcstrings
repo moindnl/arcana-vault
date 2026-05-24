@@ -1,0 +1,282 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "about" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "About" } }
+      }
+    },
+    "bottleSize" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Flaschengröße" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bottle size" } }
+      }
+    },
+    "carbohydrates" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kohlenhydrate" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Carbohydrates" } }
+      }
+    },
+    "carbsSub" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pro Stunde – geschätztes Ziel" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Per hour — estimated target" } }
+      }
+    },
+    "distance" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Distanz" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Distance" } }
+      }
+    },
+    "distanceOptional" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "(optional)" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "(optional)" } }
+      }
+    },
+    "drinkType" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Getränkeart" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Drink type" } }
+      }
+    },
+    "durationHint" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "z.B. 1:30 oder 1.5 für 1h 30min" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "e.g. 1:30 or 1.5 for 1h 30min" } }
+      }
+    },
+    "durationLabel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dauer" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Duration" } }
+      }
+    },
+    "emptyState" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gib deine Fahrtdauer ein, um personalisierte Kohlenhydrat- und Flüssigkeitsziele zu sehen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Enter your ride duration to see personalised carb & fluid targets." } }
+      }
+    },
+    "emptyTitle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Ergebnisse" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No results yet" } }
+      }
+    },
+    "fluids" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Flüssigkeit" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Fluids" } }
+      }
+    },
+    "fluidsSub" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pro Stunde zur Hydration" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Per hour for hydration" } }
+      }
+    },
+    "howMathWorks" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Mathematik dahinter" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "How the math works" } }
+      }
+    },
+    "onboardingDisclaimerAccept" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ich verstehe" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "I understand" } }
+      }
+    },
+    "onboardingDisclaimerTitle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Vor deiner Fahrt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Before you ride" } }
+      }
+    },
+    "onboardingStart" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Loslegen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Get started" } }
+      }
+    },
+    "onboardingTagline" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Präzise Kohlenhydrat- & Flüssigkeitsziele für deine Fahrten." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Precision carb & fluid targets for your rides." } }
+      }
+    },
+    "reset" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zurücksetzen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reset" } }
+      }
+    },
+    "resetRide" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fahrt zurücksetzen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reset ride" } }
+      }
+    },
+    "ridePower" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leistung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ride Power" } }
+      }
+    },
+    "ridePowerSub" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Geplanter Durchschnitt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Planned average" } }
+      }
+    },
+    "rideLabel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fahrt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Ride" } }
+      }
+    },
+    "setFtpFirst" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "FTP zuerst festlegen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Set FTP first" } }
+      }
+    },
+    "settings" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einstellungen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } }
+      }
+    },
+    "solidFood" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Feste Nahrung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Solid food" } }
+      }
+    },
+    "step1Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Profil einrichten" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Set up your profile" } }
+      }
+    },
+    "step2Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Produkte" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your products" } }
+      }
+    },
+    "step3Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ergebnisse" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Results" } }
+      }
+    },
+    "sweatHeavy" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Stark" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Heavy" } }
+      }
+    },
+    "sweatLight" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leicht" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Light" } }
+      }
+    },
+    "sweatModerate" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Moderat" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Moderate" } }
+      }
+    },
+    "tabPack" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Checkliste" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Checklist" } }
+      }
+    },
+    "tabTotals" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Übersicht" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Overview" } }
+      }
+    },
+    "temperature" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Temperatur" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Temperature" } }
+      }
+    },
+    "tourSlide0Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zwei Eingaben. Ein Plan." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Two inputs. One plan." } }
+      }
+    },
+    "tourSlide1Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Zone, deine Ziele" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your zone, your targets" } }
+      }
+    },
+    "tourSlide2Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wann essen, nicht nur wie viel" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "When to eat, not just how much" } }
+      }
+    },
+    "tourSlide3Title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Deine Produkte, deine Ziele" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your products, your targets" } }
+      }
+    },
+    "zoneEndurance" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ausdauer" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Endurance" } }
+      }
+    },
+    "zoneLabel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zone" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Zone" } }
+      }
+    },
+    "zoneRecovery" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erholung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Recovery" } }
+      }
+    },
+    "zoneTadej" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tadej-Modus" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tadej Mode" } }
+      }
+    },
+    "zoneTempo" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tempo" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tempo" } }
+      }
+    },
+    "zoneThreshold" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schwelle" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Threshold" } }
+      }
+    },
+    "zoneVO2" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "VO₂max+" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "VO₂max+" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
