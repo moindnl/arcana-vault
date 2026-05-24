@@ -29,10 +29,7 @@ struct TotalsCard: View {
                 }
             }
         }
-        .background(
-            Color(hex: "#1c1c1f")
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        )
+        .shadow(color: .black.opacity(0.18), radius: 16, y: 8)
     }
 
     // MARK: - Tab bar
