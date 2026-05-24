@@ -78,7 +78,7 @@ struct RideInputCard: View {
                 label: "durationLabel",
                 placeholder: "durationHint",
                 text: Binding(get: { state.durationText }, set: { state.durationText = $0 }),
-                keyboardType: .default,
+                keyboardType: .numbersAndPunctuation,
                 field: .duration
             )
 
