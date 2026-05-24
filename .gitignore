@@ -42,3 +42,11 @@ ios/App/DerivedData/
 # Fastlane secrets
 .env.local
 fastlane/.env.local
+
+# Claude agent files
+.agents/
+skills-lock.json
+
+# Fastlane generated
+fastlane/README.md
+fastlane/report.xml
