@@ -7,6 +7,10 @@ struct OnboardingView: View {
     @State private var animationDirection: Int = 1  // +1 forward, -1 back
     @State private var startTour: Bool = false
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private func anim(_ a: Animation) -> Animation? { reduceMotion ? nil : a }
+
     // Step 1 local state
     @FocusState private var onboardFocus: OnboardField?
     enum OnboardField: Hashable { case weight, ftp }
@@ -34,14 +38,14 @@ struct OnboardingView: View {
                     ForEach(0..<5) { step in
                         if step == currentStep {
                             stepView(step: step)
-                                .transition(.asymmetric(
+                                .transition(reduceMotion ? .opacity : .asymmetric(
                                     insertion: .move(edge: animationDirection > 0 ? .trailing : .leading),
                                     removal:   .move(edge: animationDirection > 0 ? .leading  : .trailing)
                                 ))
                         }
                     }
                 }
-                .animation(.spring(response: 0.4, dampingFraction: 0.85), value: currentStep)
+                .animation(anim(.spring(response: 0.4, dampingFraction: 0.85)), value: currentStep)
             }
         }
     }
@@ -57,7 +61,7 @@ struct OnboardingView: View {
                         width:  i == currentStep ? 8 : 6,
                         height: i == currentStep ? 8 : 6
                     )
-                    .animation(.spring(response: 0.3), value: currentStep)
+                    .animation(anim(.spring(response: 0.3)), value: currentStep)
             }
         }
     }
@@ -114,7 +118,11 @@ struct OnboardingView: View {
                         } label: {
                             Text(lang.displayName)
                                 .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(s.language == lang ? .white : Color.label)
+                                .foregroundStyle(
+                                    s.language == lang
+                                        ? Color(UIColor.systemBackground)
+                                        : Color.label
+                                )
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 10)
                                 .background(
@@ -123,6 +131,7 @@ struct OnboardingView: View {
                                         : Color.secondarySystemBackground,
                                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 )
+                                .accessibilityAddTraits(s.language == lang ? .isSelected : [])
                         }
                     }
                 }
@@ -184,6 +193,7 @@ struct OnboardingView: View {
                                           text: $s.weightText)
                                     .keyboardType(.decimalPad)
                                     .focused($onboardFocus, equals: .weight)
+                                    .accessibilityLabel(s.imperial ? "bodyWeightLbs" : "bodyWeightKg")
                             }
                         }
 
@@ -200,6 +210,7 @@ struct OnboardingView: View {
                                 TextField("e.g. 250", text: $s.ftpText)
                                     .keyboardType(.numberPad)
                                     .focused($onboardFocus, equals: .ftp)
+                                    .accessibilityLabel("FTP (W)")
                             }
                         }
                     }
@@ -302,6 +313,7 @@ struct OnboardingView: View {
                                         Image(systemName: "trash")
                                             .foregroundStyle(Color.bpAccent)
                                     }
+                                    .accessibilityLabel(Text("deleteProduct \(product.name)"))
                                 }
                                 .padding(.vertical, 8)
                                 if product.id != s.customProducts.last?.id {
@@ -444,14 +456,14 @@ struct OnboardingView: View {
 
     private func nextStep() {
         animationDirection = 1
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+        withAnimation(anim(.spring(response: 0.4, dampingFraction: 0.85))) {
             currentStep = min(currentStep + 1, 4)
         }
     }
 
     private func previousStep() {
         animationDirection = -1
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+        withAnimation(anim(.spring(response: 0.4, dampingFraction: 0.85))) {
             currentStep = max(currentStep - 1, 0)
         }
     }

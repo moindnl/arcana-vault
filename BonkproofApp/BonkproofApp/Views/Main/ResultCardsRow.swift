@@ -49,13 +49,13 @@ struct ResultCardsRow: View {
                 HStack(alignment: .firstTextBaseline, spacing: 3) {
                     if isDouble, let d = value as? Double {
                         Text("\(d, specifier: "%.1f")")
-                            .font(.system(size: 34, weight: .bold, design: .rounded))
+                            .font(.system(.largeTitle, design: .rounded, weight: .bold))
                             .foregroundStyle(Color.label)
                             .contentTransition(.numericText())
                             .animation(.spring(response: 0.4), value: d)
                     } else if let i = value as? Int {
                         Text("\(i)")
-                            .font(.system(size: 34, weight: .bold, design: .rounded))
+                            .font(.system(.largeTitle, design: .rounded, weight: .bold))
                             .foregroundStyle(Color.label)
                             .contentTransition(.numericText())
                             .animation(.spring(response: 0.4), value: i)

@@ -10,15 +10,37 @@ enum Zone: String, CaseIterable {
     case vo2max = "VO₂max+"
     case tadej = "Tadej"
 
+    /// WCAG 2.1 AA compliant adaptive colors.
+    /// Light-mode shades (700-level): ≥5:1 on white.
+    /// Dark-mode shades (400-level): ≥6:1 on near-black.
     var color: Color {
         switch self {
-        case .recovery:  return Color(hex: "#9ca3af")
-        case .endurance: return Color(hex: "#3b82f6")
-        case .tempo:     return Color(hex: "#22c55e")
-        case .threshold: return Color(hex: "#f97316")
-        case .vo2max:    return Color(hex: "#ef4444")
-        case .tadej:     return Color(hex: "#f0c000")
+        case .recovery:  return Zone.adaptive(light: "#4b5563", dark: "#9ca3af")
+        case .endurance: return Zone.adaptive(light: "#1d4ed8", dark: "#60a5fa")
+        case .tempo:     return Zone.adaptive(light: "#15803d", dark: "#4ade80")
+        case .threshold: return Zone.adaptive(light: "#c2410c", dark: "#fb923c")
+        case .vo2max:    return Zone.adaptive(light: "#b91c1c", dark: "#f87171")
+        case .tadej:     return Zone.adaptive(light: "#b45309", dark: "#fde047")
         }
+    }
+
+    private static func adaptive(light: String, dark: String) -> Color {
+        Color(UIColor { traits in
+            uiColor(hex: traits.userInterfaceStyle == .dark ? dark : light)
+        })
+    }
+
+    private static func uiColor(hex: String) -> UIColor {
+        var h = hex.trimmingCharacters(in: .whitespaces)
+        if h.hasPrefix("#") { h = String(h.dropFirst()) }
+        var rgb: UInt64 = 0
+        Scanner(string: h).scanHexInt64(&rgb)
+        return UIColor(
+            red:   CGFloat((rgb >> 16) & 0xFF) / 255,
+            green: CGFloat((rgb >>  8) & 0xFF) / 255,
+            blue:  CGFloat( rgb        & 0xFF) / 255,
+            alpha: 1
+        )
     }
 
     var ftpRange: String {

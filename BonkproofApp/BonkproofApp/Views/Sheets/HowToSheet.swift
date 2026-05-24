@@ -4,8 +4,12 @@ struct HowToSheet: View {
     @Environment(AppState.self) private var state
     @Environment(\.dismiss) private var dismiss
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var currentSlide: Int = 0
     @State private var triggered: [Int: Bool] = [:]
+
+    private func anim(_ a: Animation) -> Animation? { reduceMotion ? nil : a }
 
     var body: some View {
         NavigationStack {
@@ -17,7 +21,7 @@ struct HowToSheet: View {
                     slide3.tag(3)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(.spring(response: 0.4, dampingFraction: 0.85), value: currentSlide)
+                .animation(anim(.spring(response: 0.4, dampingFraction: 0.85)), value: currentSlide)
 
                 // Dot indicators
                 HStack(spacing: 8) {
@@ -26,7 +30,7 @@ struct HowToSheet: View {
                             .fill(i == currentSlide ? Color.label : Color.tertiaryLabel)
                             .frame(width: i == currentSlide ? 8 : 6,
                                    height: i == currentSlide ? 8 : 6)
-                            .animation(.spring(response: 0.3), value: currentSlide)
+                            .animation(anim(.spring(response: 0.3)), value: currentSlide)
                     }
                 }
                 .padding(.vertical, 12)
@@ -34,7 +38,7 @@ struct HowToSheet: View {
                 // Next / Done button
                 Button {
                     if currentSlide < 3 {
-                        withAnimation(.spring(response: 0.35)) {
+                        withAnimation(anim(.spring(response: 0.35))) {
                             currentSlide += 1
                         }
                     } else {
@@ -73,7 +77,7 @@ struct HowToSheet: View {
             Slide0Illustration(triggered: triggered[0] ?? false)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                        withAnimation(anim(.spring(response: 0.4, dampingFraction: 0.7))) {
                             triggered[0] = true
                         }
                     }
@@ -91,7 +95,7 @@ struct HowToSheet: View {
             Slide1ZoneChart(triggered: triggered[1] ?? false)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                        withAnimation(anim(.spring(response: 0.5, dampingFraction: 0.7))) {
                             triggered[1] = true
                         }
                     }
@@ -109,7 +113,7 @@ struct HowToSheet: View {
             Slide2Schedule(triggered: triggered[2] ?? false)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                        withAnimation(anim(.spring(response: 0.4, dampingFraction: 0.7))) {
                             triggered[2] = true
                         }
                     }
@@ -127,7 +131,7 @@ struct HowToSheet: View {
             Slide3Products(triggered: triggered[3] ?? false)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                        withAnimation(anim(.spring(response: 0.4, dampingFraction: 0.7))) {
                             triggered[3] = true
                         }
                     }
@@ -169,6 +173,7 @@ private struct SlideContainer<Content: View>: View {
 
 private struct Slide0Illustration: View {
     let triggered: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 12) {
@@ -194,7 +199,7 @@ private struct Slide0Illustration: View {
                 .foregroundStyle(Color.secondaryLabel)
                 .opacity(triggered ? 1 : 0)
                 .offset(y: triggered ? 0 : -10)
-                .animation(.easeOut(duration: 0.3).delay(0.36), value: triggered)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.3).delay(0.36), value: triggered)
 
             // Badge
             HStack(spacing: 6) {
@@ -210,7 +215,7 @@ private struct Slide0Illustration: View {
             .background(Zone.tempo.color.opacity(0.12), in: Capsule())
             .opacity(triggered ? 1 : 0)
             .scaleEffect(triggered ? 1 : 0.7)
-            .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(0.5), value: triggered)
+            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.6).delay(0.5), value: triggered)
         }
         .padding(.horizontal, 40)
     }
@@ -232,7 +237,7 @@ private struct Slide0Illustration: View {
         .background(Color.systemBackground, in: RoundedRectangle(cornerRadius: 10))
         .opacity(triggered ? 1 : 0)
         .offset(x: triggered ? 0 : 20)
-        .animation(.easeOut(duration: 0.3).delay(delay), value: triggered)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.3).delay(delay), value: triggered)
     }
 }
 
@@ -240,6 +245,7 @@ private struct Slide0Illustration: View {
 
 private struct Slide1ZoneChart: View {
     let triggered: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let bars: [(zone: Zone, label: String, height: CGFloat, carbs: String)] = [
         (.recovery,  "R",  30, "< 30"),
@@ -254,7 +260,7 @@ private struct Slide1ZoneChart: View {
             ForEach(Array(bars.enumerated()), id: \.offset) { idx, bar in
                 VStack(spacing: 4) {
                     Text(bar.carbs)
-                        .font(.system(size: 9, weight: .medium))
+                        .font(.caption2.weight(.medium))
                         .foregroundStyle(idx == 3 ? Color.bpAccent : Color.secondaryLabel)
                         .fixedSize()
 
@@ -262,7 +268,7 @@ private struct Slide1ZoneChart: View {
                         .fill(bar.zone.color)
                         .frame(width: 34, height: triggered ? bar.height : 4)
                         .animation(
-                            .spring(response: 0.5, dampingFraction: 0.7)
+                            reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7)
                                 .delay(Double(idx) * 0.08),
                             value: triggered
                         )
@@ -280,6 +286,7 @@ private struct Slide1ZoneChart: View {
 
 private struct Slide2Schedule: View {
     let triggered: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let events = [20, 40, 60, 80, 100]
 
@@ -295,7 +302,7 @@ private struct Slide2Schedule: View {
                             .opacity(triggered ? 1 : 0)
                             .scaleEffect(triggered ? 1 : 0.5)
                             .animation(
-                                .spring(response: 0.4, dampingFraction: 0.6)
+                                reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.6)
                                     .delay(Double(idx) * 0.12),
                                 value: triggered
                             )
@@ -304,7 +311,7 @@ private struct Slide2Schedule: View {
                             .fill(Color.bpAccent)
                             .frame(width: 10, height: 10)
                             .opacity(triggered ? 1 : 0)
-                            .animation(.easeOut(duration: 0.2).delay(Double(idx) * 0.12), value: triggered)
+                            .animation(reduceMotion ? nil : .easeOut(duration: 0.2).delay(Double(idx) * 0.12), value: triggered)
 
                         Text(formatMins(mins))
                             .font(.caption2.monospacedDigit())
@@ -320,7 +327,7 @@ private struct Slide2Schedule: View {
                             .offset(y: 8)  // align with dots
                             .scaleEffect(x: triggered ? 1 : 0, anchor: .leading)
                             .animation(
-                                .easeOut(duration: 0.3).delay(Double(idx) * 0.12 + 0.1),
+                                reduceMotion ? nil : .easeOut(duration: 0.3).delay(Double(idx) * 0.12 + 0.1),
                                 value: triggered
                             )
                     }
@@ -339,6 +346,7 @@ private struct Slide2Schedule: View {
 
 private struct Slide3Products: View {
     let triggered: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let products: [(name: String, carbs: String, highlight: Bool)] = [
         ("SIS Beta Fuel",  "40g", true),
@@ -385,7 +393,7 @@ private struct Slide3Products: View {
                 .opacity(triggered ? 1 : 0)
                 .offset(y: triggered ? 0 : 20)
                 .animation(
-                    .spring(response: 0.4, dampingFraction: 0.7).delay(Double(idx) * 0.15),
+                    reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7).delay(Double(idx) * 0.15),
                     value: triggered
                 )
             }

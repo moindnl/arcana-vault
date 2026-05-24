@@ -1736,6 +1736,38 @@
         }
       }
     },
+    "resetRideHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to confirm reset, or hold for 3 seconds to clear all inputs"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen zum Bestätigen oder 3 Sekunden halten zum Löschen aller Eingaben"
+          }
+        }
+      }
+    },
+    "deleteProduct %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ löschen"
+          }
+        }
+      }
+    },
     "noCustomProducts": {
       "localizations": {
         "en": {

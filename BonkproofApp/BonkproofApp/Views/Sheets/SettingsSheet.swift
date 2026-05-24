@@ -46,6 +46,7 @@ struct SettingsSheet: View {
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .frame(width: 70)
+                    .accessibilityLabel(s.imperial ? "bodyWeightLbs" : "bodyWeightKg")
             }
 
             // FTP
@@ -56,6 +57,7 @@ struct SettingsSheet: View {
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.trailing)
                     .frame(width: 70)
+                    .accessibilityLabel("FTP (W)")
             }
 
             // Sweat rate
@@ -200,10 +202,12 @@ struct CustomProductsView: View {
             Section("addProductSection") {
                 HStack(spacing: 10) {
                     TextField("productName", text: $newName)
+                        .accessibilityLabel("productName")
                     Divider()
                     TextField("productCarbsUnit", text: $newCarbs)
                         .keyboardType(.numberPad)
                         .frame(width: 70)
+                        .accessibilityLabel("productCarbsUnit")
                     Button {
                         addProduct()
                     } label: {
@@ -211,6 +215,7 @@ struct CustomProductsView: View {
                             .foregroundStyle(Color.bpAccent)
                             .font(.title3)
                     }
+                    .accessibilityLabel("addProduct")
                     .disabled(newName.isEmpty || newCarbs.isEmpty)
                 }
                 if let msg = errorMsg {

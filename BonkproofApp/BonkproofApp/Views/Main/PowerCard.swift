@@ -15,7 +15,7 @@ struct PowerCard: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(alignment: .firstTextBaseline, spacing: 4) {
                             Text("\(Int(state.power))")
-                                .font(.system(size: 28, weight: .bold, design: .rounded))
+                                .font(.system(.title, design: .rounded, weight: .bold))
                                 .foregroundStyle(Color.label)
                                 .contentTransition(.numericText())
                                 .animation(.spring(response: 0.4), value: Int(state.power))
@@ -63,7 +63,7 @@ struct PowerCard: View {
 
             HStack(alignment: .firstTextBaseline, spacing: 3) {
                 Text("\(state.speedDisplay, specifier: "%.1f")")
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    .font(.system(.headline, design: .rounded))
                     .foregroundStyle(Color.label)
                     .contentTransition(.numericText())
                 Text(state.speedUnit)

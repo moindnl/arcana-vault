@@ -2,6 +2,9 @@ import SwiftUI
 
 struct TotalsCard: View {
     @Environment(AppState.self) private var state
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private func anim(_ a: Animation) -> Animation? { reduceMotion ? nil : a }
 
     enum Tab: String, CaseIterable {
         case overview  = "tabTotals"
@@ -72,7 +75,7 @@ struct TotalsCard: View {
         VStack(spacing: 3) {
             HStack(alignment: .firstTextBaseline, spacing: 2) {
                 Text(value)
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .font(.system(.title2, design: .rounded, weight: .bold))
                     .foregroundStyle(.white)
                     .contentTransition(.numericText())
                 Text(unit)
@@ -260,7 +263,7 @@ struct TotalsCard: View {
     private func packRow(item: PackItem) -> some View {
         let isChecked = state.checkedPackItems.contains(item.id)
         return Button {
-            withAnimation(.spring(response: 0.25)) {
+            withAnimation(anim(.spring(response: 0.25))) {
                 if isChecked {
                     state.checkedPackItems.remove(item.id)
                 } else {

@@ -16,7 +16,7 @@ struct SegmentedPicker<T: Hashable>: View {
         HStack(spacing: 0) {
             ForEach(options, id: \.self) { option in
                 Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7)) {
                         selection = option
                     }
                 } label: {
@@ -35,6 +35,8 @@ struct SegmentedPicker<T: Hashable>: View {
                         }
                 }
                 .buttonStyle(.plain)
+                .accessibilityAddTraits(selection == option ? .isSelected : [])
+                .frame(minHeight: 44)
             }
         }
         .padding(3)
@@ -42,6 +44,7 @@ struct SegmentedPicker<T: Hashable>: View {
     }
 
     @Namespace private var pillNamespace
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
 /// Dark-surface variant (for TotalsCard)

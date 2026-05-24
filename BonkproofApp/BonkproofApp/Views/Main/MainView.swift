@@ -2,7 +2,10 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(AppState.self) private var state
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showResetShake = false
+
+    private func anim(_ a: Animation) -> Animation? { reduceMotion ? nil : a }
 
     var body: some View {
         NavigationStack {
@@ -12,15 +15,15 @@ struct MainView: View {
 
                     if state.hasDuration {
                         ResultCardsRow()
-                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
 
                         if state.hasPower {
                             PowerCard()
-                                .transition(.opacity.combined(with: .move(edge: .top)))
+                                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                         }
 
                         TotalsCard()
-                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                     } else {
                         emptyState
                             .transition(.opacity)
@@ -29,8 +32,8 @@ struct MainView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
                 .padding(.bottom, 32)
-                .animation(.spring(response: 0.4, dampingFraction: 0.8), value: state.hasDuration)
-                .animation(.spring(response: 0.4, dampingFraction: 0.8), value: state.hasPower)
+                .animation(anim(.spring(response: 0.4, dampingFraction: 0.8)), value: state.hasDuration)
+                .animation(anim(.spring(response: 0.4, dampingFraction: 0.8)), value: state.hasPower)
             }
             .background(Color.systemGroupedBackground)
             .navigationBarTitleDisplayMode(.inline)
@@ -82,6 +85,7 @@ struct MainView: View {
             Image(systemName: "gearshape")
                 .font(.body.weight(.medium))
         }
+        .accessibilityLabel("settings")
     }
 
     // MARK: - Empty state

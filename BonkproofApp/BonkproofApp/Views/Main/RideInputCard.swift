@@ -2,7 +2,10 @@ import SwiftUI
 
 struct RideInputCard: View {
     @Environment(AppState.self) private var state
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @FocusState private var focusedField: Field?
+
+    private func anim(_ a: Animation) -> Animation? { reduceMotion ? nil : a }
 
     // Swipe-to-reset gesture state
     @State private var dragOffset: CGFloat = 0
@@ -133,6 +136,7 @@ struct RideInputCard: View {
                     .keyboardType(keyboardType)
                     .focused($focusedField, equals: field)
                     .font(.body)
+                    .accessibilityLabel(label)
             }
         }
     }
@@ -196,7 +200,7 @@ struct RideInputCard: View {
                 Text("+\(state.heatBonus, specifier: "%.1f") L/h heat bonus")
                     .font(.caption)
                     .foregroundStyle(Color(hex: "#ef4444"))
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         }
     }
@@ -225,7 +229,7 @@ struct RideInputCard: View {
                     .stroke(Color.bpAccent, style: StrokeStyle(lineWidth: 2, lineCap: .round))
                     .frame(width: 32, height: 32)
                     .rotationEffect(.degrees(-90))
-                    .animation(.linear, value: holdProgress)
+                    .animation(anim(.linear), value: holdProgress)
             }
             Image(systemName: "xmark")
                 .font(.caption.weight(.bold))
@@ -233,6 +237,8 @@ struct RideInputCard: View {
         }
         .frame(width: 44, height: 44)
         .contentShape(Rectangle())
+        .accessibilityLabel("resetRide")
+        .accessibilityHint("resetRideHint")
         .onLongPressGesture(minimumDuration: 3, pressing: { pressing in
             if pressing {
                 startHoldTimer()
@@ -297,20 +303,20 @@ struct RideInputCard: View {
             .onEnded { value in
                 if dragOffset <= -80 {
                     // Snap to revealed
-                    withAnimation(.spring(response: 0.3)) {
+                    withAnimation(anim(.spring(response: 0.3))) {
                         dragOffset = -80
                         isResetRevealed = true
                     }
                     // After short delay, trigger reset
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                         performReset()
-                        withAnimation(.spring(response: 0.3)) {
+                        withAnimation(anim(.spring(response: 0.3))) {
                             dragOffset = 0
                             isResetRevealed = false
                         }
                     }
                 } else {
-                    withAnimation(.spring(response: 0.3)) {
+                    withAnimation(anim(.spring(response: 0.3))) {
                         dragOffset = 0
                         isResetRevealed = false
                     }
