@@ -5,6 +5,7 @@ struct OnboardingView: View {
 
     @State private var currentStep: Int = 0
     @State private var animationDirection: Int = 1  // +1 forward, -1 back
+    @State private var startTour: Bool = false
 
     // Step 1 local state
     @FocusState private var onboardFocus: OnboardField?
@@ -13,6 +14,7 @@ struct OnboardingView: View {
     // Step 2 local state
     @State private var newProductName: String = ""
     @State private var newProductCarbs: String = ""
+    @State private var addProductError: String? = nil
 
     var body: some View {
         ZStack {
@@ -20,14 +22,14 @@ struct OnboardingView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Progress dots
-                if currentStep > 0 && currentStep < 4 {
+                // Progress dots (steps 1–4)
+                if currentStep > 0 {
                     progressDots
                         .padding(.top, 16)
-                        .padding(.bottom, 8)
+                        .padding(.bottom, 4)
                 }
 
-                // Step content
+                // Step content with slide transition
                 ZStack {
                     ForEach(0..<5) { step in
                         if step == currentStep {
@@ -51,7 +53,10 @@ struct OnboardingView: View {
             ForEach(1..<5) { i in
                 Circle()
                     .fill(i == currentStep ? Color.label : Color.tertiaryLabel)
-                    .frame(width: i == currentStep ? 8 : 6, height: i == currentStep ? 8 : 6)
+                    .frame(
+                        width:  i == currentStep ? 8 : 6,
+                        height: i == currentStep ? 8 : 6
+                    )
                     .animation(.spring(response: 0.3), value: currentStep)
             }
         }
@@ -89,7 +94,7 @@ struct OnboardingView: View {
                         .font(.largeTitle)
                 }
 
-                Text("onboardingTagline", bundle: .main)
+                Text(String(localized: "onboardingTagline"))
                     .font(.body)
                     .foregroundStyle(Color.secondaryLabel)
                     .multilineTextAlignment(.center)
@@ -105,13 +110,15 @@ struct OnboardingView: View {
                         Button {
                             s.language = lang
                         } label: {
-                            Text(lang.rawValue)
+                            Text(lang.displayName)
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(s.language == lang ? .white : Color.label)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 10)
                                 .background(
-                                    s.language == lang ? Color.label : Color.secondarySystemBackground,
+                                    s.language == lang
+                                        ? Color.label
+                                        : Color.secondarySystemBackground,
                                     in: RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 )
                         }
@@ -135,12 +142,15 @@ struct OnboardingView: View {
         @Bindable var s = state
         return ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("step1Title", bundle: .main)
-                        .font(.title2.weight(.bold))
-                    Text("Tell us about you to personalise your targets.")
-                        .font(.subheadline)
-                        .foregroundStyle(Color.secondaryLabel)
+                // Title + back row
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(String(localized: "onboardingProfileTitle"))
+                            .font(.title2.weight(.bold))
+                        Text(String(localized: "onboardingProfileSub"))
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondaryLabel)
+                    }
                 }
                 .padding(.top, 8)
 
@@ -148,9 +158,11 @@ struct OnboardingView: View {
                 BPCard {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Units")
+                            Text(String(localized: "units"))
                                 .font(.subheadline.weight(.semibold))
-                            Text(s.imperial ? "Miles & pounds" : "Kilometres & kilograms")
+                            Text(s.imperial
+                                 ? String(localized: "miLbs")
+                                 : String(localized: "kmKg"))
                                 .font(.caption)
                                 .foregroundStyle(Color.secondaryLabel)
                         }
@@ -159,18 +171,21 @@ struct OnboardingView: View {
                     }
                 }
 
+                // Weight + FTP
                 BPCard {
                     VStack(spacing: 12) {
-                        // Weight
                         HStack {
                             Image(systemName: "scalemass.fill")
                                 .foregroundStyle(Color.secondaryLabel)
                                 .frame(width: 22)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(s.imperial ? "Weight (lbs)" : "Weight (kg)")
+                                Text(s.imperial
+                                     ? "\(String(localized: "bodyWeight")) (lbs)"
+                                     : "\(String(localized: "bodyWeight")) (kg)")
                                     .font(.caption.weight(.medium))
                                     .foregroundStyle(Color.secondaryLabel)
-                                TextField(s.imperial ? "e.g. 165" : "e.g. 72", text: $s.weightText)
+                                TextField(s.imperial ? "e.g. 165" : "e.g. 72",
+                                          text: $s.weightText)
                                     .keyboardType(.decimalPad)
                                     .focused($onboardFocus, equals: .weight)
                             }
@@ -178,13 +193,12 @@ struct OnboardingView: View {
 
                         Divider()
 
-                        // FTP
                         HStack {
                             Image(systemName: "bolt.fill")
                                 .foregroundStyle(Color.secondaryLabel)
                                 .frame(width: 22)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("FTP (W)")
+                                Text("\(String(localized: "ftpLabel")) (W)")
                                     .font(.caption.weight(.medium))
                                     .foregroundStyle(Color.secondaryLabel)
                                 TextField("e.g. 250", text: $s.ftpText)
@@ -198,17 +212,17 @@ struct OnboardingView: View {
                 // Sweat rate
                 BPCard {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Sweat rate")
+                        Text(String(localized: "sweatRate"))
                             .font(.subheadline.weight(.semibold))
                         SegmentedPicker(
                             options: SweatRate.allCases,
                             selection: $s.sweatRate,
-                            label: { $0.rawValue }
+                            label: { $0.label }
                         )
                     }
                 }
 
-                navigationButtons(
+                backNextButtons(
                     canContinue: !s.weightText.isEmpty && !s.ftpText.isEmpty
                 )
             }
@@ -218,23 +232,21 @@ struct OnboardingView: View {
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                Button("Done") { onboardFocus = nil }
+                Button(String(localized: "done")) { onboardFocus = nil }
             }
         }
     }
 
     // MARK: - Step 2: Products
 
-    @State private var addProductError: String? = nil
-
     private var productsStep: some View {
         @Bindable var s = state
         return ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("step2Title", bundle: .main)
+                    Text(String(localized: "onboardingProductsTitle"))
                         .font(.title2.weight(.bold))
-                    Text("Add your favourite gels, bars or snacks.")
+                    Text(String(localized: "onboardingProductsSub"))
                         .font(.subheadline)
                         .foregroundStyle(Color.secondaryLabel)
                 }
@@ -243,17 +255,17 @@ struct OnboardingView: View {
                 // Add product form
                 BPCard {
                     VStack(spacing: 12) {
-                        TextField("Product name", text: $newProductName)
+                        TextField(String(localized: "productNamePlaceholder"),
+                                  text: $newProductName)
                             .textFieldStyle(.plain)
                         Divider()
                         HStack {
-                            TextField("Carbs per unit (g)", text: $newProductCarbs)
+                            TextField(String(localized: "productCarbsUnit"),
+                                      text: $newProductCarbs)
                                 .keyboardType(.numberPad)
                             Spacer()
-                            Button {
-                                addProduct()
-                            } label: {
-                                Text("Add")
+                            Button { addProduct() } label: {
+                                Text(String(localized: "addProduct"))
                                     .font(.subheadline.weight(.semibold))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 16)
@@ -283,7 +295,7 @@ struct OnboardingView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(product.name)
                                             .font(.subheadline.weight(.medium))
-                                        Text("\(product.carbs)g carbs")
+                                        Text(String(localized: "\(product.carbs)g carbs"))
                                             .font(.caption)
                                             .foregroundStyle(Color.secondaryLabel)
                                     }
@@ -302,9 +314,14 @@ struct OnboardingView: View {
                             }
                         }
                     }
+                } else {
+                    Text(String(localized: "noCustomProducts"))
+                        .font(.subheadline)
+                        .foregroundStyle(Color.secondaryLabel)
+                        .padding(.horizontal, 4)
                 }
 
-                navigationButtons(canContinue: true, skipLabel: "Skip")
+                backNextButtons(canContinue: true, skipLabel: String(localized: "onboardingSkip"))
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 48)
@@ -313,7 +330,7 @@ struct OnboardingView: View {
 
     private func addProduct() {
         guard let carbs = Int(newProductCarbs), carbs > 0 else {
-            addProductError = "Enter a valid carb value"
+            addProductError = String(localized: "productCarbsHint")
             return
         }
         addProductError = nil
@@ -338,10 +355,10 @@ struct OnboardingView: View {
                     .font(.system(size: 72))
                     .foregroundStyle(Color(hex: "#22c55e"))
 
-                Text("All set!")
+                Text(String(localized: "onboardingReadyTitle"))
                     .font(.largeTitle.weight(.bold))
 
-                Text("Your profile is ready. Want a quick tour of how it works?")
+                Text(String(localized: "onboardingReadySub"))
                     .font(.subheadline)
                     .foregroundStyle(Color.secondaryLabel)
                     .multilineTextAlignment(.center)
@@ -349,20 +366,34 @@ struct OnboardingView: View {
             }
             Spacer()
             VStack(spacing: 12) {
-                primaryButton(title: "Take the tour") {
-                    state.showHowTo = true
-                    // Continue to disclaimer
+                primaryButton(title: String(localized: "tourStartTour")) {
+                    startTour = true
                     nextStep()
                 }
                 .padding(.horizontal, 32)
 
                 Button {
+                    startTour = false
                     nextStep()
                 } label: {
-                    Text("Skip tour")
+                    Text(String(localized: "tourSkipTour"))
                         .font(.subheadline)
                         .foregroundStyle(Color.secondaryLabel)
                 }
+
+                // Back button
+                Button {
+                    previousStep()
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.caption.weight(.semibold))
+                        Text(String(localized: "back"))
+                            .font(.subheadline.weight(.medium))
+                    }
+                    .foregroundStyle(Color.secondaryLabel)
+                }
+                .padding(.top, 4)
             }
             .padding(.bottom, 48)
         }
@@ -385,50 +416,31 @@ struct OnboardingView: View {
                         Spacer()
                     }
 
-                    Text("onboardingDisclaimerTitle", bundle: .main)
+                    Text(String(localized: "onboardingDisclaimerTitle"))
                         .font(.title2.weight(.bold))
                         .frame(maxWidth: .infinity, alignment: .center)
 
-                    BPCard {
-                        VStack(alignment: .leading, spacing: 12) {
-                            disclaimerParagraph(
-                                icon: "info.circle",
-                                text: "This app provides general nutrition estimates based on exercise science research. These are starting points, not medical advice."
-                            )
-                            Divider()
-                            disclaimerParagraph(
-                                icon: "person.fill",
-                                text: "Individual needs vary significantly. Always listen to your body and consult a sports dietitian for personalised guidance."
-                            )
-                            Divider()
-                            disclaimerParagraph(
-                                icon: "heart.fill",
-                                text: "If you have any medical conditions affecting nutrition or metabolism, please seek professional advice before following these recommendations."
-                            )
-                        }
-                    }
+                    Text(String(localized: "onboardingDisclaimerBody"))
+                        .font(.subheadline)
+                        .foregroundStyle(Color.secondaryLabel)
+                        .lineSpacing(4)
+
+                    Text(String(localized: "onboardingDisclaimerSources"))
+                        .font(.caption)
+                        .foregroundStyle(Color.tertiaryLabel)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
             }
 
+            // Mandatory accept — no back, no skip
             primaryButton(title: String(localized: "onboardingDisclaimerAccept")) {
                 s.disclaimerAccepted = true
                 s.onboardingDone = true
+                if startTour { s.showHowTo = true }
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 48)
-        }
-    }
-
-    private func disclaimerParagraph(icon: String, text: String) -> some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: icon)
-                .foregroundStyle(Color.bpAccent)
-                .frame(width: 20)
-            Text(text)
-                .font(.subheadline)
-                .foregroundStyle(Color.label)
         }
     }
 
@@ -448,6 +460,7 @@ struct OnboardingView: View {
         }
     }
 
+    /// Primary CTA button (full-width, accent red).
     private func primaryButton(title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
@@ -455,33 +468,43 @@ struct OnboardingView: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(Color.bpAccent, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(
+                    Color.bpAccent,
+                    in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                )
         }
     }
 
-    private func navigationButtons(canContinue: Bool, skipLabel: String? = nil) -> some View {
+    /// Back + Next/Skip row used on steps 1 and 2.
+    private func backNextButtons(
+        canContinue: Bool,
+        skipLabel: String? = nil
+    ) -> some View {
         HStack(spacing: 12) {
-            if currentStep > 1 {
-                Button {
-                    previousStep()
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "chevron.left")
-                            .font(.caption.weight(.semibold))
-                        Text("Back")
-                            .font(.subheadline.weight(.medium))
-                    }
-                    .foregroundStyle(Color.secondaryLabel)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Color.secondarySystemBackground, in: RoundedRectangle(cornerRadius: 14))
+            // Back button (steps 1+)
+            Button {
+                previousStep()
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "chevron.left")
+                        .font(.caption.weight(.semibold))
+                    Text(String(localized: "back"))
+                        .font(.subheadline.weight(.medium))
                 }
+                .foregroundStyle(Color.secondaryLabel)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    Color.secondarySystemBackground,
+                    in: RoundedRectangle(cornerRadius: 14)
+                )
             }
 
+            // Next / Skip button
             Button {
                 nextStep()
             } label: {
-                Text(skipLabel != nil && !canContinue ? skipLabel! : "Next")
+                Text((!canContinue && skipLabel != nil) ? skipLabel! : String(localized: "onboardingNext"))
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -495,6 +518,8 @@ struct OnboardingView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     OnboardingView()

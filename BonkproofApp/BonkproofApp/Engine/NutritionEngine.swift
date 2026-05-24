@@ -77,6 +77,9 @@ enum SweatRate: String, CaseIterable, Codable {
         case .heavy:    return "sweatHeavy"
         }
     }
+
+    /// Short label used in segmented pickers.
+    var label: String { String(localized: String.LocalizationValue(localizedKey)) }
 }
 
 // MARK: - IntensityCategory
