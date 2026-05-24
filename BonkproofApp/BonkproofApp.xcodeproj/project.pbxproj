@@ -55,7 +55,7 @@
 		739252FD3F5CBD8D5050783C /* SettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSheet.swift; sourceTree = "<group>"; };
 		7535DD62F0B6D86AE4397755 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		89BD1F9AA18DEADA95E27B93 /* ResultCardsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCardsRow.swift; sourceTree = "<group>"; };
-		8C70D7682C099877BCABB8C7 /* BonkproofApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BonkproofApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C70D7682C099877BCABB8C7 /* BonkproofApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BonkproofApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F50DD42C2A5C6271FA2E554 /* BPCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPCard.swift; sourceTree = "<group>"; };
 		A1CF49A2B4DA861FD2CC3916 /* RideInputCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideInputCard.swift; sourceTree = "<group>"; };
 		A2A7F6CAF39E190792B846F8 /* NutritionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionEngine.swift; sourceTree = "<group>"; };
@@ -241,8 +241,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = D7D92751736A987545D7C0EE /* Build configuration list for PBXProject "BonkproofApp" */;
 			developmentRegion = en;
@@ -487,6 +485,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BonkproofApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "bonkproof!";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -503,6 +503,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = BonkproofApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "bonkproof!";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

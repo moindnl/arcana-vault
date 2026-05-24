@@ -12,6 +12,8 @@ struct TotalsCard: View {
     }
 
     @State private var activeTab: Tab = .overview
+    @State private var contentVisible: Bool = true
+    @State private var showProductPicker: Bool = false
 
     var body: some View {
         BPCard(cornerRadius: 16, padding: 0) {
@@ -23,12 +25,14 @@ struct TotalsCard: View {
 
                 Divider()
 
-                switch activeTab {
-                case .overview:
-                    overviewTab.padding(16).transition(.opacity)
-                case .checklist:
-                    checklistTab.padding(16).transition(.opacity)
+                Group {
+                    if activeTab == .overview {
+                        overviewTab.padding(16)
+                    } else {
+                        checklistTab.padding(16)
+                    }
                 }
+                .opacity(contentVisible ? 1 : 0)
             }
         }
         .shadow(color: .black.opacity(0.18), radius: 16, y: 8)
@@ -39,7 +43,24 @@ struct TotalsCard: View {
     private var tabBar: some View {
         SegmentedPicker(
             options: Tab.allCases,
-            selection: $activeTab,
+            selection: Binding(
+                get: { activeTab },
+                set: { newTab in
+                    guard newTab != activeTab else { return }
+                    if reduceMotion {
+                        activeTab = newTab
+                    } else {
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            contentVisible = false
+                        } completion: {
+                            activeTab = newTab
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                contentVisible = true
+                            }
+                        }
+                    }
+                }
+            ),
             label: { tab in LocalizedStringKey(tab.rawValue) },
             backgroundColor: Color.primary.opacity(0.1)
         )
@@ -103,19 +124,8 @@ struct TotalsCard: View {
                 .font(.caption.weight(.medium))
                 .foregroundStyle(.secondary)
 
-            Menu {
-                ForEach(state.allSolidProducts) { product in
-                    Button {
-                        s.solidProductId = product.id
-                    } label: {
-                        HStack {
-                            Text(LocalizedStringKey(product.localizedNameKey))
-                            Spacer()
-                            Text("\(String(product.carbs))g")
-                                .foregroundStyle(Color.secondaryLabel)
-                        }
-                    }
-                }
+            Button {
+                showProductPicker = true
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -133,6 +143,19 @@ struct TotalsCard: View {
                 }
                 .padding(12)
                 .background(Color.primary.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+            }
+            .buttonStyle(.plain)
+            .confirmationDialog("solidFood", isPresented: $showProductPicker, titleVisibility: .visible) {
+                ForEach(state.allSolidProducts) { product in
+                    Button {
+                        s.solidProductId = product.id
+                    } label: {
+                        HStack {
+                            Text(LocalizedStringKey(product.localizedNameKey))
+                            Text("(\(product.carbs)g)")
+                        }
+                    }
+                }
             }
         }
     }
