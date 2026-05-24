@@ -83,11 +83,13 @@ struct OnboardingView: View {
         return VStack(spacing: 0) {
             Spacer()
             VStack(spacing: 20) {
-                // Logo
-                VStack(spacing: 8) {
-                    Image(systemName: "bolt.fill")
-                        .font(.system(size: 56))
-                        .foregroundStyle(Color.bpAccent)
+                // Logo — custom app icon + wordmark
+                VStack(spacing: 12) {
+                    Image(uiImage: UIImage(named: "AppIcon") ?? UIImage())
+                        .resizable()
+                        .frame(width: 88, height: 88)
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .shadow(color: .black.opacity(0.12), radius: 8, y: 4)
 
                     (Text("bonk").italic().fontWeight(.bold) +
                      Text("proof!").foregroundStyle(Color.bpAccent).fontWeight(.bold))
@@ -154,20 +156,16 @@ struct OnboardingView: View {
                 }
                 .padding(.top, 8)
 
-                // Units toggle
+                // Units segmented picker
                 BPCard {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(String(localized: "units"))
-                                .font(.subheadline.weight(.semibold))
-                            Text(s.imperial
-                                 ? String(localized: "miLbs")
-                                 : String(localized: "kmKg"))
-                                .font(.caption)
-                                .foregroundStyle(Color.secondaryLabel)
-                        }
-                        Spacer()
-                        Toggle("", isOn: $s.imperial)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(String(localized: "units"))
+                            .font(.subheadline.weight(.semibold))
+                        SegmentedPicker(
+                            options: [false, true],
+                            selection: $s.imperial,
+                            label: { $0 ? String(localized: "miLbs") : String(localized: "kmKg") }
+                        )
                     }
                 }
 
