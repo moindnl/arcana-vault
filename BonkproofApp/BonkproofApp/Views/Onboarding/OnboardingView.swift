@@ -494,12 +494,14 @@ struct OnboardingView: View {
                 Text((!canContinue && skipLabel != nil) ? skipLabel! : "onboardingNext")
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.white)
+                    .contentTransition(.opacity)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(
                         canContinue ? Color.bpAccent : Color.tertiaryLabel,
                         in: RoundedRectangle(cornerRadius: 14)
                     )
+                    .animation(anim(.spring(response: 0.3, dampingFraction: 0.8)), value: canContinue)
             }
             .disabled(!canContinue && skipLabel == nil)
         }

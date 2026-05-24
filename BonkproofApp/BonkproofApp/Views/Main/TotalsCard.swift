@@ -24,8 +24,10 @@ struct TotalsCard: View {
                 Divider()
 
                 switch activeTab {
-                case .overview:  overviewTab.padding(16)
-                case .checklist: checklistTab.padding(16)
+                case .overview:
+                    overviewTab.padding(16).transition(.opacity)
+                case .checklist:
+                    checklistTab.padding(16).transition(.opacity)
                 }
             }
         }

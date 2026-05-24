@@ -152,27 +152,34 @@ struct RideInputCard: View {
                 .font(.caption.weight(.medium))
                 .foregroundStyle(Color.secondaryLabel)
             Spacer()
-            if state.hasFTP && state.hasPower {
-                ZoneBadge(
-                    zone: state.zone,
-                    ifPct: Int((state.intensityFactor * 100).rounded())
-                )
-            } else if state.hasPower && !state.hasFTP {
-                Button {
-                    state.showSettings = true
-                } label: {
-                    Label("setFtpFirst", systemImage: "slider.horizontal.3")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(Color.bpAccent)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(Color.bpAccent.opacity(0.1), in: Capsule())
+            Group {
+                if state.hasFTP && state.hasPower {
+                    ZoneBadge(
+                        zone: state.zone,
+                        ifPct: Int((state.intensityFactor * 100).rounded())
+                    )
+                    .transition(.opacity)
+                } else if state.hasPower && !state.hasFTP {
+                    Button {
+                        state.showSettings = true
+                    } label: {
+                        Label("setFtpFirst", systemImage: "slider.horizontal.3")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(Color.bpAccent)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.bpAccent.opacity(0.1), in: Capsule())
+                    }
+                    .transition(.opacity)
+                } else {
+                    Text("—")
+                        .font(.caption)
+                        .foregroundStyle(Color.tertiaryLabel)
+                        .transition(.opacity)
                 }
-            } else {
-                Text("—")
-                    .font(.caption)
-                    .foregroundStyle(Color.tertiaryLabel)
             }
+            .animation(anim(.spring(response: 0.3, dampingFraction: 0.8)), value: state.hasFTP && state.hasPower)
+            .animation(anim(.spring(response: 0.3, dampingFraction: 0.8)), value: state.hasPower)
         }
     }
 

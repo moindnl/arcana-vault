@@ -3,6 +3,7 @@ import SwiftUI
 struct PowerCard: View {
     @Environment(AppState.self) private var state
     @Environment(\.openURL) private var openURL
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         BPCard {
@@ -48,9 +49,13 @@ struct PowerCard: View {
 
                 if state.hasDistance && state.speedKmh > 0 {
                     Divider()
+                        .transition(.opacity)
                     speedRow
+                        .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
                 }
             }
+            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8),
+                       value: state.hasDistance && state.speedKmh > 0)
         }
     }
 
