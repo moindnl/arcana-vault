@@ -57,6 +57,9 @@ final class AppState {
     var disclaimerAccepted: Bool = false {
         didSet { UserDefaults.standard.set(disclaimerAccepted, forKey: "disclaimerAccepted") }
     }
+    var heatWarningDismissed: Bool = false {
+        didSet { UserDefaults.standard.set(heatWarningDismissed, forKey: "heatWarningDismissed") }
+    }
 
     // MARK: - UI state (transient)
     var showSettings: Bool = false
@@ -80,6 +83,7 @@ final class AppState {
         bottleSize     = ud.integer(forKey: "bottleSize") == 0 ? 750 : ud.integer(forKey: "bottleSize")
         onboardingDone = ud.bool(forKey: "onboardingDone")
         disclaimerAccepted = ud.bool(forKey: "disclaimerAccepted")
+        heatWarningDismissed = ud.bool(forKey: "heatWarningDismissed")
 
         if let data = ud.data(forKey: "customProducts"),
            let decoded = try? JSONDecoder().decode([NutritionProduct].self, from: data) {

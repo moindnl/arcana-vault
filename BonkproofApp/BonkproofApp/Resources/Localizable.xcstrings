@@ -1746,6 +1746,22 @@
         }
       }
     },
+    "heatWarning": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergiss Elektrolyte nicht!"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don’t forget electrolytes!"
+          }
+        }
+      }
+    },
     "howItWorks": {
       "extractionState": "stale",
       "localizations": {
@@ -3262,6 +3278,7 @@
       }
     },
     "zoneAnaerobic": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {
@@ -3311,6 +3328,7 @@
       }
     },
     "zoneNeuromuscular": {
+      "extractionState": "stale",
       "localizations": {
         "de": {
           "stringUnit": {

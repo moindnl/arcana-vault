@@ -233,6 +233,29 @@ struct RideInputCard: View {
                     .foregroundStyle(Color(hex: "#ef4444"))
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
+
+            if state.temperature >= 32 && !state.heatWarningDismissed {
+                HStack(spacing: 8) {
+                    Image(systemName: "drop.fill")
+                        .font(.caption)
+                    Text("heatWarning")
+                        .font(.caption.weight(.medium))
+                    Spacer()
+                    Button {
+                        withAnimation(anim(.spring(response: 0.3))) {
+                            state.heatWarningDismissed = true
+                        }
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.caption.weight(.semibold))
+                    }
+                }
+                .foregroundStyle(Color(hex: "#f59e0b"))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 7)
+                .background(Color(hex: "#f59e0b").opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
+                .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+            }
         }
     }
 
