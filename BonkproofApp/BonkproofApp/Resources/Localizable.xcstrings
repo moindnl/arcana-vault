@@ -3265,13 +3265,13 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "type": "text",
+            "state": "translated",
             "value": "Anaerob"
           }
         },
         "en": {
           "stringUnit": {
-            "type": "text",
+            "state": "translated",
             "value": "Anaerobic"
           }
         }
@@ -3314,13 +3314,13 @@
       "localizations": {
         "de": {
           "stringUnit": {
-            "type": "text",
+            "state": "translated",
             "value": "Neuromuskulär"
           }
         },
         "en": {
           "stringUnit": {
-            "type": "text",
+            "state": "translated",
             "value": "Neuromuscular"
           }
         }
