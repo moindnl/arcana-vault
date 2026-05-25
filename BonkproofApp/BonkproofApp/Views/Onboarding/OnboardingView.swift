@@ -219,6 +219,18 @@ struct OnboardingView: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
+                Button(action: {
+                    if onboardFocus == .ftp { onboardFocus = .weight }
+                }) {
+                    Image(systemName: "chevron.up")
+                }
+                .disabled(onboardFocus == .weight)
+                Button(action: {
+                    if onboardFocus == .weight { onboardFocus = .ftp }
+                }) {
+                    Image(systemName: "chevron.down")
+                }
+                .disabled(onboardFocus == .ftp)
                 Spacer()
                 Button("done") { onboardFocus = nil }
             }
