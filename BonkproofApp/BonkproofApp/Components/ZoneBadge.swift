@@ -32,7 +32,9 @@ struct ZoneBadge: View {
         ZoneBadge(zone: .endurance, ifPct: 68)
         ZoneBadge(zone: .tempo, ifPct: 83)
         ZoneBadge(zone: .threshold, ifPct: 98)
-        ZoneBadge(zone: .vo2max, ifPct: 110)
+        ZoneBadge(zone: .vo2max, ifPct: 112)
+        ZoneBadge(zone: .anaerobic, ifPct: 135)
+        ZoneBadge(zone: .neuromuscular, ifPct: 160)
         ZoneBadge(zone: .tadej, ifPct: nil)
     }
     .padding()

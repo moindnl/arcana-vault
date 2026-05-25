@@ -105,11 +105,13 @@ struct FormulaView: View {
     @Environment(\.openURL) private var openURL
 
     private let zones: [(zone: Zone, ftpRange: String, carbRange: String)] = [
-        (.recovery,  "< 55%",    "< 30 g/h"),
-        (.endurance, "55–75%",   "30–45 g/h"),
-        (.tempo,     "76–90%",   "45–60 g/h"),
-        (.threshold, "91–105%",  "60–90 g/h"),
-        (.vo2max,    "> 105%",   "90–120 g/h"),
+        (.recovery,      "< 55%",    "< 30 g/h"),
+        (.endurance,     "55–75%",   "30–45 g/h"),
+        (.tempo,         "76–90%",   "45–60 g/h"),
+        (.threshold,     "91–105%",  "60–90 g/h"),
+        (.vo2max,        "106–120%", "90–120 g/h"),
+        (.anaerobic,     "121–150%", "90–120 g/h"),
+        (.neuromuscular, "> 150%",   "120 g/h"),
     ]
 
     private let sources: [(title: String, url: String)] = [

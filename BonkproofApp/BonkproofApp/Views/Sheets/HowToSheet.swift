@@ -249,25 +249,27 @@ private struct Slide1ZoneChart: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let bars: [(zone: Zone, label: String, height: CGFloat, carbs: String)] = [
-        (.recovery,  "R",  30, "< 30"),
-        (.endurance, "E",  55, "30–45"),
-        (.tempo,     "T",  80, "45–60"),
-        (.threshold, "S", 110, "60–90"),
-        (.vo2max,    "V", 140, "90–120"),
+        (.recovery,      "Z1",  20, "< 30"),
+        (.endurance,     "Z2",  40, "30–45"),
+        (.tempo,         "Z3",  65, "45–60"),
+        (.threshold,     "Z4",  95, "60–90"),
+        (.vo2max,        "Z5", 120, "90–120"),
+        (.anaerobic,     "Z6", 140, "90–120"),
+        (.neuromuscular, "Z7", 155, "120+"),
     ]
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 12) {
+        HStack(alignment: .bottom, spacing: 7) {
             ForEach(Array(bars.enumerated()), id: \.offset) { idx, bar in
                 VStack(spacing: 4) {
                     Text(verbatim: bar.carbs)
-                        .font(.caption2.weight(.medium))
+                        .font(.system(size: 9).weight(.medium))
                         .foregroundStyle(idx == 3 ? Color.bpAccent : Color.secondaryLabel)
                         .fixedSize()
 
                     RoundedRectangle(cornerRadius: 5, style: .continuous)
                         .fill(bar.zone.color)
-                        .frame(width: 34, height: triggered ? bar.height : 4)
+                        .frame(width: 28, height: triggered ? bar.height : 4)
                         .animation(
                             reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7)
                                 .delay(Double(idx) * 0.08),
@@ -275,7 +277,7 @@ private struct Slide1ZoneChart: View {
                         )
 
                     Text(verbatim: bar.label)
-                        .font(.caption2.weight(.bold))
+                        .font(.system(size: 9).weight(.bold))
                         .foregroundStyle(bar.zone.color)
                 }
             }

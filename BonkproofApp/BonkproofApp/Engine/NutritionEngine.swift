@@ -7,7 +7,9 @@ enum Zone: String, CaseIterable {
     case endurance = "Endurance"
     case tempo = "Tempo"
     case threshold = "Threshold"
-    case vo2max = "VO₂max+"
+    case vo2max = "VO₂max"
+    case anaerobic = "Anaerobic"
+    case neuromuscular = "Neuromuscular"
     case tadej = "Tadej"
 
     /// WCAG 2.1 AA compliant adaptive colors.
@@ -15,12 +17,14 @@ enum Zone: String, CaseIterable {
     /// Dark-mode shades (400-level): ≥6:1 on near-black.
     var color: Color {
         switch self {
-        case .recovery:  return Zone.adaptive(light: "#4b5563", dark: "#9ca3af")
-        case .endurance: return Zone.adaptive(light: "#1d4ed8", dark: "#60a5fa")
-        case .tempo:     return Zone.adaptive(light: "#15803d", dark: "#4ade80")
-        case .threshold: return Zone.adaptive(light: "#c2410c", dark: "#fb923c")
-        case .vo2max:    return Zone.adaptive(light: "#b91c1c", dark: "#f87171")
-        case .tadej:     return Zone.adaptive(light: "#b45309", dark: "#fde047")
+        case .recovery:      return Zone.adaptive(light: "#4b5563", dark: "#9ca3af")
+        case .endurance:     return Zone.adaptive(light: "#1d4ed8", dark: "#60a5fa")
+        case .tempo:         return Zone.adaptive(light: "#15803d", dark: "#4ade80")
+        case .threshold:     return Zone.adaptive(light: "#c2410c", dark: "#fb923c")
+        case .vo2max:        return Zone.adaptive(light: "#b91c1c", dark: "#f87171")
+        case .anaerobic:     return Zone.adaptive(light: "#9d174d", dark: "#fb7185")
+        case .neuromuscular: return Zone.adaptive(light: "#6b21a8", dark: "#c084fc")
+        case .tadej:         return Zone.adaptive(light: "#b45309", dark: "#fde047")
         }
     }
 
@@ -45,34 +49,40 @@ enum Zone: String, CaseIterable {
 
     var ftpRange: String {
         switch self {
-        case .recovery:  return "< 55%"
-        case .endurance: return "55–75%"
-        case .tempo:     return "76–90%"
-        case .threshold: return "91–105%"
-        case .vo2max:    return "> 105%"
-        case .tadej:     return "≥ 500W"
+        case .recovery:      return "< 55%"
+        case .endurance:     return "55–75%"
+        case .tempo:         return "76–90%"
+        case .threshold:     return "91–105%"
+        case .vo2max:        return "106–120%"
+        case .anaerobic:     return "121–150%"
+        case .neuromuscular: return "> 150%"
+        case .tadej:         return "≥ 500W"
         }
     }
 
     var carbRange: String {
         switch self {
-        case .recovery:  return "< 30 g/h"
-        case .endurance: return "30–45 g/h"
-        case .tempo:     return "45–60 g/h"
-        case .threshold: return "60–90 g/h"
-        case .vo2max:    return "90–120 g/h"
-        case .tadej:     return "120 g/h"
+        case .recovery:      return "< 30 g/h"
+        case .endurance:     return "30–45 g/h"
+        case .tempo:         return "45–60 g/h"
+        case .threshold:     return "60–90 g/h"
+        case .vo2max:        return "90–120 g/h"
+        case .anaerobic:     return "90–120 g/h"
+        case .neuromuscular: return "120 g/h"
+        case .tadej:         return "120 g/h"
         }
     }
 
     var localizedKey: String {
         switch self {
-        case .recovery:  return "zoneRecovery"
-        case .endurance: return "zoneEndurance"
-        case .tempo:     return "zoneTempo"
-        case .threshold: return "zoneThreshold"
-        case .vo2max:    return "zoneVO2"
-        case .tadej:     return "zoneTadej"
+        case .recovery:      return "zoneRecovery"
+        case .endurance:     return "zoneEndurance"
+        case .tempo:         return "zoneTempo"
+        case .threshold:     return "zoneThreshold"
+        case .vo2max:        return "zoneVO2"
+        case .anaerobic:     return "zoneAnaerobic"
+        case .neuromuscular: return "zoneNeuromuscular"
+        case .tadej:         return "zoneTadej"
         }
     }
 }
@@ -195,7 +205,9 @@ enum NutritionEngine {
         if ifVal < 0.76  { return .endurance }
         if ifVal < 0.91  { return .tempo }
         if ifVal < 1.06  { return .threshold }
-        return .vo2max
+        if ifVal < 1.21  { return .vo2max }
+        if ifVal < 1.51  { return .anaerobic }
+        return .neuromuscular
     }
 
     // MARK: Zone from IF (no FTP context)
@@ -204,7 +216,9 @@ enum NutritionEngine {
         if ifVal < 0.76  { return .endurance }
         if ifVal < 0.91  { return .tempo }
         if ifVal < 1.06  { return .threshold }
-        return .vo2max
+        if ifVal < 1.21  { return .vo2max }
+        if ifVal < 1.51  { return .anaerobic }
+        return .neuromuscular
     }
 
     // MARK: Intensity category
