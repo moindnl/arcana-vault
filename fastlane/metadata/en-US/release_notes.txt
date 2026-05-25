@@ -1,6 +1,1 @@
-Language switcher in onboarding: switch between English and German directly on the welcome screen — before you start setup.
-Reset button in ride screen now works reliably on iOS.
-Double-tap to zoom disabled — the app now feels fully native.
-"Water only" label in the drink picker no longer gets clipped.
-Keyboard toolbar with previous, next, and done buttons above the keyboard.
-Input fields now scroll into view automatically when the keyboard appears.
+New app icon. 7 Coggan power zones (Z1–Z7). Heat warning at 32°C. Keyboard navigation improvements. Various bug fixes and visual polish.

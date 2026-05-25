@@ -1,6 +1,1 @@
-Sprachumschaltung im Onboarding: Direkt auf dem Startbildschirm kannst du jetzt zwischen Deutsch und Englisch wechseln — bevor du die Einrichtung beginnst.
-Zurücksetzen-Button im Fahrt-Screen funktioniert jetzt zuverlässig auf iOS.
-Doppel-Tippen zum Zoomen deaktiviert — die App verhält sich jetzt wie eine native App.
-„Water only" in der Getränkeauswahl wird nicht mehr abgeschnitten.
-Tastatur-Leiste mit Vor/Zurück- und Fertig-Taste über der Tastatur.
-Eingabefelder scrollen automatisch in den sichtbaren Bereich wenn die Tastatur erscheint.
+Neues App-Icon. 7 Coggan-Leistungszonen (Z1–Z7). Hitzwarnung ab 32°C. Bessere Tastaturnavigation. Fehlerbehebungen und visueller Feinschliff.
