@@ -121,6 +121,8 @@ struct FormulaView: View {
          "https://pubmed.ncbi.nlm.nih.gov/21660838/"),
         ("Sawka et al. (2007) — Exercise and fluid replacement",
          "https://pubmed.ncbi.nlm.nih.gov/17277604/"),
+        ("Coggan & Allen (2010) — Training and Racing with a Power Meter (event template IF targets)",
+         "https://www.amazon.com/dp/1934030554"),
     ]
 
     var body: some View {
