@@ -14,6 +14,7 @@ struct TotalsCard: View {
     @State private var activeTab: Tab = .overview
     @State private var contentVisible: Bool = true
     @State private var showProductPicker: Bool = false
+    @State private var showConfetti: Bool = false
 
     var body: some View {
         BPCard(cornerRadius: 16, padding: 0) {
@@ -36,6 +37,13 @@ struct TotalsCard: View {
             }
         }
         .shadow(color: .black.opacity(0.18), radius: 16, y: 8)
+        .overlay {
+            if showConfetti && !reduceMotion {
+                ConfettiView()
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .allowsHitTesting(false)
+            }
+        }
     }
 
     // MARK: - Tab bar
@@ -299,6 +307,14 @@ struct TotalsCard: View {
                     state.checkedPackItems.remove(item.id)
                 } else {
                     state.checkedPackItems.insert(item.id)
+                    let allDone = state.packItems.allSatisfy { state.checkedPackItems.contains($0.id) }
+                    if allDone && !showConfetti {
+                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                        showConfetti = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                            withAnimation { showConfetti = false }
+                        }
+                    }
                 }
             }
         } label: {
@@ -329,6 +345,65 @@ struct TotalsCard: View {
         case .key(let k):
             return Text(LocalizedStringKey(k))
         }
+    }
+}
+
+// MARK: - Confetti
+
+private struct ConfettiView: View {
+    private let startDate = Date()
+
+    private struct Flake: Identifiable {
+        let id = UUID()
+        let x: CGFloat
+        let hue: Double
+        let speed: Double
+        let wobble: Double
+        let wobbleAmp: CGFloat
+        let rotation: Double
+        let rotSpeed: Double
+        let size: CGSize
+    }
+
+    private let flakes: [Flake] = (0..<55).map { _ in
+        Flake(
+            x: .random(in: 0...1),
+            hue: .random(in: 0...1),
+            speed: .random(in: 0.35...1.1),
+            wobble: .random(in: 1.5...4.0),
+            wobbleAmp: .random(in: 8...28),
+            rotation: .random(in: 0...360),
+            rotSpeed: .random(in: 80...300) * (Bool.random() ? 1 : -1),
+            size: CGSize(width: .random(in: 6...12), height: .random(in: 4...8))
+        )
+    }
+
+    var body: some View {
+        TimelineView(.animation) { ctx in
+            let t = ctx.date.timeIntervalSince(startDate)
+            Canvas { canvas, size in
+                for flake in flakes {
+                    let progress = t * flake.speed
+                    let y = size.height * CGFloat(progress) * 0.55
+                    guard y < size.height + 20 else { continue }
+                    let x = size.width * flake.x
+                        + flake.wobbleAmp * CGFloat(sin(flake.wobble * t + flake.x * 10))
+                    let angle = Angle(degrees: flake.rotation + flake.rotSpeed * t)
+                    var c = canvas
+                    c.translateBy(x: x, y: y)
+                    c.rotate(by: angle)
+                    let rect = CGRect(
+                        x: -flake.size.width / 2,
+                        y: -flake.size.height / 2,
+                        width: flake.size.width,
+                        height: flake.size.height
+                    )
+                    c.fill(Path(rect),
+                           with: .color(Color(hue: flake.hue, saturation: 0.85, brightness: 0.95)))
+                }
+            }
+        }
+        .ignoresSafeArea()
     }
 }
 
