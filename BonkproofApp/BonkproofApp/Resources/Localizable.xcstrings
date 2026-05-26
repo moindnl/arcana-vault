@@ -1,3583 +1,3590 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "%.1f": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%.1f"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "—" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "—"
           }
         }
       }
     },
-    "%@": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@"
+    "·" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "·"
           }
         }
       }
     },
-    "%@ carbs per unit": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ KH pro Einheit"
+    "(%@g)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%@g)"
           }
         }
       }
     },
-    "%@ kcal/h": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ kcal/h"
+    "%.1f" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f"
           }
         }
       }
     },
-    "%@%% IF": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@%% IF"
+    "%@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
           }
         }
       }
     },
-    "%@%@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@%2$@"
+    "%@ carbs per unit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ KH pro Einheit"
           }
         }
       }
     },
-    "%@g": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@g"
+    "%@ kcal/h" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kcal/h"
           }
         }
       }
     },
-    "%@g carbs": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@g KH"
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
           }
         }
       }
     },
-    "%@g carbs per unit": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@g KH pro Einheit"
+    "%@%% IF" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@%% IF"
           }
         }
       }
     },
-    "%@g carbs per unit · %@ needed": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@g KH pro Einheit · %2$@ benötigt"
+    "%@°C" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@°C"
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@g carbs per unit · %2$@ needed"
-          }
         }
       }
     },
-    "%@°C": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@°C"
+    "%@× %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@× %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@× %2$@"
           }
         }
       }
     },
-    "%@× %@": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@× %2$@"
+    "%@× %@ml per bottle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@× %2$@ml pro Flasche"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@× %2$@"
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@× %2$@ml per bottle"
           }
         }
       }
     },
-    "%@× %@ml per bottle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@× %2$@ml pro Flasche"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@× %2$@ml per bottle"
+    "%@g" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@g"
           }
         }
       }
     },
-    "%lld× %lldml per bottle": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$lld× %2$lldml pro Flasche"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld× %lldml per bottle"
+    "%@g carbs" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@g KH"
           }
         }
       }
     },
-    "(%@g)": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(%@g)"
+    "%@g carbs per unit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@g KH pro Einheit"
           }
         }
       }
     },
-    "+%.1f L/h heat bonus": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "+%.1f L/h Hitzebonus"
+    "%@g carbs per unit · %@ needed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@g KH pro Einheit · %2$@ benötigt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@g carbs per unit · %2$@ needed"
           }
         }
       }
     },
-    "1 L": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 L"
+    "%lld× %lldml per bottle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld× %2$lldml pro Flasche"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld× %lldml per bottle"
+          }
         }
       }
     },
-    "500 ml": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "500 ml"
+    "+%.1f L/h heat bonus" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%.1f L/h Hitzebonus"
           }
         }
       }
     },
-    "750 ml": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "750 ml"
+    "1 L" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 L"
           }
         }
       }
     },
-    "Add": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hinzufügen"
+    "500 ml" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 ml"
           }
         }
       }
     },
-    "Add your favourite gels, bars or snacks.": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Füge deine Gels, Riegel oder Snacks hinzu."
+    "750 ml" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "750 ml"
           }
         }
       }
     },
-    "All ride inputs will be cleared.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle Fahrt-Eingaben werden gelöscht."
+    "about" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "About"
           }
         }
       }
     },
-    "All set!": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alles bereit!"
+    "Add" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinzufügen"
           }
         }
       }
     },
-    "Appearance": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Darstellung"
+    "Add your favourite gels, bars or snacks." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Füge deine Gels, Riegel oder Snacks hinzu."
           }
         }
       }
     },
-    "Back": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zurück"
+    "addProduct" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinzufügen"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
         }
       }
     },
-    "Custom": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eigene"
+    "addProductSection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkt hinzufügen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add product"
           }
         }
       }
     },
-    "Cycling nutrition calculator": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radsport-Ernährungsrechner"
+    "All ride inputs will be cleared." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Fahrt-Eingaben werden gelöscht."
           }
         }
       }
     },
-    "Dark": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dunkel"
+    "All set!" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles bereit!"
           }
         }
       }
     },
-    "FTP (W)": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FTP (W)"
+    "allDataOnDevice" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Daten bleiben auf deinem iPhone"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All data stays on your iPhone"
           }
         }
       }
     },
-    "Fueling schedule": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ernährungsplan"
+    "animalAmbulance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krankenwagen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ambulance"
           }
         }
       }
     },
-    "Hm? There was no ride...": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hm? Da war keine Fahrt..."
+    "animalCheetah" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gepard"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cheetah"
           }
         }
       }
     },
-    "Language": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sprache"
+    "animalDownhill" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downhill"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downhill"
+          }
         }
       }
     },
-    "Light": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hell"
+    "animalFalcon" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falke"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falcon"
           }
         }
       }
     },
-    "No solid needed": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine feste Nahrung nötig"
+    "animalGazelle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gazelle"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gazelle"
+          }
         }
       }
     },
-    "Pack list": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Packliste"
+    "animalGreyhound" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Greyhound"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Greyhound"
           }
         }
       }
     },
-    "Products": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Produkte"
+    "animalMotorcycle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Motorrad"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Motorcycle"
           }
         }
       }
     },
-    "Profile": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil"
+    "animalPenguin" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pinguin"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penguin"
           }
         }
       }
     },
-    "Reset": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zurücksetzen"
+    "animalPeregrine" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wanderfalke"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peregrine"
           }
         }
       }
     },
-    "Shake detected — reset all ride inputs?": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schütteln erkannt — Fahrt zurücksetzen?"
+    "animalTurtle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schildkröte"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turtle"
+          }
         }
       }
     },
-    "Skip tour": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tour überspringen"
+    "appearance" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darstellung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
           }
         }
       }
     },
-    "Sweat rate": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schwitztyp"
+    "Appearance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darstellung"
           }
         }
       }
     },
-    "System": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "System"
+    "back" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
+          }
         }
       }
     },
-    "Tell us about you to personalise your targets.": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erzähl uns von dir, damit wir deine Ziele personalisieren können."
+    "Back" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück"
           }
         }
       }
     },
-    "Tempo · 60 g/h": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tempo · 60 g/h"
+    "banana" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Banane"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Banana"
           }
         }
       }
     },
-    "Total needs": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gesamtbedarf"
+    "bar" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energieriegel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy Bar"
           }
         }
       }
     },
-    "Units": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einheiten"
+    "bodyWeight" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Körpergewicht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body Weight"
           }
         }
       }
     },
-    "Version %@": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Version %@"
+    "bodyWeightKg" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Körpergewicht (kg)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body weight (kg)"
           }
         }
       }
     },
-    "W": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "W"
+    "bodyWeightLbs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Körpergewicht (lbs)"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body weight (lbs)"
+          }
         }
       }
     },
-    "Your profile is ready. Want a quick tour of how it works?": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dein Profil ist gespeichert. Möchtest du eine kurze Tour machen?"
+    "bonk" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bonk"
           }
         }
       }
     },
-    "about": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Über"
+    "bottleSize" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flaschengröße"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "About"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bottle size"
           }
         }
       }
     },
-    "addProduct": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hinzufügen"
+    "calculations" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechnungen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculations"
           }
         }
       }
     },
-    "addProductSection": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Produkt hinzufügen"
+    "cancel" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add product"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         }
       }
     },
-    "allDataOnDevice": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle Daten bleiben auf deinem iPhone"
+    "carbmix" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohlehydratmix"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All data stays on your iPhone"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carb mix"
           }
         }
       }
     },
-    "animalAmbulance": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Krankenwagen"
+    "carbohydrates" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohlenhydrate"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ambulance"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carbohydrates"
           }
         }
       }
     },
-    "animalCheetah": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gepard"
+    "carbs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohlenhydrate"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cheetah"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carbs"
           }
         }
       }
     },
-    "animalDownhill": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Downhill"
+    "carbsEstimated" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schätzung auf Basis deiner Intensität"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Downhill"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated from your intensity level"
           }
         }
       }
     },
-    "animalFalcon": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Falke"
+    "carbsMultiNote" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glukose+Fruktose-Mix (2:1) erforderlich. Einzelne Zuckerquellen schaffen max. ~60 g/h."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Falcon"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requires a glucose+fructose blend (2:1). Single-source carbs top out at ~60 g/h."
           }
         }
       }
     },
-    "animalGazelle": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gazelle"
+    "carbsSub" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro Stunde — Richtwert"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gazelle"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per hour — estimated target"
           }
         }
       }
     },
-    "animalGreyhound": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Greyhound"
+    "chew" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy-Kaugummis"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Greyhound"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy Chews"
           }
         }
       }
     },
-    "animalMotorcycle": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Motorrad"
+    "close" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Motorcycle"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         }
       }
     },
-    "animalPenguin": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pinguin"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Penguin"
+    "Custom" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene"
           }
         }
       }
     },
-    "animalPeregrine": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wanderfalke"
+    "customProducts" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene Produkte"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Peregrine"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Products"
           }
         }
       }
     },
-    "animalTurtle": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schildkröte"
+    "Cycling nutrition calculator" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radsport-Ernährungsrechner"
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Turtle"
-          }
         }
       }
     },
-    "appearance": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Darstellung"
+    "cyclingNutritionCalculator" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radsport-Ernährungsrechner"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Appearance"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cycling nutrition calculator"
           }
         }
       }
     },
-    "back": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zurück"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back"
+    "Dark" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dunkel"
           }
         }
       }
     },
-    "banana": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Banane"
+    "dataPrivacy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daten & Privatsphäre"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Banana"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data & privacy"
           }
         }
       }
     },
-    "bar": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energieriegel"
+    "dataStorage" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenspeicherung"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energy Bar"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data storage"
           }
         }
       }
     },
-    "bodyWeight": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Körpergewicht"
+    "dataStorageVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur auf Gerät"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Body Weight"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Device only"
           }
         }
       }
     },
-    "bodyWeightKg": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Körpergewicht (kg)"
+    "dates" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medjool-Datteln"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Body weight (kg)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medjool Dates"
           }
         }
       }
     },
-    "bodyWeightLbs": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Körpergewicht (lbs)"
+    "defaultProducts" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standardprodukte"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Body weight (lbs)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default products"
           }
         }
       }
     },
-    "bonk": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "bonk"
+    "deleteProduct" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkt löschen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete product"
           }
         }
       }
     },
-    "bottleSize": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flaschengröße"
+    "deleteProduct %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ löschen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bottle size"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@"
           }
         }
       }
     },
-    "calculations": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Berechnungen"
+    "distance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distanz"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Calculations"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
           }
         }
       }
     },
-    "cancel": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abbrechen"
+    "distanceFull" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distanz (optional)"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance (optional)"
           }
         }
       }
     },
-    "carbmix": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kohlehydratmix"
+    "distanceOptional" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(optional)"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carb mix"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(optional)"
           }
         }
       }
     },
-    "carbohydrates": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kohlenhydrate"
+    "done" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carbohydrates"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         }
       }
     },
-    "carbs": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kohlenhydrate"
+    "drinkCoversAll" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine feste Nahrung nötig — Drink deckt alle Kohlenhydrate."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carbs"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No solid food needed — drink covers all carbs."
           }
         }
       }
     },
-    "carbsEstimated": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schätzung auf Basis deiner Intensität"
+    "drinkType" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getränk"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estimated from your intensity level"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drink type"
           }
         }
       }
     },
-    "carbsMultiNote": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Glukose+Fruktose-Mix (2:1) erforderlich. Einzelne Zuckerquellen schaffen max. ~60 g/h."
+    "durationHint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "z.B. 1:30 oder 1.5 für 1h 30min"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Requires a glucose+fructose blend (2:1). Single-source carbs top out at ~60 g/h."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. 1:30 or 1.5 for 1h 30min"
           }
         }
       }
     },
-    "carbsSub": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pro Stunde — Richtwert"
+    "durationLabel" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dauer"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Per hour — estimated target"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duration"
           }
         }
       }
     },
-    "chew": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energy-Kaugummis"
+    "emptyState" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib deine Fahrtdauer ein, um personalisierte Kohlenhydrat- und Flüssigkeitsziele zu sehen."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energy Chews"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your ride duration to see personalised carb & fluid targets."
           }
         }
       }
     },
-    "close": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schließen"
+    "emptyTitle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Ergebnisse"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No results yet"
           }
         }
       }
     },
-    "customProducts": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eigene Produkte"
+    "energy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energie"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom Products"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy"
           }
         }
       }
     },
-    "cyclingNutritionCalculator": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radsport-Ernährungsrechner"
+    "enterPower" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leistung eingeben"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cycling nutrition calculator"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter power"
           }
         }
       }
     },
-    "dataPrivacy": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Daten & Privatsphäre"
+    "enterValidCarb" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib einen gültigen Kohlenhydratwert ein"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data & privacy"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a valid carb value"
           }
         }
       }
     },
-    "dataStorage": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datenspeicherung"
+    "fluidFormula" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flüssigkeitsformel"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Data storage"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fluid formula"
           }
         }
       }
     },
-    "dataStorageVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nur auf Gerät"
+    "fluids" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flüssigkeit"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Device only"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fluids"
           }
         }
       }
     },
-    "dates": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Medjool-Datteln"
+    "fluidsBased" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basierend auf Gewicht, Schwitztyp und Dauer"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Medjool Dates"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Based on weight, sweat rate, and duration"
           }
         }
       }
     },
-    "defaultProducts": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Standardprodukte"
+    "fluidsSub" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro Stunde zur Hydration"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default products"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per hour for hydration"
           }
         }
       }
     },
-    "deleteProduct": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Produkt löschen"
+    "formulaBaseFluid" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basisflüssig."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete product"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Base fluid"
           }
         }
       }
     },
-    "deleteProduct %@": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ löschen"
+    "formulaBaseFluidVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zonenmittelpunkt (L/h)"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete %@"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zone midpoint (L/h)"
           }
         }
       }
     },
-    "distance": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Distanz"
+    "formulaHeatBonus" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hitzebonus"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Distance"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat bonus"
           }
         }
       }
     },
-    "distanceFull": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Distanz (optional)"
+    "formulaHeatBonusVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+0,3 L/h pro 5°C über 20°C"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Distance (optional)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+0.3 L/h per 5°C above 20°C"
           }
         }
       }
     },
-    "distanceOptional": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(optional)"
+    "formulaSweatRate" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schweißrate"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(optional)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweat rate"
           }
         }
       }
     },
-    "done": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fertig"
+    "formulaSweatRateVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "× 0,8 / 1,0 / 1,3"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "× 0.8 / 1.0 / 1.3"
           }
         }
       }
     },
-    "drinkCoversAll": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine feste Nahrung nötig — Drink deckt alle Kohlenhydrate."
+    "formulaWeightAdj" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewichtsanp."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No solid food needed — drink covers all carbs."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weight adj."
           }
         }
       }
     },
-    "drinkType": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Getränk"
+    "formulaWeightAdjVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "× (Gewicht / 70 kg)"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drink type"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "× (weight / 70 kg)"
           }
         }
       }
     },
-    "durationHint": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "z.B. 1:30 oder 1.5 für 1h 30min"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. 1:30 or 1.5 for 1h 30min"
+    "FTP (W)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FTP (W)"
           }
         }
       }
     },
-    "durationLabel": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dauer"
+    "ftpLabel" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FTP"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duration"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FTP"
           }
         }
       }
     },
-    "emptyState": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gib deine Fahrtdauer ein, um personalisierte Kohlenhydrat- und Flüssigkeitsziele zu sehen."
+    "ftpSub" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max. 1-Stunden-Leistung"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter your ride duration to see personalised carb & fluid targets."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Max 1-hour power"
           }
         }
       }
     },
-    "emptyTitle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Noch keine Ergebnisse"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No results yet"
+    "Fueling schedule" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ernährungsplan"
           }
         }
       }
     },
-    "energy": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energie"
+    "fuelingSchedule" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ernährungsplan"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energy"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fueling schedule"
           }
         }
       }
     },
-    "enterPower": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leistung eingeben"
+    "gel" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy-Gel"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter power"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energy Gel"
           }
         }
       }
     },
-    "enterValidCarb": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gib einen gültigen Kohlenhydratwert ein"
+    "heatInactive" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hitzeanpassung ab 20°C aktiv"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter a valid carb value"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heat adjustment activates above 20°C"
           }
         }
       }
     },
-    "fluidFormula": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flüssigkeitsformel"
+    "heatWarning" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vergiss Elektrolyte nicht!"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fluid formula"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don’t forget electrolytes!"
           }
         }
       }
     },
-    "fluids": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flüssigkeit"
+    "Hm? There was no ride..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hm? Da war keine Fahrt..."
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fluids"
-          }
         }
       }
     },
-    "fluidsBased": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Basierend auf Gewicht, Schwitztyp und Dauer"
+    "howItWorks" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "So funktioniert's"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Based on weight, sweat rate, and duration"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How it works"
           }
         }
       }
     },
-    "fluidsSub": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pro Stunde zur Hydration"
+    "howMathWorks" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie die Berechnung funktioniert"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Per hour for hydration"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How the math works"
           }
         }
       }
     },
-    "formulaBaseFluid": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Basisflüssig."
+    "imperialToggle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial (mi/lbs)"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Base fluid"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imperial (mi/lbs)"
           }
         }
       }
     },
-    "formulaBaseFluidVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zonenmittelpunkt (L/h)"
+    "isotonic" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isotonisch"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zone midpoint (L/h)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isotonic"
           }
         }
       }
     },
-    "formulaHeatBonus": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hitzebonus"
+    "kmKg" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km / kg"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heat bonus"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km / kg"
           }
         }
       }
     },
-    "formulaHeatBonusVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "+0,3 L/h pro 5°C über 20°C"
+    "language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "+0.3 L/h per 5°C above 20°C"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
           }
         }
       }
     },
-    "formulaSweatRate": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schweißrate"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sweat rate"
+    "Language" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
           }
         }
       }
     },
-    "formulaSweatRateVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "× 0,8 / 1,0 / 1,3"
+    "Light" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hell"
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "× 0.8 / 1.0 / 1.3"
-          }
         }
       }
     },
-    "formulaWeightAdj": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gewichtsanp."
+    "miLbs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mi / lbs"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weight adj."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mi / lbs"
           }
         }
       }
     },
-    "formulaWeightAdjVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "× (Gewicht / 70 kg)"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "× (weight / 70 kg)"
+    "No solid needed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine feste Nahrung nötig"
           }
         }
       }
     },
-    "ftpLabel": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FTP"
+    "noBottles" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Flaschen bei dieser Intensität nötig."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "FTP"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No bottles needed at this intensity."
           }
         }
       }
     },
-    "ftpSub": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Max. 1-Stunden-Leistung"
+    "noCustomProducts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine eigenen Produkte."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Max 1-hour power"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No custom products yet."
           }
         }
       }
     },
-    "fuelingSchedule": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ernährungsplan"
+    "noInternet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Internet erforderlich"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fueling schedule"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No internet required"
           }
         }
       }
     },
-    "gel": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energy-Gel"
+    "noServerRequests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Serveranfragen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Energy Gel"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No server requests"
           }
         }
       }
     },
-    "heatInactive": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hitzeanpassung ab 20°C aktiv"
+    "noSolidNeeded" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine feste Nahrung nötig"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heat adjustment activates above 20°C"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No solid needed"
           }
         }
       }
     },
-    "heatWarning": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vergiss Elektrolyte nicht!"
+    "noTracking" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Tracking, keine Analysen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Don’t forget electrolytes!"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tracking, no analytics"
           }
         }
       }
     },
-    "howItWorks": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "So funktioniert's"
+    "onboardingDisclaimerAccept" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich verstehe"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How it works"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I understand"
           }
         }
       }
     },
-    "howMathWorks": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wie die Berechnung funktioniert"
+    "onboardingDisclaimerBody" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bonkproof berechnet geschätzte Kohlenhydrat- und Flüssigkeitsziele für Ausdauersportler auf Basis sportwissenschaftlicher Leitlinien (Jeukendrup, Sports Medicine 2014; Sawka et al., ACSM 2007; Thomas et al., AND 2016).\n\nDiese Werte sind keine medizinische Beratung und ersetzen nicht die Konsultation eines Arztes, Ernährungsberaters oder Sportwissenschaftlers. Nutzung auf eigene Verantwortung.\n\nBei gesundheitlichen Einschränkungen — z. B. Diabetes — bitte vorher einen Arzt konsultieren."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How the math works"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bonkproof calculates estimated carbohydrate and fluid targets for endurance athletes based on sports science guidelines (Jeukendrup, Sports Medicine 2014; Sawka et al., ACSM 2007; Thomas et al., AND 2016).\n\nThese values are not medical advice and do not replace consultation with a doctor, dietitian, or sports scientist. Use at your own risk.\n\nIf you have any health conditions — such as diabetes — consult a physician before use."
           }
         }
       }
     },
-    "imperialToggle": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Imperial (mi/lbs)"
+    "onboardingDisclaimerSources" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wissenschaftliche Quellen: Über → Formel"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Imperial (mi/lbs)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scientific sources: About → Formula"
           }
         }
       }
     },
-    "isotonic": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Isotonisch"
+    "onboardingDisclaimerTitle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vor deiner Fahrt"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Isotonic"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Before you ride"
           }
         }
       }
     },
-    "kmKg": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "km / kg"
+    "onboardingNext" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter →"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "km / kg"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next →"
           }
         }
       }
     },
-    "language": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sprache"
+    "onboardingProductsSub" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzt du bestimmte Gels oder Riegel? Füge sie einmal hinzu — bonkproof rechnet mit deinen echten Werten."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Language"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you use specific gels or bars? Add them once — bonkproof will calculate with your actual numbers."
           }
         }
       }
     },
-    "miLbs": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "mi / lbs"
+    "onboardingProductsTitle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Produkte"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "mi / lbs"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Products"
           }
         }
       }
     },
-    "noBottles": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine Flaschen bei dieser Intensität nötig."
+    "onboardingProfileSub" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib Gewicht und FTP einmal ein — bonkproof berechnet damit deine persönlichen Ziele."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No bottles needed at this intensity."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your weight and FTP once — bonkproof uses them to calculate your personal carb and fluid targets."
           }
         }
       }
     },
-    "noCustomProducts": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Noch keine eigenen Produkte."
+    "onboardingProfileTitle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Profil"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No custom products yet."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Profile"
           }
         }
       }
     },
-    "noInternet": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kein Internet erforderlich"
+    "onboardingReadySub" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Profil ist gespeichert. Du kannst es jederzeit in den Einstellungen anpassen."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No internet required"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your profile is saved. You can update it anytime in Settings."
           }
         }
       }
     },
-    "noServerRequests": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine Serveranfragen"
+    "onboardingReadyTitle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles bereit!"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No server requests"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All set!"
           }
         }
       }
     },
-    "noSolidNeeded": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine feste Nahrung nötig"
+    "onboardingSkip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überspringen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No solid needed"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip"
           }
         }
       }
     },
-    "noTracking": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kein Tracking, keine Analysen"
+    "onboardingStart" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loslegen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No tracking, no analytics"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get started"
           }
         }
       }
     },
-    "onboardingDisclaimerAccept": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ich verstehe"
+    "onboardingTagline" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Präzise Kohlenhydrat- & Flüssigkeitsziele für deine Fahrten."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I understand"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Precision carb & fluid targets for your rides."
           }
         }
       }
     },
-    "onboardingDisclaimerBody": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "bonkproof berechnet geschätzte Kohlenhydrat- und Flüssigkeitsziele für Ausdauersportler auf Basis sportwissenschaftlicher Leitlinien (Jeukendrup, Sports Medicine 2014; Sawka et al., ACSM 2007; Thomas et al., AND 2016).\n\nDiese Werte sind keine medizinische Beratung und ersetzen nicht die Konsultation eines Arztes, Ernährungsberaters oder Sportwissenschaftlers. Nutzung auf eigene Verantwortung.\n\nBei gesundheitlichen Einschränkungen — z. B. Diabetes — bitte vorher einen Arzt konsultieren."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "bonkproof calculates estimated carbohydrate and fluid targets for endurance athletes based on sports science guidelines (Jeukendrup, Sports Medicine 2014; Sawka et al., ACSM 2007; Thomas et al., AND 2016).\n\nThese values are not medical advice and do not replace consultation with a doctor, dietitian, or sports scientist. Use at your own risk.\n\nIf you have any health conditions — such as diabetes — consult a physician before use."
+    "Pack list" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Packliste"
           }
         }
       }
     },
-    "onboardingDisclaimerSources": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wissenschaftliche Quellen: Über → Formel"
+    "packElectrolytes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elektrolyte / Salztabs"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scientific sources: About → Formula"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Electrolytes / salt tabs"
           }
         }
       }
     },
-    "onboardingDisclaimerTitle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vor deiner Fahrt"
+    "packItemCash" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bargeld oder Karte (Café-Stop / Notfall)"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Before you ride"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cash or card (café stop / emergency)"
           }
         }
       }
     },
-    "onboardingNext": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Weiter →"
+    "packItemComputer" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fahrradcomputer aufgeladen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Next →"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bike computer charged"
           }
         }
       }
     },
-    "onboardingProductsSub": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nutzt du bestimmte Gels oder Riegel? Füge sie einmal hinzu — bonkproof rechnet mit deinen echten Werten."
+    "packItemElectrolytes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elektrolyt-Tabs / Salzkapseln"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do you use specific gels or bars? Add them once — bonkproof will calculate with your actual numbers."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Electrolyte tabs / salt caps"
           }
         }
       }
     },
-    "onboardingProductsTitle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Produkte"
+    "packItemPhone" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handy aufgeladen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your Products"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone charged"
           }
         }
       }
     },
-    "onboardingProfileSub": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gib Gewicht und FTP einmal ein — bonkproof berechnet damit deine persönlichen Ziele."
+    "packList" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Packliste"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter your weight and FTP once — bonkproof uses them to calculate your personal carb and fluid targets."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pack list"
           }
         }
       }
     },
-    "onboardingProfileTitle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dein Profil"
+    "packPhone" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handy aufgeladen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your Profile"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone charged"
           }
         }
       }
     },
-    "onboardingReadySub": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dein Profil ist gespeichert. Du kannst es jederzeit in den Einstellungen anpassen."
+    "packPump" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pumpe & Reifenheber"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your profile is saved. You can update it anytime in Settings."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pump & tyre levers"
           }
         }
       }
     },
-    "onboardingReadyTitle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alles bereit!"
+    "packSnack" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notfallsnack"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All set!"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emergency snack"
           }
         }
       }
     },
-    "onboardingSkip": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Überspringen"
+    "packTube" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersatzschlauch"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spare inner tube"
           }
         }
       }
     },
-    "onboardingStart": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Loslegen"
+    "productCarbsHint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohlenhydrate pro Portion — Etikett prüfen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Get started"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carbohydrates per serving — check the label"
           }
         }
       }
     },
-    "onboardingTagline": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Präzise Kohlenhydrat- & Flüssigkeitsziele für deine Fahrten."
+    "productCarbsUnit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "g KH"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Precision carb & fluid targets for your rides."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "g carbs"
           }
         }
       }
     },
-    "packElectrolytes": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elektrolyte / Salztabs"
+    "productName" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Electrolytes / salt tabs"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
           }
         }
       }
     },
-    "packItemCash": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bargeld oder Karte (Café-Stop / Notfall)"
+    "productNamePlaceholder" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "z.B. Maurten 100"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cash or card (café stop / emergency)"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. Maurten 100"
           }
         }
       }
     },
-    "packItemComputer": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrradcomputer aufgeladen"
+    "products" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkte"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bike computer charged"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Products"
           }
         }
       }
     },
-    "packItemElectrolytes": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elektrolyt-Tabs / Salzkapseln"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Electrolyte tabs / salt caps"
+    "Products" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produkte"
           }
         }
       }
     },
-    "packItemPhone": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Handy aufgeladen"
+    "profile" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Phone charged"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
           }
         }
       }
     },
-    "packList": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Packliste"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pack list"
+    "Profile" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil"
           }
         }
       }
     },
-    "packPhone": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Handy aufgeladen"
+    "proof!" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "proof!"
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Phone charged"
-          }
         }
       }
     },
-    "packPump": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pumpe & Reifenheber"
+    "replayTour" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Tour erneut starten"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pump & tyre levers"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replay app tour"
           }
         }
       }
     },
-    "packSnack": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Notfallsnack"
+    "reset" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Emergency snack"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
           }
         }
       }
     },
-    "packTube": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ersatzschlauch"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spare inner tube"
+    "Reset" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
           }
         }
       }
     },
-    "productCarbsHint": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kohlenhydrate pro Portion — Etikett prüfen"
+    "resetRide" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fahrt zurücksetzen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carbohydrates per serving — check the label"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset ride"
           }
         }
       }
     },
-    "productCarbsUnit": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "g KH"
+    "resetRideHint" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tippen zum Bestätigen oder 3 Sekunden halten zum Löschen aller Eingaben"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "g carbs"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to confirm reset, or hold for 3 seconds to clear all inputs"
           }
         }
       }
     },
-    "productName": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name"
+    "rice" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiskuchen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rice Cake"
           }
         }
       }
     },
-    "productNamePlaceholder": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "z.B. Maurten 100"
+    "rideLabel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fahrt"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. Maurten 100"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ride"
           }
         }
       }
     },
-    "products": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Produkte"
+    "ridePower" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fahrleistung"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Products"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ride Power"
           }
         }
       }
     },
-    "profile": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil"
+    "ridePowerSub" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geplanter Durchschnitt"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profile"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planned average"
           }
         }
       }
     },
-    "proof!": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "proof!"
+    "riderProfile" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fahrerprofil"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rider Profile"
+          }
         }
       }
     },
-    "replayTour": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App-Tour erneut starten"
+    "rideTooShort" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fahrt zu kurz für Ernährungsplan."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Replay app tour"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ride too short for a fueling schedule."
           }
         }
       }
     },
-    "reset": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zurücksetzen"
+    "scheduleEvery20min" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle 20 min"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reset"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every 20 min"
           }
         }
       }
     },
-    "resetRide": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrt zurücksetzen"
+    "serverRequests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serveranfragen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reset ride"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server requests"
           }
         }
       }
     },
-    "resetRideHint": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tippen zum Bestätigen oder 3 Sekunden halten zum Löschen aller Eingaben"
+    "serverRequestsVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tap to confirm reset, or hold for 3 seconds to clear all inputs"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
           }
         }
       }
     },
-    "rice": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reiskuchen"
+    "setFtpFirst" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuerst FTP setzen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rice Cake"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set FTP first"
           }
         }
       }
     },
-    "rideLabel": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrt"
+    "settings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ride"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         }
       }
     },
-    "ridePower": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrleistung"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ride Power"
+    "Shake detected — reset all ride inputs?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schütteln erkannt — Fahrt zurücksetzen?"
           }
         }
       }
     },
-    "ridePowerSub": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geplanter Durchschnitt"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Planned average"
+    "Skip tour" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tour überspringen"
           }
         }
       }
     },
-    "rideTooShort": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrt zu kurz für Ernährungsplan."
+    "solidFood" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feste Nahrung"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ride too short for a fueling schedule."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solid food"
           }
         }
       }
     },
-    "riderProfile": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fahrerprofil"
+    "sources" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quellen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rider Profile"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sources"
           }
         }
       }
     },
-    "scheduleEvery20min": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle 20 min"
+    "step1Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profil einrichten"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Every 20 min"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set up your profile"
           }
         }
       }
     },
-    "serverRequests": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Serveranfragen"
+    "step2Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Produkte"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Server requests"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your products"
           }
         }
       }
     },
-    "serverRequestsVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine"
+    "step3Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ergebnisse"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "None"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Results"
           }
         }
       }
     },
-    "setFtpFirst": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zuerst FTP setzen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set FTP first"
+    "Sweat rate" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwitztyp"
           }
         }
       }
     },
-    "settings": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einstellungen"
+    "sweatHeavy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stark"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heavy"
           }
         }
       }
     },
-    "solidFood": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Feste Nahrung"
+    "sweatLight" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gering"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Solid food"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Light"
           }
         }
       }
     },
-    "sources": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quellen"
+    "sweatModerate" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mittel"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sources"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moderate"
           }
         }
       }
     },
-    "step1Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Profil einrichten"
+    "sweatRate" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwitztyp"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set up your profile"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweat Rate"
           }
         }
       }
     },
-    "step2Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Produkte"
+    "system" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your products"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
           }
         }
       }
     },
-    "step3Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ergebnisse"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Results"
+    "System" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
           }
         }
       }
     },
-    "sweatHeavy": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stark"
+    "tabPack" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einpacken"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heavy"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checklist"
           }
         }
       }
     },
-    "sweatLight": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gering"
+    "tabTotals" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überblick"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Light"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overview"
           }
         }
       }
     },
-    "sweatModerate": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mittel"
+    "Tell us about you to personalise your targets." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erzähl uns von dir, damit wir deine Ziele personalisieren können."
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Moderate"
-          }
         }
       }
     },
-    "sweatRate": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schwitztyp"
+    "temperature" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperatur"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sweat Rate"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature"
           }
         }
       }
     },
-    "system": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "System"
+    "template703" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "70.3 Bike"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "System"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "70.3 Bike"
           }
         }
       }
     },
-    "tabPack": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einpacken"
+    "templateCrit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kriterium / Rennen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Checklist"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criterium / Race"
           }
         }
       }
     },
-    "tabTotals": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Überblick"
+    "templateCyclo" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cyclosportive 200 km"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Overview"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cyclosportive 200 km"
           }
         }
       }
     },
-    "temperature": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temperatur"
+    "templateGF100" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gran Fondo 100 km"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Temperature"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gran Fondo 100 km"
           }
         }
       }
     },
-    "template703": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "70.3 Bike"
+    "templateGF150" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gran Fondo 150 km"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "70.3 Bike"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gran Fondo 150 km"
           }
         }
       }
     },
-    "templateCrit": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kriterium / Rennen"
+    "templateIronman" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ironman Bike"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Criterium / Race"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ironman Bike"
           }
         }
       }
     },
-    "templateCyclo": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cyclosportive 200 km"
+    "templatePickerTitle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event-Vorlage"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cyclosportive 200 km"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Event Template"
           }
         }
       }
     },
-    "templateGF100": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gran Fondo 100 km"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gran Fondo 100 km"
+    "Tempo · 60 g/h" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo · 60 g/h"
           }
         }
       }
     },
-    "templateGF150": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gran Fondo 150 km"
+    "theme" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Design"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gran Fondo 150 km"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Theme"
           }
         }
       }
     },
-    "templateIronman": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ironman Bike"
+    "Total needs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesamtbedarf"
           }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ironman Bike"
-          }
         }
       }
     },
-    "templatePickerTitle": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Event-Vorlage"
+    "totalNeeds" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesamtbedarf"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Event Template"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total needs"
           }
         }
       }
     },
-    "theme": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Design"
+    "tourReplay" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Tour"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Theme"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App tour"
           }
         }
       }
     },
-    "totalNeeds": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gesamtbedarf"
+    "tourSkipTour" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tour überspringen"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Total needs"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip tour"
           }
         }
       }
     },
-    "tourReplay": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App-Tour"
+    "tourSlide0Body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib Dauer und Durchschnittsleistung ein — bonkproof berechnet sofort deine Kohlenhydrat- und Flüssigkeitsziele."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App tour"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter duration and average power — bonkproof instantly calculates your carb and fluid targets."
           }
         }
       }
     },
-    "tourSkipTour": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tour überspringen"
+    "tourSlide0Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwei Eingaben. Ein Plan."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip tour"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two inputs. One plan."
           }
         }
       }
     },
-    "tourSlide0Body": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gib Dauer und Durchschnittsleistung ein — bonkproof berechnet sofort deine Kohlenhydrat- und Flüssigkeitsziele."
+    "tourSlide1Body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Intensitätsfaktor bestimmt deine Zone. Jede Zone hat einen präzisen KH-Bereich, skaliert auf deinen FTP."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter duration and average power — bonkproof instantly calculates your carb and fluid targets."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensity factor determines your zone. Each zone has a precise carb range, scaled to your FTP."
           }
         }
       }
     },
-    "tourSlide0Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zwei Eingaben. Ein Plan."
+    "tourSlide1Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Zone, deine Ziele"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Two inputs. One plan."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your zone, your targets"
           }
         }
       }
     },
-    "tourSlide1Body": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Der Intensitätsfaktor bestimmt deine Zone. Jede Zone hat einen präzisen KH-Bereich, skaliert auf deinen FTP."
+    "tourSlide2Body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Zeitplan-Tab teilt deine Fahrt in 20-Minuten-Slots — du weißt immer, wann du essen sollst."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Intensity factor determines your zone. Each zone has a precise carb range, scaled to your FTP."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Schedule tab breaks your ride into 20-minute slots — so you always know what to reach for."
           }
         }
       }
     },
-    "tourSlide1Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Zone, deine Ziele"
+    "tourSlide2Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wann essen, nicht nur wie viel"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your zone, your targets"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When to eat, not just how much"
           }
         }
       }
     },
-    "tourSlide2Body": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Der Zeitplan-Tab teilt deine Fahrt in 20-Minuten-Slots — du weißt immer, wann du essen sollst."
+    "tourSlide3Body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Füge deine Gels oder Riegel in den Einstellungen hinzu. bonkproof rechnet mit deinen exakten KH-Werten."
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The Schedule tab breaks your ride into 20-minute slots — so you always know what to reach for."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add your gels or bars in Settings. bonkproof calculates with your exact carb values — not generic estimates."
           }
         }
       }
     },
-    "tourSlide2Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wann essen, nicht nur wie viel"
+    "tourSlide3Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Produkte, deine Ziele"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "When to eat, not just how much"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your products, your targets"
           }
         }
       }
     },
-    "tourSlide3Body": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Füge deine Gels oder Riegel in den Einstellungen hinzu. bonkproof rechnet mit deinen exakten KH-Werten."
+    "tourStartTour" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tour starten"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add your gels or bars in Settings. bonkproof calculates with your exact carb values — not generic estimates."
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take the tour"
           }
         }
       }
     },
-    "tourSlide3Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Produkte, deine Ziele"
+    "units" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einheiten"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your products, your targets"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Units"
           }
         }
       }
     },
-    "tourStartTour": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tour starten"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Take the tour"
+    "Units" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einheiten"
           }
         }
       }
     },
-    "units": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einheiten"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Units"
+    "Version %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
           }
         }
       }
     },
-    "waffle": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stroopwafel"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stroopwafel"
+    "W" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W"
           }
         }
       }
     },
-    "water": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nur Wasser"
+    "waffle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stroopwafel"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Water only"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stroopwafel"
           }
         }
       }
     },
-    "worksOffline": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Funktioniert offline"
+    "water" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Wasser"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Works offline"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Water only"
           }
         }
       }
     },
-    "worksOfflineVal": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ja"
+    "worksOffline" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Funktioniert offline"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yes"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Works offline"
           }
         }
       }
     },
-    "yourProducts": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deine Produkte"
+    "worksOfflineVal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your products"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yes"
           }
         }
       }
     },
-    "zoneAnaerobic": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anaerob"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anaerobic"
+    "Your profile is ready. Want a quick tour of how it works?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Profil ist gespeichert. Möchtest du eine kurze Tour machen?"
           }
         }
       }
     },
-    "zoneEndurance": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ausdauer"
+    "yourProducts" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Produkte"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Endurance"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your products"
           }
         }
       }
     },
-    "zoneLabel": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zone"
+    "zoneAnaerobic" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anaerob"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zone"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anaerobic"
           }
         }
       }
     },
-    "zoneNeuromuscular": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neuromuskulär"
+    "zoneEndurance" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausdauer"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neuromuscular"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endurance"
           }
         }
       }
     },
-    "zoneRecovery": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erholung"
+    "zoneLabel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zone"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recovery"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zone"
           }
         }
       }
     },
-    "zoneTadej": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "GEHT ES DIR GUT?!"
+    "zoneNeuromuscular" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuromuskulär"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ARE YOU OKAY?!"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuromuscular"
           }
         }
       }
     },
-    "zoneTargets": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zone-Kohlenhydratziele"
+    "zoneRecovery" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erholung"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zone carb targets"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recovery"
           }
         }
       }
     },
-    "zoneTempo": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tempo"
+    "zoneTadej" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GEHT ES DIR GUT?!"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tempo"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ARE YOU OKAY?!"
           }
         }
       }
     },
-    "zoneThreshold": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schwelle"
+    "zoneTargets" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zone-Kohlenhydratziele"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Threshold"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zone carb targets"
           }
         }
       }
     },
-    "zoneVO2": {
-      "extractionState": "stale",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "VO₂max+"
+    "zoneTempo" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "VO₂max+"
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo"
           }
         }
       }
     },
-    "·": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "·"
+    "zoneThreshold" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwelle"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Threshold"
+          }
         }
       }
     },
-    "—": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "—"
+    "zoneVO2" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VO₂max+"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VO₂max+"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

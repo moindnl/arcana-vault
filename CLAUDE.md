@@ -58,6 +58,16 @@ Native iOS developer. Target: latest iOS (iOS 18+). All implementation decisions
 - Estimated effort: ~2 weeks solo
 - Trigger: when adding platform-native features (widgets, Watch, HealthKit) justifies rewrite cost
 
+## App Store Changelog Templates
+
+### Generic Polish/Cleanup (EN)
+> Various improvements to performance, stability, and visual polish. This update makes the app feel smoother and more refined.
+
+### Generic Polish/Cleanup (DE)
+> Kleinere Verbesserungen an Performance, Stabilität und visuellem Feinschliff. Diese Version macht die App insgesamt runder und schöner.
+
+---
+
 ### v2.0 — Shake to Reset
 - Gerät schütteln → Fahrtdaten zurücksetzen
 - Bestätigung via Alert required (verhindert ungewolltes Reset)
