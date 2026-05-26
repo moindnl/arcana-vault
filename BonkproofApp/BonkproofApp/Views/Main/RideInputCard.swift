@@ -17,6 +17,9 @@ struct RideInputCard: View {
     @State private var showNeuralizer = false
     @State private var showResetConfirm = false
 
+    // Template picker
+    @State private var showTemplatePicker = false
+
     enum Field: Hashable { case distance, duration, power }
 
     private var hasAnyInput: Bool {
@@ -72,9 +75,20 @@ struct RideInputCard: View {
                 Spacer()
                 if hasAnyInput {
                     resetButton
+                } else {
+                    templateButton
                 }
             }
             .padding(.bottom, 14)
+            .confirmationDialog("templatePickerTitle", isPresented: $showTemplatePicker, titleVisibility: .visible) {
+                ForEach(RaceTemplate.all) { template in
+                    Button {
+                        withAnimation { state.applyTemplate(template) }
+                    } label: {
+                        Text(LocalizedStringKey(template.nameKey))
+                    }
+                }
+            }
 
             // Distance (optional)
             inputRow(
@@ -268,6 +282,23 @@ struct RideInputCard: View {
             green: max(0, 0.4 - pct * 0.4),
             blue:  max(0, 0.4 - pct * 0.4)
         )
+    }
+
+    // MARK: - Template button
+
+    private var templateButton: some View {
+        Button {
+            showTemplatePicker = true
+        } label: {
+            Label("templatePickerTitle", systemImage: "flag.fill")
+                .font(.caption.weight(.medium))
+                .foregroundStyle(Color.bpAccent)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Color.bpAccent.opacity(0.1), in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("templatePickerTitle")
     }
 
     // MARK: - Reset button (hold 2s)

@@ -2957,6 +2957,118 @@
         }
       }
     },
+    "template703": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "70.3 Bike"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "70.3 Bike"
+          }
+        }
+      }
+    },
+    "templateCrit": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kriterium / Rennen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criterium / Race"
+          }
+        }
+      }
+    },
+    "templateCyclo": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cyclosportive 200 km"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cyclosportive 200 km"
+          }
+        }
+      }
+    },
+    "templateGF100": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gran Fondo 100 km"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gran Fondo 100 km"
+          }
+        }
+      }
+    },
+    "templateGF150": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gran Fondo 150 km"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gran Fondo 150 km"
+          }
+        }
+      }
+    },
+    "templateIronman": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ironman Bike"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ironman Bike"
+          }
+        }
+      }
+    },
+    "templatePickerTitle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event-Vorlage"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Event Template"
+          }
+        }
+      }
+    },
     "theme": {
       "extractionState": "stale",
       "localizations": {

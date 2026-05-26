@@ -100,6 +100,19 @@ final class AppState {
         checkedPackItems = []
     }
 
+    // MARK: - Apply race template
+    func applyTemplate(_ template: RaceTemplate) {
+        let distKm = template.distanceKm
+        distanceText = imperial
+            ? String(format: "%.0f", distKm / 1.60934)
+            : String(format: "%.0f", distKm)
+        if hasFTP {
+            let watts = Int((ftp * template.intensityFactor).rounded())
+            powerText = String(watts)
+        }
+        // duration: intentionally left empty — user knows their pace
+    }
+
     // MARK: - Products helpers
     var allSolidProducts: [NutritionProduct] {
         NutritionProduct.defaults + customProducts
