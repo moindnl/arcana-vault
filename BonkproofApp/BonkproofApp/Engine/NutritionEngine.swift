@@ -333,12 +333,17 @@ enum NutritionEngine {
         guard duration > 0, solidCarbsPerUnit > 0 else { return [] }
         let totalMins = Int((duration * 60).rounded())
         var events: [FuelingEvent] = []
+        var accumulated: Double = 0
         var t = 20
         // Only show an event if at least 15 minutes of riding remain after it —
         // eating with <15 min to go provides no meaningful benefit.
+        // Accumulate carbs across slots so high-carb-per-unit products
+        // (bars, Maurten 100, etc.) are scheduled correctly instead of
+        // rounding to zero every slot independently.
         while t <= totalMins - 15 {
-            let carbsPerSlot = Int((Double(solidCarbsPerHour) / 3).rounded())
-            let units = max(0, Int((Double(carbsPerSlot) / Double(solidCarbsPerUnit)).rounded()))
+            accumulated += Double(solidCarbsPerHour) / 3.0  // 20 min = 1/3 h
+            let units = Int(accumulated / Double(solidCarbsPerUnit))
+            accumulated -= Double(units * solidCarbsPerUnit)
             let actual = units * solidCarbsPerUnit
             events.append(FuelingEvent(minuteMark: t, units: units, actualCarbs: actual))
             t += 20
