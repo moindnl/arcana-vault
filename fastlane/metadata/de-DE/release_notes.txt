@@ -1,1 +1,15 @@
-Neues App-Icon. 7 Coggan-Leistungszonen (Z1–Z7). Hitzwarnung ab 32°C. Bessere Tastaturnavigation. Fehlerbehebungen und visueller Feinschliff.
+Neu in v2.2
+
+7 Leistungszonen — die App nutzt jetzt das vollständige Coggan/Allen-Modell (Z1–Z7), inkl. anaerob und neuromuskulär. Zonanzeige und Formelblatt entsprechend angepasst.
+
+Renn-Templates — Flaggen-Icon antippen und Distanz sowie Zielleistung für gängige Events vorbefüllen: Gran Fondo 100/150, Ironman Bike, 70.3 Bike, Cyclosportif, Kriterium.
+
+Hitzwarnung — Temperatur auf über 32°C schieben und ein Hinweis erscheint, mehr zu trinken. × tippt man weg, bleibt für die Session weg.
+
+Packlisten-Konfetti — letztes Item abhaken, kleines Easter Egg. Kein Spoiler.
+
+Startbildschirm — die App blendet beim Start nicht mehr weiß auf.
+
+Bugfix — eigene Produkte mit hohen Kohlenhydraten pro Einheit (z.B. Maurten 100, Riegel) haben im Ernährungsplan immer „Keine feste Nahrung nötig" angezeigt. Behoben.
+
+Einige Farb- und Kontrastkorrekturen, vor allem im Dark Mode.

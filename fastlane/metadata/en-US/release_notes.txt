@@ -1,1 +1,15 @@
-New app icon. 7 Coggan power zones (Z1–Z7). Heat warning at 32°C. Keyboard navigation improvements. Various bug fixes and visual polish.
+What's new in v2.2
+
+7 power zones — the app now uses the full Coggan/Allen model (Z1–Z7), including Anaerobic and Neuromuscular. Zone badge and formula sheet updated accordingly.
+
+Race templates — tap the flag icon to pre-fill distance and target power for common events: Gran Fondo 100/150, Ironman bike leg, 70.3 bike leg, Cyclosportive, Criterium.
+
+Heat warning — slide the temperature above 32°C and a reminder appears to drink more. Tap × to dismiss for that session.
+
+Pack list confetti — check off your last item and something small happens. No spoilers.
+
+Launch screen — the app now has a proper startup screen instead of a white flash.
+
+Bug fix — custom products with high carbs per unit (e.g. Maurten 100, bars) were showing "no solid food needed" in the fueling schedule. Fixed.
+
+A bunch of color and contrast fixes, especially in dark mode.
