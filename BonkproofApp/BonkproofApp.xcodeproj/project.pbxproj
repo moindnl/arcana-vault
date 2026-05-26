@@ -20,6 +20,7 @@
 		6CE10D2F2A08665075D635B3 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D096220F80E83B1A46342E /* OnboardingView.swift */; };
 		79834654B73782B2151C15EF /* PowerCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F28D7AD0C943420B4C8B1F17 /* PowerCard.swift */; };
 		7DCB96A14B2DAE49CA8F18ED /* NutritionProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */; };
+		8B6F8B7DF1FBCA78B4EA1D0F /* RaceTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC1F92D55338DE60201F75 /* RaceTemplate.swift */; };
 		863265C51A79878EAF6FE3CD /* BPCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50DD42C2A5C6271FA2E554 /* BPCard.swift */; };
 		8BBE9D3BD6D0BD4E4C176F83 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739252FD3F5CBD8D5050783C /* SettingsSheet.swift */; };
 		98D859A94B2F92CF481679A2 /* TotalsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39DFFBC247BFFF57D9808B4 /* TotalsCard.swift */; };
@@ -62,6 +63,7 @@
 		A65A01DCE718E089DF7F1C18 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B9D096220F80E83B1A46342E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionProduct.swift; sourceTree = "<group>"; };
+		62DC1F92D55338DE60201F75 /* RaceTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceTemplate.swift; sourceTree = "<group>"; };
 		D39DFFBC247BFFF57D9808B4 /* TotalsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalsCard.swift; sourceTree = "<group>"; };
 		F2295701A1DFB1F55C8B849C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F28D7AD0C943420B4C8B1F17 /* PowerCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerCard.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */,
+				62DC1F92D55338DE60201F75 /* RaceTemplate.swift */,
 				A65A01DCE718E089DF7F1C18 /* Profile.swift */,
 			);
 			path = Models;
@@ -297,6 +300,7 @@
 				672B53B145FD8336F1556B8B /* MainView.swift in Sources */,
 				ABF06AF7BCA8F2E1DE4A9901 /* NutritionEngine.swift in Sources */,
 				7DCB96A14B2DAE49CA8F18ED /* NutritionProduct.swift in Sources */,
+				8B6F8B7DF1FBCA78B4EA1D0F /* RaceTemplate.swift in Sources */,
 				6CE10D2F2A08665075D635B3 /* OnboardingView.swift in Sources */,
 				79834654B73782B2151C15EF /* PowerCard.swift in Sources */,
 				2C9CFED15307E6E1F1449A9A /* Profile.swift in Sources */,
@@ -493,6 +497,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -512,6 +517,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
