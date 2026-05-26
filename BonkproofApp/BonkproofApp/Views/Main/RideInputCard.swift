@@ -230,7 +230,7 @@ struct RideInputCard: View {
             if state.heatBonus > 0 {
                 Text("+\(state.heatBonus, specifier: "%.1f") L/h heat bonus")
                     .font(.caption)
-                    .foregroundStyle(Color(hex: "#ef4444"))
+                    .foregroundStyle(Color.bpDanger)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
 
@@ -250,10 +250,10 @@ struct RideInputCard: View {
                             .font(.caption.weight(.semibold))
                     }
                 }
-                .foregroundStyle(Color(hex: "#f59e0b"))
+                .foregroundStyle(Color.bpWarning)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 7)
-                .background(Color(hex: "#f59e0b").opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
+                .background(Color.bpWarning.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         }

@@ -8,7 +8,7 @@ struct ResultCardsRow: View {
             // Carbs card
             resultCard(
                 icon: "leaf.fill",
-                iconColor: Color(hex: "#f59e0b"),
+                iconColor: Color.bpWarning,
                 value: state.carbsPerHour,
                 unit: "g/h",
                 subtitle: "carbsSub"
@@ -17,7 +17,7 @@ struct ResultCardsRow: View {
             // Fluids card
             resultCard(
                 icon: "drop.fill",
-                iconColor: Color(hex: "#3b82f6"),
+                iconColor: Color.bpInfo,
                 value: Double(Int(state.fluidPerHour * 10)) / 10,
                 unit: "L/h",
                 subtitle: "fluidsSub",

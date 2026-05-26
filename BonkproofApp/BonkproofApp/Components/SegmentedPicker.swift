@@ -9,7 +9,7 @@ struct SegmentedPicker<T: Hashable>: View {
     var pillColor: Color = Color(UIColor.systemBackground)
     var textColorSelected: Color = .label
     var textColorUnselected: Color = .secondaryLabel
-    var backgroundColor: Color = Color(hex: "#f0f0f3")
+    var backgroundColor: Color = Color.bpInputBg
     var cornerRadius: CGFloat = 10
 
     var body: some View {

@@ -36,9 +36,9 @@ struct AboutView: View {
 
             // Privacy / data
             Section("dataPrivacy") {
-                infoRow(icon: "iphone",       iconColor: Color(hex: "#3b82f6"), title: "dataStorageVal",   subtitle: "allDataOnDevice")
-                infoRow(icon: "network.slash", iconColor: Color(hex: "#22c55e"), title: "noServerRequests", subtitle: "noTracking")
-                infoRow(icon: "airplane",      iconColor: Color(hex: "#22c55e"), title: "worksOffline",     subtitle: "noInternet")
+                infoRow(icon: "iphone",       iconColor: Color.bpInfo, title: "dataStorageVal",   subtitle: "allDataOnDevice")
+                infoRow(icon: "network.slash", iconColor: Color.bpSuccess, title: "noServerRequests", subtitle: "noTracking")
+                infoRow(icon: "airplane",      iconColor: Color.bpSuccess, title: "worksOffline",     subtitle: "noInternet")
             }
 
             // Math

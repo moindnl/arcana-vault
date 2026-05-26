@@ -354,7 +354,7 @@ struct OnboardingView: View {
             VStack(spacing: 20) {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 72))
-                    .foregroundStyle(Color(hex: "#22c55e"))
+                    .foregroundStyle(Color.bpSuccess)
 
                 Text("onboardingReadyTitle")
                     .font(.largeTitle.weight(.bold))
@@ -413,7 +413,7 @@ struct OnboardingView: View {
                         Spacer()
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.system(size: 48))
-                            .foregroundStyle(Color(hex: "#f59e0b"))
+                            .foregroundStyle(Color.bpWarning)
                         Spacer()
                     }
 
