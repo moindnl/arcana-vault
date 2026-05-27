@@ -1,4 +1,19 @@
 import SwiftUI
+import TipKit
+
+// MARK: - Template tip
+
+struct TemplateTip: Tip {
+    var title: Text {
+        Text("templateTipTitle")
+    }
+    var message: Text? {
+        Text("templateTipBody")
+    }
+    var image: Image? {
+        Image(systemName: "flag.fill")
+    }
+}
 
 struct RideInputCard: View {
     @Environment(AppState.self) private var state
@@ -286,8 +301,11 @@ struct RideInputCard: View {
 
     // MARK: - Template button
 
+    private let templateTip = TemplateTip()
+
     private var templateButton: some View {
         Button {
+            templateTip.invalidate(reason: .actionPerformed)
             showTemplatePicker = true
         } label: {
             Label("templatePickerTitle", systemImage: "flag.fill")
@@ -299,6 +317,7 @@ struct RideInputCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("templatePickerTitle")
+        .popoverTip(templateTip, arrowEdge: .top)
     }
 
     // MARK: - Reset button (hold 2s)

@@ -3209,6 +3209,18 @@
         }
       }
     },
+    "templateTipTitle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Renn-Templates" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Race Templates" } }
+      }
+    },
+    "templateTipBody" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Distanz und Zielleistung für Gran Fondos, Ironman, Kriterien und mehr vorausfüllen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pre-fill distance and target power for gran fondos, Ironman, criteriums, and more." } }
+      }
+    },
     "templatePickerTitle" : {
       "extractionState" : "stale",
       "localizations" : {
