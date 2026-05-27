@@ -11,6 +11,11 @@ struct ContentView: View {
                 OnboardingView()
             }
         }
+        .task(id: state.onboardingDone) {
+            // Gate TipKit tips behind onboarding completion so they
+            // don't fire while the tour sheet is still open.
+            TemplateTip.onboardingDone = state.onboardingDone
+        }
         // UIKit bridge: set window.overrideUserInterfaceStyle directly so
         // .system properly resets to .unspecified — SwiftUI's
         // .preferredColorScheme(nil) doesn't reliably clear the VC-level

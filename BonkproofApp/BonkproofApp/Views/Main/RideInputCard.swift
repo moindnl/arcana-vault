@@ -4,6 +4,13 @@ import TipKit
 // MARK: - Template tip
 
 struct TemplateTip: Tip {
+    /// Synced from AppState.onboardingDone — tip only eligible after onboarding + tour are complete.
+    @Parameter static var onboardingDone: Bool = false
+
+    var rules: [Rule] {
+        #Rule(Self.$onboardingDone) { $0 }
+    }
+
     var title: Text {
         Text("templateTipTitle")
     }
