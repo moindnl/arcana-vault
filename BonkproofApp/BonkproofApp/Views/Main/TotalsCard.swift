@@ -558,23 +558,29 @@ private struct PreRideNotifSheet: View {
                     .padding(.horizontal, 24)
 
                 // Calculated fire time
-                HStack {
+                HStack(alignment: .top, spacing: 6) {
                     Image(systemName: "bell")
                         .foregroundStyle(.secondary)
                         .font(.caption)
+                        .padding(.top, 1)
                     if isTooSoon {
                         Text("notifTooSoon")
                             .font(.caption)
                             .foregroundStyle(Color.bpDanger)
+                            .fixedSize(horizontal: false, vertical: true)
                     } else {
-                        Text("notifFiresAt")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(fireDate, style: .time)
-                            .font(.caption.weight(.semibold))
-                        Text(fireDate, style: .date)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("notifFiresAt")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            HStack(spacing: 4) {
+                                Text(fireDate, style: .time)
+                                    .font(.caption.weight(.semibold))
+                                Text(fireDate, style: .date)
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
                     }
                     Spacer()
                 }
@@ -609,7 +615,7 @@ private struct PreRideNotifSheet: View {
                 }
             }
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.medium, .large])
     }
 }
 
