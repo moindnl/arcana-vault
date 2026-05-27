@@ -15,6 +15,9 @@ struct OnboardingView: View {
     @FocusState private var onboardFocus: OnboardField?
     enum OnboardField: Hashable { case weight, ftp }
 
+    // Step 4 local state
+    @State private var disclaimerButtonEnabled: Bool = false
+
     // Step 2 local state
     @State private var newProductName: String = ""
     @State private var newProductCarbs: String = ""
@@ -440,8 +443,16 @@ struct OnboardingView: View {
                 s.onboardingDone = true
                 if startTour { s.showHowTo = true }
             }
+            .disabled(!disclaimerButtonEnabled)
+            .opacity(disclaimerButtonEnabled ? 1 : 0.4)
+            .animation(anim(.easeInOut(duration: 0.3)), value: disclaimerButtonEnabled)
             .padding(.horizontal, 20)
             .padding(.bottom, 48)
+        }
+        .task {
+            disclaimerButtonEnabled = false
+            try? await Task.sleep(for: .seconds(2.2))
+            disclaimerButtonEnabled = true
         }
     }
 
