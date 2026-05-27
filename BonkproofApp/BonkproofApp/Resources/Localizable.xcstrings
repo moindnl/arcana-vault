@@ -1821,20 +1821,56 @@
         }
       }
     },
-    "preRideMealSub" : {
+    "preRideMealExplain" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3h vor dem Start · Haferflocken, Reis, Brot, Banane"
+            "value" : "3–4 g Carbs pro kg Körpergewicht, ca. 3h vor dem Start. Füllt die Glykogenspeicher vor der Belastung. Leicht verdaulich, wenig Fett und Ballaststoffe."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3h before start · oatmeal, rice, bread, banana"
+            "value" : "3–4 g carbs per kg body weight, ~3h before start. Tops up glycogen stores before effort. Choose easily digestible foods, low in fat and fibre."
           }
         }
+      }
+    },
+    "preRideFood1" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Haferflocken" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Oatmeal" } }
+      }
+    },
+    "preRideFood2" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Reis" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rice" } }
+      }
+    },
+    "preRideFood3" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nudeln" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pasta" } }
+      }
+    },
+    "preRideFood4" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Brot" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bread" } }
+      }
+    },
+    "preRideFood5" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Banane" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Banana" } }
+      }
+    },
+    "preRideFood6" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kartoffeln" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Potatoes" } }
       }
     },
     "noSolidNeeded" : {

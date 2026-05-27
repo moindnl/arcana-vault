@@ -15,6 +15,7 @@ struct TotalsCard: View {
     @State private var contentVisible: Bool = true
     @State private var showProductPicker: Bool = false
     @State private var showConfetti: Bool = false
+    @State private var preRideExpanded: Bool = false
 
     var body: some View {
         BPCard(cornerRadius: 16, padding: 0) {
@@ -223,23 +224,74 @@ struct TotalsCard: View {
                 .font(.caption.weight(.medium))
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 10) {
-                Image(systemName: "fork.knife")
-                    .foregroundStyle(Color.bpSuccess)
-                    .font(.subheadline)
-                    .frame(width: 20)
-                VStack(alignment: .leading, spacing: 3) {
-                    if let range = state.preRideCarbRange {
-                        Text(verbatim: "\(range.min)–\(range.max) g carbs")
-                            .font(.subheadline.weight(.semibold))
+            VStack(spacing: 0) {
+                // Header row — always visible, tap to expand
+                Button {
+                    withAnimation(anim(.spring(response: 0.35, dampingFraction: 0.8))) {
+                        preRideExpanded.toggle()
                     }
-                    Text("preRideMealSub")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "fork.knife")
+                            .foregroundStyle(Color.bpSuccess)
+                            .font(.subheadline)
+                            .frame(width: 20)
+                        if let range = state.preRideCarbRange {
+                            Text(verbatim: "\(range.min)–\(range.max) g carbs")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                            .rotationEffect(.degrees(preRideExpanded ? 90 : 0))
+                    }
+                    .padding(12)
                 }
-                Spacer()
+                .buttonStyle(.plain)
+
+                // Expanded detail
+                if preRideExpanded {
+                    Divider()
+                        .padding(.horizontal, 12)
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        if let range = state.preRideCarbRange {
+                            // Formula breakdown
+                            HStack(spacing: 4) {
+                                Text(verbatim: "\(Int(state.weight)) kg × 3–4 g =")
+                                    .font(.caption.monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                                Text(verbatim: "\(range.min)–\(range.max) g")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                        }
+
+                        Text("preRideMealExplain")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        // Food chips
+                        FlowLayout(spacing: 6) {
+                            ForEach(["preRideFood1", "preRideFood2", "preRideFood3",
+                                     "preRideFood4", "preRideFood5", "preRideFood6"], id: \.self) { key in
+                                Text(LocalizedStringKey(key))
+                                    .font(.caption.weight(.medium))
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.bpSuccess.opacity(0.12),
+                                                in: Capsule())
+                                    .foregroundStyle(Color.bpSuccess)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                }
             }
-            .padding(12)
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
         }
     }

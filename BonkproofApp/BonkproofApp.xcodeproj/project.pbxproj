@@ -22,6 +22,7 @@
 		7DCB96A14B2DAE49CA8F18ED /* NutritionProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5AAEFE4C4FF62E1B93DC18 /* NutritionProduct.swift */; };
 		8B6F8B7DF1FBCA78B4EA1D0F /* RaceTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC1F92D55338DE60201F75 /* RaceTemplate.swift */; };
 		863265C51A79878EAF6FE3CD /* BPCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F50DD42C2A5C6271FA2E554 /* BPCard.swift */; };
+		A3F1C8B2D4E509C712345678 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D2E9A1C3F408B562345678 /* FlowLayout.swift */; };
 		8BBE9D3BD6D0BD4E4C176F83 /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739252FD3F5CBD8D5050783C /* SettingsSheet.swift */; };
 		98D859A94B2F92CF481679A2 /* TotalsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39DFFBC247BFFF57D9808B4 /* TotalsCard.swift */; };
 		99F0EBA5686CD1FCE14BF056 /* RideInputCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF49A2B4DA861FD2CC3916 /* RideInputCard.swift */; };
@@ -58,6 +59,7 @@
 		89BD1F9AA18DEADA95E27B93 /* ResultCardsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultCardsRow.swift; sourceTree = "<group>"; };
 		8C70D7682C099877BCABB8C7 /* BonkproofApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BonkproofApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F50DD42C2A5C6271FA2E554 /* BPCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPCard.swift; sourceTree = "<group>"; };
+		B7D2E9A1C3F408B562345678 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		A1CF49A2B4DA861FD2CC3916 /* RideInputCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideInputCard.swift; sourceTree = "<group>"; };
 		A2A7F6CAF39E190792B846F8 /* NutritionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionEngine.swift; sourceTree = "<group>"; };
 		A65A01DCE718E089DF7F1C18 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				9F50DD42C2A5C6271FA2E554 /* BPCard.swift */,
+				B7D2E9A1C3F408B562345678 /* FlowLayout.swift */,
 				6BF8D640A4FB87D39469ED51 /* SegmentedPicker.swift */,
 				0AEC2BC93A5512C6F0A8EDBD /* ZoneBadge.swift */,
 			);
@@ -294,6 +297,7 @@
 				276C2EA02F470DC5FC6CBE69 /* AboutSheet.swift in Sources */,
 				61DDD81D2C85E026DD36E9F5 /* AppState.swift in Sources */,
 				863265C51A79878EAF6FE3CD /* BPCard.swift in Sources */,
+				A3F1C8B2D4E509C712345678 /* FlowLayout.swift in Sources */,
 				D9FEA61A2FAC206B97C2ECC7 /* BonkproofApp.swift in Sources */,
 				A9BA4271F1784293069A9BAA /* ContentView.swift in Sources */,
 				5F376FA495B9536060BFA009 /* HowToSheet.swift in Sources */,
