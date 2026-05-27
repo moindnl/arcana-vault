@@ -332,8 +332,10 @@ struct TotalsCard: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
                 }
             }
+            .clipped()
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
             .task(id: state.preRideNotificationStartTime) {
                 // Clean up expired reminder state outside the view body
