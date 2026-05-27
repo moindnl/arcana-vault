@@ -61,6 +61,17 @@ final class AppState {
         didSet { UserDefaults.standard.set(heatWarningDismissed, forKey: "heatWarningDismissed") }
     }
 
+    /// Start time of the scheduled ride — used to compute the pre-ride notification (fires 3h before).
+    var preRideNotificationStartTime: Date? {
+        didSet {
+            if let d = preRideNotificationStartTime {
+                UserDefaults.standard.set(d, forKey: "preRideNotifStart")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "preRideNotifStart")
+            }
+        }
+    }
+
     // MARK: - UI state (transient)
     var showSettings: Bool = false
     var showHowTo:    Bool = false
@@ -84,6 +95,7 @@ final class AppState {
         onboardingDone = ud.bool(forKey: "onboardingDone")
         disclaimerAccepted = ud.bool(forKey: "disclaimerAccepted")
         heatWarningDismissed = ud.bool(forKey: "heatWarningDismissed")
+        preRideNotificationStartTime = ud.object(forKey: "preRideNotifStart") as? Date
 
         if let data = ud.data(forKey: "customProducts"),
            let decoded = try? JSONDecoder().decode([NutritionProduct].self, from: data) {
@@ -98,6 +110,17 @@ final class AppState {
         powerText    = ""
         temperature  = 20
         checkedPackItems = []
+        NotificationManager.cancelPreRideMeal()
+        preRideNotificationStartTime = nil
+    }
+
+    // MARK: - Locale helper
+    var isGermanUI: Bool {
+        switch language {
+        case .de:     return true
+        case .en:     return false
+        case .system: return Locale.current.language.languageCode?.identifier == "de"
+        }
     }
 
     // MARK: - Apply race template

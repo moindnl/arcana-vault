@@ -16,6 +16,9 @@ struct TotalsCard: View {
     @State private var showProductPicker: Bool = false
     @State private var showConfetti: Bool = false
     @State private var preRideExpanded: Bool = false
+    @State private var showNotifSheet: Bool = false
+    @State private var pickedStartTime: Date = Date().addingTimeInterval(4 * 3600)
+    @State private var notifDenied: Bool = false
 
     var body: some View {
         BPCard(cornerRadius: 16, padding: 0) {
@@ -44,6 +47,39 @@ struct TotalsCard: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .allowsHitTesting(false)
             }
+        }
+        .sheet(isPresented: $showNotifSheet) {
+            PreRideNotifSheet(
+                startTime: $pickedStartTime,
+                onSchedule: { time in
+                    guard let range = state.preRideCarbRange else { return }
+                    Task {
+                        let ok = await NotificationManager.schedulePreRideMeal(
+                            startTime: time,
+                            carbMin: range.min,
+                            carbMax: range.max,
+                            isGerman: state.isGermanUI
+                        )
+                        await MainActor.run {
+                            if ok {
+                                state.preRideNotificationStartTime = time
+                            } else {
+                                notifDenied = true
+                            }
+                        }
+                    }
+                }
+            )
+        }
+        .alert("notifDeniedTitle", isPresented: $notifDenied) {
+            Button("notifDeniedSettings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("cancel", role: .cancel) {}
+        } message: {
+            Text("notifDeniedBody")
         }
     }
 
@@ -287,12 +323,63 @@ struct TotalsCard: View {
                                     .foregroundStyle(Color.bpSuccess)
                             }
                         }
+
+                        Divider()
+
+                        // Notification reminder row
+                        notifRow
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                 }
             }
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
+        }
+    }
+
+    @ViewBuilder
+    private var notifRow: some View {
+        // Clear expired state (start time already passed)
+        let isExpired = state.preRideNotificationStartTime.map { $0 < Date.now } ?? false
+
+        if isExpired {
+            let _ = { Task { @MainActor in state.preRideNotificationStartTime = nil }() }()
+        }
+
+        if let startTime = state.preRideNotificationStartTime, !isExpired {
+            // Reminder set — show fire time + cancel
+            let fireTime = startTime.addingTimeInterval(-3 * 3600)
+            HStack(spacing: 8) {
+                Image(systemName: "bell.fill")
+                    .font(.caption)
+                    .foregroundStyle(Color.bpSuccess)
+                Text(fireTime, style: .time)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+                Text("notifSetLabel")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Button {
+                    NotificationManager.cancelPreRideMeal()
+                    state.preRideNotificationStartTime = nil
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                }
+            }
+        } else {
+            // No reminder set
+            Button {
+                pickedStartTime = Date().addingTimeInterval(4 * 3600)
+                showNotifSheet = true
+            } label: {
+                Label("notifSetReminder", systemImage: "bell")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(Color.bpAccent)
+            }
+            .buttonStyle(.plain)
         }
     }
 
@@ -431,6 +518,97 @@ struct TotalsCard: View {
         case .key(let k):
             return Text(LocalizedStringKey(k))
         }
+    }
+}
+
+// MARK: - Pre-ride notification sheet
+
+private struct PreRideNotifSheet: View {
+    @Binding var startTime: Date
+    let onSchedule: (Date) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    private var fireDate: Date { startTime.addingTimeInterval(-3 * 3600) }
+    private var isTooSoon: Bool { fireDate <= Date.now }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 28) {
+                // Icon + title
+                VStack(spacing: 12) {
+                    Image(systemName: "bell.badge")
+                        .font(.system(size: 44))
+                        .foregroundStyle(Color.bpAccent)
+                    Text("notifSheetTitle")
+                        .font(.title3.weight(.bold))
+                    Text("notifSheetSub")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 24)
+                }
+
+                // Date picker
+                DatePicker("notifStartLabel",
+                           selection: $startTime,
+                           in: Date.now...,
+                           displayedComponents: [.date, .hourAndMinute])
+                    .datePickerStyle(.compact)
+                    .padding(.horizontal, 24)
+
+                // Calculated fire time
+                HStack {
+                    Image(systemName: "bell")
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
+                    if isTooSoon {
+                        Text("notifTooSoon")
+                            .font(.caption)
+                            .foregroundStyle(Color.bpDanger)
+                    } else {
+                        Text("notifFiresAt")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Text(fireDate, style: .time)
+                            .font(.caption.weight(.semibold))
+                        Text(fireDate, style: .date)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, 24)
+
+                Spacer()
+
+                // CTA
+                Button {
+                    onSchedule(startTime)
+                    dismiss()
+                } label: {
+                    Text("notifSetReminder")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(
+                            isTooSoon ? Color.tertiaryLabel : Color.bpAccent,
+                            in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        )
+                }
+                .disabled(isTooSoon)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 32)
+            }
+            .padding(.top, 32)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("cancel") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 }
 
