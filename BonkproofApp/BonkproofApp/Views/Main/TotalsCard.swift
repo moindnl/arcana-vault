@@ -263,9 +263,7 @@ struct TotalsCard: View {
             VStack(spacing: 0) {
                 // Header row — always visible, tap to expand
                 Button {
-                    withAnimation(anim(.spring(response: 0.35, dampingFraction: 0.8))) {
-                        preRideExpanded.toggle()
-                    }
+                    preRideExpanded.toggle()
                 } label: {
                     HStack(spacing: 10) {
                         Image(systemName: "fork.knife")
@@ -332,10 +330,11 @@ struct TotalsCard: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .transition(.opacity)
                 }
             }
             .clipped()
+            .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
             .task(id: state.preRideNotificationStartTime) {
                 // Clean up expired reminder state outside the view body
