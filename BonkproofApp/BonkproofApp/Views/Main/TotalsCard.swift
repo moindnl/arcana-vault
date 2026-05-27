@@ -284,6 +284,7 @@ struct TotalsCard: View {
                             .rotationEffect(.degrees(preRideExpanded ? 90 : 0))
                     }
                     .padding(12)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
 
