@@ -301,11 +301,11 @@ struct RideInputCard: View {
 
     // MARK: - Template button
 
-    private let templateTip = TemplateTip()
+    private static let templateTip = TemplateTip()
 
     private var templateButton: some View {
         Button {
-            templateTip.invalidate(reason: .actionPerformed)
+            Self.templateTip.invalidate(reason: .actionPerformed)
             showTemplatePicker = true
         } label: {
             Label("templatePickerTitle", systemImage: "flag.fill")
@@ -317,7 +317,7 @@ struct RideInputCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("templatePickerTitle")
-        .popoverTip(templateTip, arrowEdge: .top)
+        .popoverTip(Self.templateTip, arrowEdge: .top)
     }
 
     // MARK: - Reset button (hold 2s)

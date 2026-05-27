@@ -105,11 +105,12 @@ final class AppState {
 
     // MARK: - Reset
     func resetRide() {
-        distanceText = ""
-        durationText = ""
-        powerText    = ""
-        temperature  = 20
-        checkedPackItems = []
+        distanceText         = ""
+        durationText         = ""
+        powerText            = ""
+        temperature          = 20
+        checkedPackItems     = []
+        heatWarningDismissed = false
         NotificationManager.cancelPreRideMeal()
         preRideNotificationStartTime = nil
     }

@@ -334,17 +334,18 @@ struct TotalsCard: View {
                 }
             }
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
+            .task(id: state.preRideNotificationStartTime) {
+                // Clean up expired reminder state outside the view body
+                if let t = state.preRideNotificationStartTime, t < Date.now {
+                    state.preRideNotificationStartTime = nil
+                }
+            }
         }
     }
 
     @ViewBuilder
     private var notifRow: some View {
-        // Clear expired state (start time already passed)
         let isExpired = state.preRideNotificationStartTime.map { $0 < Date.now } ?? false
-
-        if isExpired {
-            let _ = { Task { @MainActor in state.preRideNotificationStartTime = nil }() }()
-        }
 
         if let startTime = state.preRideNotificationStartTime, !isExpired {
             // Reminder set — show fire time + cancel
