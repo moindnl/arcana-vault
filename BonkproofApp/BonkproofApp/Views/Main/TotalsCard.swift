@@ -280,7 +280,6 @@ struct TotalsCard: View {
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(.secondary)
                             .rotationEffect(.degrees(preRideExpanded ? 90 : 0))
-                            .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
                     }
                     .padding(12)
                     .contentShape(Rectangle())
@@ -332,11 +331,15 @@ struct TotalsCard: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                 }
+                // clipped() only on inner — outer must stay unclipped so rounded
+                // background animates without square-corner artifacts
                 .frame(maxHeight: preRideExpanded ? 600 : 0, alignment: .top)
                 .clipped()
                 .opacity(preRideExpanded ? 1 : 0)
-                .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
             }
+            // animation on outer drives all layout (background, header, chevron)
+            // in one pass — no snap between outer layout and inner content
+            .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
             .task(id: state.preRideNotificationStartTime) {
                 // Clean up expired reminder state outside the view body
