@@ -286,8 +286,8 @@ struct TotalsCard: View {
                 }
                 .buttonStyle(.plain)
 
-                // Expanded detail
-                if preRideExpanded {
+                // Expanded detail — always in hierarchy, height+opacity animated
+                VStack(spacing: 0) {
                     Divider()
                         .padding(.horizontal, 12)
 
@@ -330,10 +330,11 @@ struct TotalsCard: View {
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
-                    .transition(.opacity)
                 }
+                .frame(maxHeight: preRideExpanded ? .infinity : 0, alignment: .top)
+                .clipped()
+                .opacity(preRideExpanded ? 1 : 0)
             }
-            .clipped()
             .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
             .task(id: state.preRideNotificationStartTime) {
