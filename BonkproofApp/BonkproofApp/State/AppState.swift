@@ -211,6 +211,14 @@ final class AppState {
     var totalFluid: Double { (fluidPerHour * duration * 10).rounded() / 10 }
     var totalKcal:  Int  { Int((Double(kcalPerHour) * duration).rounded()) }
 
+    /// Pre-ride meal carb target: 3–4 g/kg, 3h before start.
+    /// Nil when ride < 90 min or weight not entered.
+    var preRideCarbRange: (min: Int, max: Int)? {
+        guard hasDuration, duration >= 1.5, weight > 0 else { return nil }
+        return (min: Int((weight * 3).rounded()),
+                max: Int((weight * 4).rounded()))
+    }
+
     var bottleCountAndMl: (count: Int, mlPerBottle: Int) {
         NutritionEngine.bottlePlan(
             totalFluidMl: totalFluid * 1000,

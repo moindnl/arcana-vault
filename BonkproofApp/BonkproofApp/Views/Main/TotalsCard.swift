@@ -100,6 +100,11 @@ struct TotalsCard: View {
             if !state.fuelingEvents.isEmpty {
                 fuelingScheduleSection
             }
+
+            // Pre-ride meal
+            if state.preRideCarbRange != nil {
+                preRideMealSection
+            }
         }
     }
 
@@ -207,6 +212,35 @@ struct TotalsCard: View {
                                 in: RoundedRectangle(cornerRadius: 7))
                 }
             }
+        }
+    }
+
+    // MARK: - Pre-ride meal section
+
+    private var preRideMealSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("preRideMeal")
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
+
+            HStack(spacing: 10) {
+                Image(systemName: "fork.knife")
+                    .foregroundStyle(Color.bpSuccess)
+                    .font(.subheadline)
+                    .frame(width: 20)
+                VStack(alignment: .leading, spacing: 3) {
+                    if let range = state.preRideCarbRange {
+                        Text(verbatim: "\(range.min)–\(range.max) g carbs")
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    Text("preRideMealSub")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+            }
+            .padding(12)
+            .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
         }
     }
 

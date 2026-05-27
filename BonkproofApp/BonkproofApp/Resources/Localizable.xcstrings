@@ -1805,6 +1805,38 @@
         }
       }
     },
+    "preRideMeal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mahlzeit vor der Fahrt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pre-ride meal"
+          }
+        }
+      }
+    },
+    "preRideMealSub" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3h vor dem Start · Haferflocken, Reis, Brot, Banane"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3h before start · oatmeal, rice, bread, banana"
+          }
+        }
+      }
+    },
     "noSolidNeeded" : {
       "localizations" : {
         "de" : {
