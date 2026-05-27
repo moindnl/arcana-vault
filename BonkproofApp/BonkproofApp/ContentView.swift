@@ -11,10 +11,11 @@ struct ContentView: View {
                 OnboardingView()
             }
         }
-        .task(id: state.onboardingDone) {
-            // Gate TipKit tips behind onboarding completion so they
-            // don't fire while the tour sheet is still open.
-            TemplateTip.onboardingDone = state.onboardingDone
+        .task(id: state.onboardingDone && !state.showHowTo) {
+            // Gate TipKit tips: eligible only after onboarding AND tour are both done.
+            // onboardingDone becomes true at the same moment the tour starts,
+            // so we must also require showHowTo == false.
+            TemplateTip.onboardingDone = state.onboardingDone && !state.showHowTo
         }
         // UIKit bridge: set window.overrideUserInterfaceStyle directly so
         // .system properly resets to .unspecified — SwiftUI's
