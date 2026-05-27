@@ -136,13 +136,17 @@ struct TotalsCard: View {
             // Fueling schedule
             if !state.fuelingEvents.isEmpty {
                 fuelingScheduleSection
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
 
             // Pre-ride meal
             if state.preRideCarbRange != nil {
                 preRideMealSection
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         }
+        .animation(anim(.spring(response: 0.4, dampingFraction: 0.8)), value: !state.fuelingEvents.isEmpty)
+        .animation(anim(.spring(response: 0.4, dampingFraction: 0.8)), value: state.preRideCarbRange != nil)
     }
 
     private func totalCell(value: String, unit: String, label: LocalizedStringKey) -> some View {

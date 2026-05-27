@@ -278,9 +278,7 @@ struct RideInputCard: View {
                         .font(.caption.weight(.medium))
                     Spacer()
                     Button {
-                        withAnimation(anim(.spring(response: 0.3))) {
-                            state.heatWarningDismissed = true
-                        }
+                        state.heatWarningDismissed = true
                     } label: {
                         Image(systemName: "xmark")
                             .font(.caption.weight(.semibold))
@@ -293,6 +291,8 @@ struct RideInputCard: View {
                 .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         }
+        .animation(anim(.spring(response: 0.3, dampingFraction: 0.8)), value: state.heatBonus > 0)
+        .animation(anim(.spring(response: 0.3, dampingFraction: 0.8)), value: state.temperature >= 32 && !state.heatWarningDismissed)
     }
 
     private var temperatureColor: Color {
