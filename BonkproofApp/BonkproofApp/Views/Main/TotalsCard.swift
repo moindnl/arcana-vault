@@ -16,6 +16,8 @@ struct TotalsCard: View {
     @State private var showProductPicker: Bool = false
     @State private var showConfetti: Bool = false
     @State private var preRideExpanded: Bool = false
+    @State private var preRideContentOpacity: Double = 0
+    @State private var preRideChevronDown: Bool = false
     @State private var showNotifSheet: Bool = false
     @State private var pickedStartTime: Date = Date().addingTimeInterval(4 * 3600)
     @State private var notifDenied: Bool = false
@@ -149,6 +151,28 @@ struct TotalsCard: View {
         .animation(anim(.spring(response: 0.4, dampingFraction: 0.8)), value: state.preRideCarbRange != nil)
     }
 
+    // MARK: - Pre-ride meal toggle
+    // Collapse: fade content first (0.15 s), then snap height — prevents ScrollView
+    // content-size jump from animating the layout and scrolling the page.
+    // Expand: spring height open, then fade content in.
+    private func togglePreRideMeal() {
+        if preRideExpanded {
+            withAnimation(anim(.easeOut(duration: 0.15))) { preRideContentOpacity = 0 }
+            withAnimation(anim(.spring(response: 0.3))) { preRideChevronDown = false }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                preRideExpanded = false           // height snaps — content already invisible
+            }
+        } else {
+            preRideChevronDown = true
+            withAnimation(anim(.spring(response: 0.35, dampingFraction: 0.8))) {
+                preRideExpanded = true
+            }
+            withAnimation(reduceMotion ? nil : .easeIn(duration: 0.2).delay(0.1)) {
+                preRideContentOpacity = 1
+            }
+        }
+    }
+
     private func totalCell(value: String, unit: String, label: LocalizedStringKey) -> some View {
         VStack(spacing: 3) {
             HStack(alignment: .firstTextBaseline, spacing: 2) {
@@ -265,9 +289,9 @@ struct TotalsCard: View {
                 .foregroundStyle(.secondary)
 
             VStack(spacing: 0) {
-                // Header row — always visible, tap to expand
+                // Header row — always visible, tap to expand/collapse
                 Button {
-                    preRideExpanded.toggle()
+                    togglePreRideMeal()
                 } label: {
                     HStack(spacing: 10) {
                         Image(systemName: "fork.knife")
@@ -283,14 +307,17 @@ struct TotalsCard: View {
                         Image(systemName: "chevron.right")
                             .font(.caption.weight(.semibold))
                             .foregroundStyle(.secondary)
-                            .rotationEffect(.degrees(preRideExpanded ? 90 : 0))
+                            .rotationEffect(.degrees(preRideChevronDown ? 90 : 0))
+                            .animation(anim(.spring(response: 0.3, dampingFraction: 0.8)), value: preRideChevronDown)
                     }
                     .padding(12)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
 
-                // Expanded detail — always in hierarchy, clipped to animated height
+                // Expanded detail — always in hierarchy.
+                // Collapse: fade content first, then snap height (avoids ScrollView jump).
+                // Expand: spring height open, then fade content in.
                 VStack(spacing: 0) {
                     Divider()
                         .padding(.horizontal, 12)
@@ -335,15 +362,11 @@ struct TotalsCard: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                 }
-                // clipped() only on inner — outer must stay unclipped so rounded
-                // background animates without square-corner artifacts
                 .frame(maxHeight: preRideExpanded ? 600 : 0, alignment: .top)
                 .clipped()
-                .opacity(preRideExpanded ? 1 : 0)
+                .opacity(preRideContentOpacity)
+                .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
             }
-            // animation on outer drives all layout (background, header, chevron)
-            // in one pass — no snap between outer layout and inner content
-            .animation(anim(.spring(response: 0.35, dampingFraction: 0.8)), value: preRideExpanded)
             .background(Color.primary.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
             .task(id: state.preRideNotificationStartTime) {
                 // Clean up expired reminder state outside the view body
