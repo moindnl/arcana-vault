@@ -557,6 +557,7 @@ private struct PreRideNotifSheet: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 24)
                 }
 
